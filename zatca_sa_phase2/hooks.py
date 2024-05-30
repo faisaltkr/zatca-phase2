@@ -227,3 +227,10 @@ app_license = "mit"
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+doc_events = {
+    'Sales Invoice': {
+        'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.sales_invoice.generate_invoice_xml'
+    }
+}
+
+fixtures = [ {"dt": "Custom Field","filters": [["module", "=", "Zatca Sa Phase2"]] }]
