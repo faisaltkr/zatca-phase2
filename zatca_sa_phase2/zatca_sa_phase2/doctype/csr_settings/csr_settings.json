@@ -1,0 +1,334 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-05-30 09:53:25.031739",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "company_details_tab",
+  "company_details_section",
+  "company_name",
+  "business_unit",
+  "egs_unit_serial",
+  "company_category",
+  "country",
+  "country_code",
+  "currency_code",
+  "column_break_bmuw",
+  "street",
+  "building_number",
+  "city",
+  "district",
+  "postal_code",
+  "amended_from",
+  "zatca_integration_settings_section",
+  "zatca_communication",
+  "business_transaction_type",
+  "company_id_details_tab",
+  "company_namearabic",
+  "vat_registration_number",
+  "additional_ids",
+  "integration_details_tab",
+  "configuration_section",
+  "root_path",
+  "generate_xml",
+  "column_break_mhbt",
+  "fatoora_portal_api_url",
+  "zatca_onboarding_section",
+  "enter_otp",
+  "egs_onboard",
+  "csid",
+  "compliance_request_id",
+  "private_key",
+  "private_key_pem_format",
+  "created_time",
+  "column_break_trih",
+  "perform_compliance_check",
+  "enter_prodution_otp",
+  "get_production_csid",
+  "prodcution_request_id",
+  "production_csid_pcsid"
+ ],
+ "fields": [
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "CSR Settings",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "company_details_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "company_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Company Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "business_unit",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Business Unit",
+   "reqd": 1
+  },
+  {
+   "description": "Format:1-Solution Provider Name|2-Model or Version|3-Serial\nExample : 1-ERPNext|2-15|3-001",
+   "fieldname": "egs_unit_serial",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "EGS Unit Serial",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company_category",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Company Category",
+   "reqd": 1
+  },
+  {
+   "default": "Saudi Arabia",
+   "fieldname": "country",
+   "fieldtype": "Data",
+   "label": "Country",
+   "reqd": 1
+  },
+  {
+   "default": "SA",
+   "fieldname": "country_code",
+   "fieldtype": "Data",
+   "label": "Country Code",
+   "reqd": 1
+  },
+  {
+   "default": "SAR",
+   "fieldname": "currency_code",
+   "fieldtype": "Data",
+   "label": "Currency Code",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_bmuw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "street",
+   "fieldtype": "Data",
+   "label": "Street",
+   "reqd": 1
+  },
+  {
+   "fieldname": "building_number",
+   "fieldtype": "Data",
+   "label": "Building Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City",
+   "reqd": 1
+  },
+  {
+   "fieldname": "district",
+   "fieldtype": "Data",
+   "label": "District",
+   "reqd": 1
+  },
+  {
+   "fieldname": "postal_code",
+   "fieldtype": "Data",
+   "label": "Postal Code",
+   "reqd": 1
+  },
+  {
+   "fieldname": "zatca_integration_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Zatca Integration Settings"
+  },
+  {
+   "fieldname": "zatca_communication",
+   "fieldtype": "Select",
+   "label": "ZATCA Communication",
+   "options": "Clearance\nReporting"
+  },
+  {
+   "fieldname": "business_transaction_type",
+   "fieldtype": "Select",
+   "label": "Business Transaction Type",
+   "options": "Standard Tax Invoice\nSimplified Tax Invoice\nStandard & Simplified Invoices"
+  },
+  {
+   "fieldname": "company_id_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Company ID Details"
+  },
+  {
+   "fieldname": "company_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Company Details"
+  },
+  {
+   "fieldname": "company_namearabic",
+   "fieldtype": "Data",
+   "label": "Company Name(Arabic)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "vat_registration_number",
+   "fieldtype": "Data",
+   "label": "VAT Registration Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "integration_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Integration Details"
+  },
+  {
+   "fieldname": "additional_ids",
+   "fieldtype": "Table",
+   "label": "Additional IDs",
+   "options": "Additional IDs-Zatca"
+  },
+  {
+   "fieldname": "configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Configuration"
+  },
+  {
+   "description": "Path to the executable for zatca cli",
+   "fieldname": "root_path",
+   "fieldtype": "Data",
+   "label": "Root Path"
+  },
+  {
+   "fieldname": "generate_xml",
+   "fieldtype": "Button",
+   "label": "Generate XML"
+  },
+  {
+   "fieldname": "column_break_mhbt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "The URL for the zatca",
+   "fieldname": "fatoora_portal_api_url",
+   "fieldtype": "Data",
+   "label": "Fatoora Portal API URL"
+  },
+  {
+   "fieldname": "zatca_onboarding_section",
+   "fieldtype": "Section Break",
+   "label": "ZATCA Onboarding"
+  },
+  {
+   "description": "Enter OTP Generate from fatoora portal",
+   "fieldname": "enter_otp",
+   "fieldtype": "Data",
+   "label": "Enter OTP"
+  },
+  {
+   "description": "Generate a CSR and make a compliance CSID Request through ZATCA",
+   "fieldname": "egs_onboard",
+   "fieldtype": "Button",
+   "label": "EGS Onboard"
+  },
+  {
+   "fieldname": "csid",
+   "fieldtype": "Text",
+   "label": "CSID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "compliance_request_id",
+   "fieldtype": "Small Text",
+   "label": "CSR PEM Format",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_trih",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Perform compliance check for different invoice check. It is a prerequisites to retrieve a production CSID",
+   "fieldname": "perform_compliance_check",
+   "fieldtype": "Button",
+   "label": "Perform Compliance Check"
+  },
+  {
+   "description": "Use the compliance request from the onboarding to get a production CSID from ZATCA",
+   "fieldname": "get_production_csid",
+   "fieldtype": "Button",
+   "label": "Get Production CSID"
+  },
+  {
+   "fieldname": "enter_prodution_otp",
+   "fieldtype": "Data",
+   "label": "Enter OTP"
+  },
+  {
+   "fieldname": "prodcution_request_id",
+   "fieldtype": "Data",
+   "label": "Prodcution Request ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "production_csid_pcsid",
+   "fieldtype": "Text",
+   "label": "Production CSID (PCSID)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "private_key",
+   "fieldtype": "Small Text",
+   "label": "Private Key",
+   "read_only": 1
+  },
+  {
+   "fieldname": "private_key_pem_format",
+   "fieldtype": "Small Text",
+   "label": "Private Key PEM Format",
+   "read_only": 1
+  },
+  {
+   "fieldname": "created_time",
+   "fieldtype": "Data",
+   "label": "Created Time",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-05-31 05:27:46.265043",
+ "modified_by": "Administrator",
+ "module": "Zatca Sa Phase2",
+ "name": "CSR Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
