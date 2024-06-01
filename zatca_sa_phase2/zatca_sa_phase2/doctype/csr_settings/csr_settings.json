@@ -30,24 +30,29 @@
   "additional_ids",
   "integration_details_tab",
   "configuration_section",
-  "root_path",
-  "generate_xml",
+  "select_environment",
+  "sandbox_url",
+  "simulation_url",
+  "production_url",
+  "generate_csr",
+  "csr",
   "column_break_mhbt",
-  "fatoora_portal_api_url",
+  "private_key",
+  "compliance_request_id",
   "zatca_onboarding_section",
   "enter_otp",
   "egs_onboard",
   "csid",
-  "compliance_request_id",
-  "private_key",
-  "private_key_pem_format",
   "created_time",
   "column_break_trih",
+  "select_invoice_type",
+  "sample_invoice_number_to_test",
   "perform_compliance_check",
+  "section_break_qfnh",
   "enter_prodution_otp",
   "get_production_csid",
-  "prodcution_request_id",
-  "production_csid_pcsid"
+  "production_csid_pcsid",
+  "prodcution_request_id"
  ],
  "fields": [
   {
@@ -201,28 +206,11 @@
   {
    "fieldname": "configuration_section",
    "fieldtype": "Section Break",
-   "label": "Configuration"
-  },
-  {
-   "description": "Path to the executable for zatca cli",
-   "fieldname": "root_path",
-   "fieldtype": "Data",
-   "label": "Root Path"
-  },
-  {
-   "fieldname": "generate_xml",
-   "fieldtype": "Button",
-   "label": "Generate XML"
+   "label": "URL & API End Points"
   },
   {
    "fieldname": "column_break_mhbt",
    "fieldtype": "Column Break"
-  },
-  {
-   "description": "The URL for the zatca",
-   "fieldname": "fatoora_portal_api_url",
-   "fieldtype": "Data",
-   "label": "Fatoora Portal API URL"
   },
   {
    "fieldname": "zatca_onboarding_section",
@@ -236,10 +224,9 @@
    "label": "Enter OTP"
   },
   {
-   "description": "Generate a CSR and make a compliance CSID Request through ZATCA",
    "fieldname": "egs_onboard",
    "fieldtype": "Button",
-   "label": "EGS Onboard"
+   "label": "Generate Compliance CSID"
   },
   {
    "fieldname": "csid",
@@ -249,16 +236,17 @@
   },
   {
    "fieldname": "compliance_request_id",
-   "fieldtype": "Small Text",
-   "label": "CSR PEM Format",
+   "fieldtype": "Data",
+   "label": "Compliance Request ID",
    "read_only": 1
   },
   {
+   "description": "Perform compliance check for different invoice check. It is a prerequisites to retrieve a production CSID",
    "fieldname": "column_break_trih",
-   "fieldtype": "Column Break"
+   "fieldtype": "Column Break",
+   "label": "Zatca Compliance Check"
   },
   {
-   "description": "Perform compliance check for different invoice check. It is a prerequisites to retrieve a production CSID",
    "fieldname": "perform_compliance_check",
    "fieldtype": "Button",
    "label": "Perform Compliance Check"
@@ -293,22 +281,72 @@
    "read_only": 1
   },
   {
-   "fieldname": "private_key_pem_format",
-   "fieldtype": "Small Text",
-   "label": "Private Key PEM Format",
-   "read_only": 1
-  },
-  {
    "fieldname": "created_time",
    "fieldtype": "Data",
    "label": "Created Time",
+   "read_only": 1
+  },
+  {
+   "fieldname": "select_invoice_type",
+   "fieldtype": "Select",
+   "label": "Select Invoice Type",
+   "options": "Standard Tax Invoice\nStandard Credit Note\nStandard Debit Note\nSimplified Tax Invoice\nSimplified Credit Note\nSimplified Debit Note"
+  },
+  {
+   "description": "Need to link sales invoice number to this field",
+   "fieldname": "sample_invoice_number_to_test",
+   "fieldtype": "Data",
+   "label": "Sample Invoice Number to Test"
+  },
+  {
+   "fieldname": "section_break_qfnh",
+   "fieldtype": "Section Break",
+   "label": "Get Production CSID"
+  },
+  {
+   "fieldname": "select_environment",
+   "fieldtype": "Select",
+   "label": "Select Environment",
+   "options": "Sandbox\nSimulation\nProduction"
+  },
+  {
+   "default": "https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal/",
+   "depends_on": "eval:doc.select_environment==\"SandBox\"",
+   "fieldname": "sandbox_url",
+   "fieldtype": "Data",
+   "label": "Sandbox URL"
+  },
+  {
+   "default": "https://gw-fatoora.zatca.gov.sa/e-invoicing/simulation/",
+   "depends_on": "doc.select_environment==\"Simulation\";",
+   "fieldname": "simulation_url",
+   "fieldtype": "Data",
+   "label": "Simulation URL"
+  },
+  {
+   "default": "https://gw-fatoora.zatca.gov.sa/e-invoicing/core/",
+   "depends_on": "doc.select_environment==\"Production\"",
+   "fieldname": "production_url",
+   "fieldtype": "Data",
+   "label": "Production URL"
+  },
+  {
+   "description": "Generate a CSR and make a compliance CSID Request through ZATCA",
+   "fieldname": "generate_csr",
+   "fieldtype": "Button",
+   "label": "Generate CSR"
+  },
+  {
+   "fieldname": "csr",
+   "fieldtype": "Text",
+   "label": "CSR",
    "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-05-31 05:27:46.265043",
+ "modified": "2024-05-31 16:21:24.956499",
  "modified_by": "Administrator",
  "module": "Zatca Sa Phase2",
  "name": "CSR Settings",

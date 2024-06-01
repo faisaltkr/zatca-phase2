@@ -232,5 +232,18 @@ doc_events = {
         'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.sales_invoice.generate_invoice_xml'
     }
 }
+#"filters": [["module", "=", "Zatca Sa Phase2"]],
+fixtures = [ 
+    {"dt": "Custom Field",
+               "filters": [["name", "in", [
+            "Sales Invoice-custom_field_1",
+            "Sales Invoice-custom_field_2"
+        ]]]
+              }
+              
+              ]
 
-fixtures = [ {"dt": "Custom Field","filters": [["module", "=", "Zatca Sa Phase2"]] }]
+
+
+
+app_include_css = "/private/files/custom.css"
