@@ -229,7 +229,7 @@ app_license = "mit"
 
 doc_events = {
     'Sales Invoice': {
-        'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.sales_invoice.generate_invoice_xml'
+        'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.einvoices.create_invoice.create_simplified_invoice'
     }
 }
 #"filters": [["module", "=", "Zatca Sa Phase2"]],

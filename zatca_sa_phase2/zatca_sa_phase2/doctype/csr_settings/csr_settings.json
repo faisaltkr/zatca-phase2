@@ -10,20 +10,22 @@
   "company_name",
   "business_unit",
   "egs_unit_serial",
+  "common_name",
+  "column_break_xfal",
   "company_category",
   "country",
   "country_code",
   "currency_code",
+  "business_transaction_type",
+  "address_details_section",
   "column_break_bmuw",
   "street",
   "building_number",
   "city",
+  "column_break_yapt",
   "district",
   "postal_code",
   "amended_from",
-  "zatca_integration_settings_section",
-  "zatca_communication",
-  "business_transaction_type",
   "company_id_details_tab",
   "company_namearabic",
   "vat_registration_number",
@@ -67,12 +69,12 @@
   },
   {
    "fieldname": "company_details_section",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "EGS Settings"
   },
   {
    "fieldname": "company_name",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "label": "Company Name",
    "reqd": 1
   },
@@ -80,7 +82,7 @@
    "fieldname": "business_unit",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Business Unit",
+   "label": "Business Unit (Branch Name)",
    "reqd": 1
   },
   {
@@ -95,7 +97,7 @@
    "fieldname": "company_category",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Company Category",
+   "label": "Industry Type",
    "reqd": 1
   },
   {
@@ -130,6 +132,7 @@
    "reqd": 1
   },
   {
+   "description": "4 Digit building number",
    "fieldname": "building_number",
    "fieldtype": "Data",
    "label": "Building Number",
@@ -148,26 +151,16 @@
    "reqd": 1
   },
   {
+   "description": "5 Digit Postal Code",
    "fieldname": "postal_code",
    "fieldtype": "Data",
    "label": "Postal Code",
    "reqd": 1
   },
   {
-   "fieldname": "zatca_integration_settings_section",
-   "fieldtype": "Section Break",
-   "label": "Zatca Integration Settings"
-  },
-  {
-   "fieldname": "zatca_communication",
-   "fieldtype": "Select",
-   "label": "ZATCA Communication",
-   "options": "Clearance\nReporting"
-  },
-  {
    "fieldname": "business_transaction_type",
    "fieldtype": "Select",
-   "label": "Business Transaction Type",
+   "label": "Invoice Type",
    "options": "Standard Tax Invoice\nSimplified Tax Invoice\nStandard & Simplified Invoices"
   },
   {
@@ -341,12 +334,33 @@
    "fieldtype": "Text",
    "label": "CSR",
    "read_only": 1
+  },
+  {
+   "description": "Name or asset tracking number for the solution unit",
+   "fieldname": "common_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Common Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_xfal",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "address_details_section",
+   "fieldtype": "Section Break",
+   "label": "Address Details"
+  },
+  {
+   "fieldname": "column_break_yapt",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-05-31 16:21:24.956499",
+ "modified": "2024-06-15 14:15:07.788517",
  "modified_by": "Administrator",
  "module": "Zatca Sa Phase2",
  "name": "CSR Settings",
@@ -360,7 +374,7 @@
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "System Manager",
+   "role": "Administrator",
    "share": 1,
    "submit": 1,
    "write": 1
