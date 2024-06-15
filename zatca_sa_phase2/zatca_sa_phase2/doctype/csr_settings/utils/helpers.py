@@ -7,13 +7,10 @@ import json
 def has_all_keys(dictionary, key_list):
     return all(key in dictionary for key in key_list)
 
-
-print("jjjjjjjj")
 @frappe.whitelist()
 def helpers(name):
     current_dict = json.loads(name)
-    print(current_dict)
-    required_field = [
+    required_fields = [
                         "name",
                         "company_name",
                         "business_unit",
@@ -21,22 +18,20 @@ def helpers(name):
                         "company_category",
                         "country",
                         "country_code",
+                        "common_name",
                         "currency_code",
                         "street",
                         "building_number",
                         "city",
                         "district",
                         "postal_code",
-                        "zatca_communication",
                         "business_transaction_type",
                         "company_namearabic",
                         "vat_registration_number",
                         "select_environment",
                         "select_invoice_type",
-                        "doctype"
                     ]
-    if not has_all_keys(current_dict, required_field):
-        print("hhhjhhhhhhhhh")
+    if not has_all_keys(current_dict, required_fields):
         return "Please add all mandatory fields."  
     
     config_dict = {
@@ -70,15 +65,47 @@ def helpers(name):
     },
     "alt_names": {
         "SN": current_dict.get('egs_unit_serial'), #egs
-        "UID": current_dict.get('vat_registration_name'), #vat registration number
+        "UID": current_dict.get('vat_registration_number'), #vat registration number
         "title": "1100", # invoice type
         "registeredAddress":  current_dict.get('city'),
         "businessCategory":  current_dict.get('company_category')
         }
     }   
 
-    return name
+    print(config_dict)
 
+    try:
+        from .generate_keys import generatekeys
+        keys = generatekeys(current_dict.get('name'),config_dict,current_dict.get('business_unit'))
+        return "CSR Token Generated Successfully!"
+
+    except Exception as e:
+        return "failed to generate csr "+ str(e)
+    
+    return config_dict
+
+
+
+@frappe.whitelist()
+def csid(dict):
+    current_dict = json.loads(dict)
+    from .generate_keys import get_csid
+    # name = 
+    try:
+        env = current_dict.get('select_environment')
+        print(env,"ggggggggggggggggggggggggggg")
+        csid = get_csid(current_dict.get('business_unit'),current_dict.get('name'),current_dict.get('enter_otp'))
+
+    
+        return {
+            'message':"CSID generated sucessfully",
+            "compliance_request_id":csid[2],
+            "csr":csid[1],
+            "private_key":csid[0]
+        }
+
+    except Exception as e:
+        return "failed to generate csid "+ str(e)
 
 def get_uuid():
     """
@@ -109,10 +136,11 @@ def get_home_dir():
     return os.path.expanduser("~")
 
 
-def get_fatoora_base_url(current_env):
+def get_fatoora_base_url(current_env="sanbox"):
     """
     get current base url
     """
+    current_env=current_env.lower()
     if current_env == "sandbox":
         return 'https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal/'
     elif current_env == "simulation":

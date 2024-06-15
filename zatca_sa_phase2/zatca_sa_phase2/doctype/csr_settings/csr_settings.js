@@ -41,10 +41,39 @@ frappe.ui.form.on('CSR Settings', {
                     callback: function(r) {
                         if(r.message) {
                             frappe.msgprint({
-                                title: __('Error'),
-                                message: 'Server-side method response: <b style="color:red">' + r.message + '</b>',
+                                title: __('Success'),
+                                message: '<b style="color:green">' + r.message + '</b>',
                                 indicator: 'red'
                             });
+                        }
+                    }
+                });
+            });
+            frm.fields_dict['egs_onboard'].$input.on('click', function() {
+                console.log("button clicked")
+                let formData = frm.doc;
+            
+                // Print form data to the console
+                console.log(formData);
+                // Define what happens when the button is clicked
+                // frappe.msgprint(__('Custom button clicked!'));
+    
+                // Perform additional actions here
+                frappe.call({
+                    method: 'zatca_sa_phase2.zatca_sa_phase2.doctype.csr_settings.utils.helpers.csid',
+                    args: {
+                        dict:formData
+                    },
+                    callback: function(r) {
+                        if(r.message) {
+                            frappe.msgprint({
+                                title: __('Success'),
+                                message: '<b style="color:green">' + r.message.message + '</b>',
+                                indicator: 'red'
+                            });
+                            frm.set_value('compliance_request_id', r.message.compliance_request_id);
+                            frm.set_value('csr', r.message.csr);
+                            frm.set_value('private_key',  r.message.private_key);
                         }
                     }
                 });
