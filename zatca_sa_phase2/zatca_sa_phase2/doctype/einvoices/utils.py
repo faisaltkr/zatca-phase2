@@ -11,6 +11,7 @@ from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 import binascii
+import pyqrcode
 
 
 # Get the current date
@@ -489,3 +490,80 @@ def generate_tlv_xml():
                             return result_dict
                     except Exception as e:
                         frappe.throw(" error in getting the entire tlv data: "+ str(e) )
+
+
+def get_tlv_for_value(tag_num, tag_value):
+                try:
+                    tag_num_buf = bytes([tag_num])
+                    if isinstance(tag_value, str):
+                        if len(tag_value) < 256:
+                            tag_value_len_buf = bytes([len(tag_value)])
+                        else:
+                            tag_value_len_buf = bytes([0xFF, (len(tag_value) >> 8) & 0xFF, len(tag_value) & 0xFF])
+                        tag_value = tag_value.encode('utf-8')
+                    else:
+                        tag_value_len_buf = bytes([len(tag_value)])
+                    return tag_num_buf + tag_value_len_buf + tag_value
+                except Exception as e:
+                    frappe.throw(" error in getting the tlv data value: "+ str(e) )
+
+
+
+def update_Qr_toXml(qrCodeB64):
+                    try:
+                        xml_file_path = frappe.local.site + "/private/files/final_xml_after_sign.xml"
+                        xml_tree = etree.parse(xml_file_path)
+                        qr_code_element = xml_tree.find('.//cac:AdditionalDocumentReference[cbc:ID="QR"]/cac:Attachment/cbc:EmbeddedDocumentBinaryObject', namespaces={'cac': 'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2', 'cbc': 'urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2'})
+                        if qr_code_element is not None:
+                            qr_code_element.text =qrCodeB64
+                        else:
+                            frappe.msgprint("QR code element not found")
+
+                        xml_tree.write(xml_file_path, encoding="UTF-8", xml_declaration=True)
+                    except Exception as e:
+                            frappe.throw(" error in saving tlv data to xml: "+ str(e) )
+
+def structuring_signedxml():
+                try:
+                    with open(frappe.local.site + '/private/files/final_xml_after_sign.xml', 'r') as file:
+                        xml_content = file.readlines()
+                    indentations = {
+                        29: ['<xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Target="signature">','</xades:QualifyingProperties>'],
+                        33: ['<xades:SignedProperties Id="xadesSignedProperties">', '</xades:SignedProperties>'],
+                        37: ['<xades:SignedSignatureProperties>','</xades:SignedSignatureProperties>'],
+                        41: ['<xades:SigningTime>', '<xades:SigningCertificate>','</xades:SigningCertificate>'],
+                        45: ['<xades:Cert>','</xades:Cert>'],
+                        49: ['<xades:CertDigest>', '<xades:IssuerSerial>', '</xades:CertDigest>', '</xades:IssuerSerial>'],
+                        53: ['<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>', '<ds:DigestValue>', '<ds:X509IssuerName>', '<ds:X509SerialNumber>']
+                    }
+                    def adjust_indentation(line):
+                        for col, tags in indentations.items():
+                            for tag in tags:
+                                if line.strip().startswith(tag):
+                                    return ' ' * (col - 1) + line.lstrip()
+                        return line
+                    adjusted_xml_content = [adjust_indentation(line) for line in xml_content]
+                    with open(frappe.local.site + '/private/files/final_xml_after_indent.xml', 'w') as file:
+                        file.writelines(adjusted_xml_content)
+                    signed_xmlfile_name = frappe.local.site + '/private/files/final_xml_after_indent.xml'
+                    return signed_xmlfile_name
+                except Exception as e:
+                    frappe.throw(" error in structuring signed xml: "+ str(e) )
+
+
+def attach_QR_Image(qrCodeB64,sales_invoice_doc):
+                    try:
+                        qr = pyqrcode.create(qrCodeB64)
+                        temp_file_path = "qr_code.png"
+                        qr_image=qr.png(temp_file_path, scale=5)
+                        file = frappe.get_doc({
+                            "doctype": "File",
+                            "file_name": f"QR_image_{sales_invoice_doc.name}.png",
+                            "attached_to_doctype": sales_invoice_doc.doctype,
+                            "attached_to_name": sales_invoice_doc.name,
+                            "content": open(temp_file_path, "rb").read()
+                           
+                        })
+                        file.save(ignore_permissions=True)
+                    except Exception as e:
+                        frappe.throw("error in qrcode from xml:  " + str(e) )

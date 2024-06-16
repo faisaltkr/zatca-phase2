@@ -1,6 +1,7 @@
 import frappe
 import re
 import xml.etree.ElementTree as ET
+import json
 
 def get_ICV_code(invoice_number):
                 try:
@@ -52,7 +53,7 @@ def get_pih_for_company(pih_data, company_name):
 
 def additional_Reference(invoice):
             try:
-                settings = frappe.get_doc('Zatca ERPgulf Setting')
+                # settings = frappe.get_doc('Zatca ERPgulf Setting')
                 cac_AdditionalDocumentReference2 = ET.SubElement(invoice, "cac:AdditionalDocumentReference")
                 cbc_ID_1_1 = ET.SubElement(cac_AdditionalDocumentReference2, "cbc:ID")
                 cbc_ID_1_1.text = "PIH"
@@ -61,13 +62,23 @@ def additional_Reference(invoice):
                 cbc_EmbeddedDocumentBinaryObject.set("mimeCode", "text/plain")
                 
                 
-                company = settings.company
-                company_name = frappe.db.get_value("Company", company, "abbr")
-                pih_data_raw = settings.get("pih", "{}")
-                pih_data = json.loads(pih_data_raw)
-                pih = get_pih_for_company(pih_data, company_name)
+                # company = settings.company # TODO
+                company = "mycompany"
+
+                # company_name = frappe.db.get_value("Company", company, "abbr")
+                # pih_data_raw = settings.get("pih", "{}")
+                # pih_data_raw = settings.get("pih", "{}") # TODO
+
+                # company = settings.company
+
+                # pih_data = json.loads(pih_data_raw)
+
+                # pih = get_pih_for_company(pih_data, company_name)
                 
-                cbc_EmbeddedDocumentBinaryObject.text = pih
+                # cbc_EmbeddedDocumentBinaryObject.text = pih
+
+                cbc_EmbeddedDocumentBinaryObject.text = 'z7A3LdsYRnh3CaxgX97QRRKIEMa3l88+FOOMEolV6sg='
+
                 # cbc_EmbeddedDocumentBinaryObject.text = "L0Awl814W4ycuFvjDVL/vIW08mNRNAwqfdlF5i/3dpU="
             # QR CODE ------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 cac_AdditionalDocumentReference22 = ET.SubElement(invoice, "cac:AdditionalDocumentReference")
