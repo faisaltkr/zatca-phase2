@@ -1,13 +1,14 @@
 import xml.etree.ElementTree as ET
-from .utils import invoice_Typecode_Compliance, doc_Reference
-from .company_details import company_Data
-from .customer_details import customer_Data
-from .invoice_detail import salesinvoice_data
-from .invoice_type import invoice_Typecode_Simplified,invoice_Typecode_Standard
-from .invoice_pay_means import delivery_And_PaymentMeans
-from .invoice_pay_means_cmp import delivery_And_PaymentMeans_for_Compliance
+# from .utils import invoice_Typecode_Compliance, doc_Reference
+# from .company_details import company_Data
+# from .customer_details import customer_Data
+# from .invoice_detail import salesinvoice_data
+# from .invoice_type import invoice_Typecode_Simplified,invoice_Typecode_Standard
+# from .invoice_pay_means import delivery_And_PaymentMeans
+# from .invoice_pay_means_cmp import delivery_And_PaymentMeans_for_Compliance
+import frappe
 
-def generate_xml_tags():
+def xml_tags():
             try: 
                 invoice = ET.Element("Invoice", xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" )
                 invoice.set("xmlns:cac", "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
@@ -93,22 +94,21 @@ def generate_xml_tags():
                 X509SerialNumber.text = "2475382886904809774818644480820936050208702411"
                 return invoice
             except Exception as e:
-                    print(str(e))
-
+                    frappe.throw("error in xml tags formation:  "+ str(e) )
 
 # print(generate_xml_tags().__dict__)
 
 # inv = invoice_Typecode_Compliance(generate_xml_tags())
-cmp=company_Data(generate_xml_tags())
-cst = customer_Data(cmp)
-inv_det = salesinvoice_data(cst)
-in_stan = invoice_Typecode_Standard(inv_det)
-in_smp = invoice_Typecode_Simplified(in_stan)
-in_p = delivery_And_PaymentMeans(in_smp)
-in_p_c = delivery_And_PaymentMeans_for_Compliance(in_p)
+# cmp=company_Data(generate_xml_tags())
+# cst = customer_Data(cmp)
+# inv_det = salesinvoice_data(cst)
+# in_stan = invoice_Typecode_Standard(inv_det)
+# in_smp = invoice_Typecode_Simplified(in_stan)
+# in_p = delivery_And_PaymentMeans(in_smp)
+# in_p_c = delivery_And_PaymentMeans_for_Compliance(in_p)
 # doc_ref = doc_Reference(inv)
 
-tree = ET.ElementTree(in_p_c)
+# tree = ET.ElementTree(in_p_c)
 
 
 tree.write("invoice.xml", encoding="utf-8", xml_declaration=True)

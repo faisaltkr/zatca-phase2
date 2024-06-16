@@ -229,7 +229,7 @@ app_license = "mit"
 
 doc_events = {
     'Sales Invoice': {
-        'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.einvoices.create_invoices.create_invoice'
+        'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.einvoices.create_invoices.zatca_Background_on_submit'
     }
 }
 
