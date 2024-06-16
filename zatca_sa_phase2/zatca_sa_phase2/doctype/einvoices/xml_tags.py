@@ -1,11 +1,11 @@
 import xml.etree.ElementTree as ET
-from utils import invoice_Typecode_Compliance, doc_Reference
-from company_details import company_Data
-from customer_details import customer_Data
-from invoice_detail import salesinvoice_data
-from invoice_type import invoice_Typecode_Simplified,invoice_Typecode_Standard
-from invoice_pay_means import delivery_And_PaymentMeans
-from invoice_pay_means_cmp import delivery_And_PaymentMeans_for_Compliance
+from .utils import invoice_Typecode_Compliance, doc_Reference
+from .company_details import company_Data
+from .customer_details import customer_Data
+from .invoice_detail import salesinvoice_data
+from .invoice_type import invoice_Typecode_Simplified,invoice_Typecode_Standard
+from .invoice_pay_means import delivery_And_PaymentMeans
+from .invoice_pay_means_cmp import delivery_And_PaymentMeans_for_Compliance
 
 def generate_xml_tags():
             try: 

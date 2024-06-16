@@ -2,6 +2,27 @@ import xml.etree.ElementTree as ET
 import re
 import hashlib
 import base64
+import frappe
+from datetime import datetime
+
+# Get the current date
+
+def dateformat():
+    current_date = datetime.now()
+    # Format the current date as YYYYMMDD
+    formatted_current_date = current_date.strftime("%Y%m%d")
+
+    return formatted_current_date
+
+def timeformat():
+    # Get the current time
+    current_time = datetime.now()
+
+    # Format the current time to HHMMSS format
+    current_time_string = current_time.strftime("%H%M%S")
+
+    return current_time_string
+
 
 def base_64_hash(data):
         sha256_hash = hashlib.sha256(data.encode('utf-8')).digest()
@@ -103,3 +124,7 @@ def doc_Reference(invoice,sales_invoice_doc='1',invoice_number="DFSDF24345349594
                 return invoice  
             except Exception as e:
                     print(str(e))
+
+
+def get_private_path():
+    return  frappe.utils.get_files_path(is_private=True)
