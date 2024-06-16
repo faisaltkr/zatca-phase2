@@ -2,25 +2,25 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('CSR Settings', {
-    onload: function(frm) {
-        // Fetch value from the database asynchronously
-        frappe.call({
-            method: 'zatca_sa_phase2.zatca_sa_phase2.doctype.csr_settings.utils.get_values.company',
-            args: {
-                // Add any arguments needed for your method here
-            },
-            callback: function(response) {
-                // Check if the call was successful and the value was retrieved
-                console.log(response)
-                if (response.message) {
-                    // Set the value to the field
-                    frm.set_value('company_name', response.message.name);
-                } else {
-                    frappe.msgprint('Failed to get value from the database.');
-                }
-            }
-        });
-    },
+    // onload: function(frm) {
+    //     // Fetch value from the database asynchronously
+    //     frappe.call({
+    //         method: 'zatca_sa_phase2.zatca_sa_phase2.doctype.csr_settings.utils.get_values.company',
+    //         args: {
+    //             // Add any arguments needed for your method here
+    //         },
+    //         callback: function(response) {
+    //             // Check if the call was successful and the value was retrieved
+    //             console.log(response)
+    //             if (response.message) {
+    //                 // Set the value to the field
+    //                 frm.set_value('company_name', response.message.name);
+    //             } else {
+    //                 frappe.msgprint('Failed to get value from the database.');
+    //             }
+    //         }
+    //     });
+    // },
     refresh: function(frm) {
             // Bind the custom button click event
             frm.fields_dict['generate_csr'].$input.on('click', function() {

@@ -33,7 +33,8 @@ class SimplifiedInvoice:
     
 # file name  - vatnumber-datetime-invoicenumber //yyyy-mm-dd-hh-mm-ss //3xxxxxxxxx1xxx3_20210526T132400_2021-05-26-23555.xml
 def create_invoice(doc,method):
-    print(doc)
+    csr_details =  get_csr_deatils()
+    vat_number =   csr_details.get('vat_registration_number')
     simp =  SimplifiedInvoice(1,pih=123)
     simp_inv = simp.create_simplified_invoice()
     tree = ET.ElementTree(simp_inv)
@@ -46,14 +47,13 @@ def create_invoice(doc,method):
 
     current_date = dateformat()
     current_time = timeformat()
-    get_vat()
 
-    tree.write(f"{private_path}/xmls/invoice_simple.xml", encoding="utf-8", xml_declaration=True)
+    tree.write(f"{private_path}/xmls/{vat_number}_{current_date}T{current_time}_{doc.name}.xml", encoding="utf-8", xml_declaration=True)
     return True
 
 
 
-def get_vat():
+def get_csr_deatils():
     docs = frappe.get_all('CSR Settings', fields=['name', 'vat_registration_number'])
 
     try:
@@ -61,10 +61,15 @@ def get_vat():
         docs = frappe.get_list('CSR Settings', fields='*', order_by='creation desc', limit=1)
         
         # Iterate through the documents and print all field values
+        doc_value = {}
         for doc in docs:
             print(f"Document: {doc}")
+            doc_value = doc
+            break
+
 
     except frappe.DoesNotExistError:
         print(f"No documents found for Doctype.")
 
 
+    return doc_value
