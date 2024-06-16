@@ -47,6 +47,7 @@ def get_csid(unit,name,otp):
         'csr': '000',
     }
     json_data['csr'] = csr
+    print(json_data)
     response = requests.post(
         get_fatoora_base_url(current_env="sandbox")+'compliance',
         headers=headers,
@@ -54,6 +55,7 @@ def get_csid(unit,name,otp):
     )
     if response.status_code == 200:
         csid = response.json()
+        print(csid,"csid gener")
         binarySecurityToken = response.json()['binarySecurityToken']
         decoded_token = base64.b64decode(binarySecurityToken).decode('utf-8')
         secret = response.json()['secret']

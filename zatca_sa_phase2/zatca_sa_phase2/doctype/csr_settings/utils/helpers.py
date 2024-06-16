@@ -93,7 +93,6 @@ def csid(dict):
     # name = 
     try:
         env = current_dict.get('select_environment')
-        print(env,"ggggggggggggggggggggggggggg")
         csid = get_csid(current_dict.get('business_unit'),current_dict.get('name'),current_dict.get('enter_otp'))
 
     
