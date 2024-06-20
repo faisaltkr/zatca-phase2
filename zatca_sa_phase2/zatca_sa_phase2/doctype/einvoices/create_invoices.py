@@ -176,18 +176,18 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                             print(invoice,"dsjfhdfjkghkjdfhgjk,jjfjfjjfjfjfjfjfjfjj")
                             invoice=delivery_And_PaymentMeans(invoice,sales_invoice_doc, sales_invoice_doc.is_return) 
                             print(invoice,"dsjfhdfjkghkjdfhgjk,jjfjfjjfjfjfjfj,dfkgdfj")
-                            # if not any_item_has_tax_template:
-                            #     print("dffdgdfg")
-                            #     invoice = tax_Data(invoice, sales_invoice_doc)
-                            # else:
-                            #     print("dfgjdhfgjdhfg")
-                            #     invoice = tax_Data_with_template(invoice, sales_invoice_doc)
-                            # if not any_item_has_tax_template:
-                            #     print("dfgjkhdfgh")
-                            #     invoice=item_data(invoice,sales_invoice_doc)
-                            # else:
-                            #        print("sdfjkhdfgj")
-                            #        item_data_with_template(invoice,sales_invoice_doc)
+                            if not any_item_has_tax_template:
+                                print("dffdgdfg")
+                                invoice = tax_Data(invoice, sales_invoice_doc)
+                            else:
+                                print("dfgjdhfgjdhfg")
+                                invoice = tax_Data_with_template(invoice, sales_invoice_doc)
+                            if not any_item_has_tax_template:
+                                print("dfgjkhdfgh")
+                                invoice=item_data(invoice,sales_invoice_doc)
+                            else:
+                                   print("sdfjkhdfgj")
+                                   item_data_with_template(invoice,sales_invoice_doc)
                             pretty_xml_string=xml_structuring(invoice,sales_invoice_doc)
 
                             print("jjjjjsdfjndkjfbdjkdfgkb")

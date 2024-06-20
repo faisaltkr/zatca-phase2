@@ -88,7 +88,8 @@ def item_data_with_template(invoice, sales_invoice_doc):
             
             cac_ClassifiedTaxCategory = ET.SubElement(cac_Item, "cac:ClassifiedTaxCategory")
             cbc_ID_11 = ET.SubElement(cac_ClassifiedTaxCategory, "cbc:ID")
-            zatca_tax_category = item_tax_template.custom_zatca_tax_category
+            # zatca_tax_category = item_tax_template.custom_zatca_tax_category
+            zatca_tax_category = "Standard"
             if zatca_tax_category == "Standard":
                 cbc_ID_11.text = "S"
             elif zatca_tax_category == "Zero Rated":

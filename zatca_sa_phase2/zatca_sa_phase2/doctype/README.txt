@@ -12,3 +12,6 @@ Payment by debit movement of funds from one account to another.
 ## base64 encoded of csr
  ds:SignatureValue 1 SignatureValue element contains contains the actual value of the digital
 signature; it is always encoded using base64 [RFC2045].
+
+## Note
+tax exemption code and reason to be added in the invoice template
