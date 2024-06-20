@@ -25,7 +25,8 @@ def generatekeys(path,config_dict,name):
         subprocess.run([os.path.join(openssl_dir, 'openssl'), 'req', '-new', '-sha256', '-key', f'{name}/{path}_PrivateKey.pem', '-extensions', 'v3_req',
                         '-config', get_config(config_dict=config_dict), '-out', f'{name}/{path}_.csr'])
     
-        return True
+        private_key_path = f'{name}/{path}_PrivateKey.pem'
+        return True , private_key_path
 
 
 def get_csid(unit,name,otp):
@@ -68,13 +69,15 @@ def get_csid(unit,name,otp):
 
         with open(f'keys_{unit}/{name}_binarySecurityToken.txt', 'w') as f:
             f.write(binarySecurityToken)
-            update_frappe_doc(name,'csr',decoded_token)
+            update_frappe_doc(name,'csid',decoded_token)
+            update_frappe_doc(name,'csr',csr)
+
 
         print('binarySecurityToken.txt'+' saved')
 
         with open(f'keys_{unit}/{name}_secret.txt', 'w') as f:
             f.write(secret)
-            update_frappe_doc(name,'private_key',secret)
+            update_frappe_doc(name,'secret',secret)
 
         print('secret.txt'+' saved')
     else:

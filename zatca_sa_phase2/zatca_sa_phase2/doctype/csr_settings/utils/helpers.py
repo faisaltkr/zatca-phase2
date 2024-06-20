@@ -3,6 +3,7 @@ import uuid
 import os
 import frappe
 import json
+from .generate_keys import update_frappe_doc
 
 def has_all_keys(dictionary, key_list):
     return all(key in dictionary for key in key_list)
@@ -76,7 +77,14 @@ def helpers(name):
 
     try:
         from .generate_keys import generatekeys
-        keys = generatekeys(current_dict.get('name'),config_dict,current_dict.get('business_unit'))
+        keys,p_path = generatekeys(current_dict.get('name'),config_dict,current_dict.get('business_unit'))
+
+        with open(p_path, "r") as f:
+            private_key = f.read()
+            update_frappe_doc(name,'csid',decoded_token)
+
+
+
         return "CSR Token Generated Successfully!"
 
     except Exception as e:
