@@ -176,24 +176,24 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                             print(invoice,"dsjfhdfjkghkjdfhgjk,jjfjfjjfjfjfjfjfjfjj")
                             invoice=delivery_And_PaymentMeans(invoice,sales_invoice_doc, sales_invoice_doc.is_return) 
                             print(invoice,"dsjfhdfjkghkjdfhgjk,jjfjfjjfjfjfjfj,dfkgdfj")
-                            if not any_item_has_tax_template:
-                                print("dffdgdfg")
-                                invoice = tax_Data(invoice, sales_invoice_doc)
-                            else:
-                                print("dfgjdhfgjdhfg")
-                                invoice = tax_Data_with_template(invoice, sales_invoice_doc)
-                            if not any_item_has_tax_template:
-                                print("dfgjkhdfgh")
-                                invoice=item_data(invoice,sales_invoice_doc)
-                            else:
-                                   print("sdfjkhdfgj")
-                                   item_data_with_template(invoice,sales_invoice_doc)
+                            # if not any_item_has_tax_template:
+                            #     print("dffdgdfg")
+                            #     invoice = tax_Data(invoice, sales_invoice_doc)
+                            # else:
+                            #     print("dfgjdhfgjdhfg")
+                            #     invoice = tax_Data_with_template(invoice, sales_invoice_doc)
+                            # if not any_item_has_tax_template:
+                            #     print("dfgjkhdfgh")
+                            #     invoice=item_data(invoice,sales_invoice_doc)
+                            # else:
+                            #        print("sdfjkhdfgj")
+                            #        item_data_with_template(invoice,sales_invoice_doc)
                             pretty_xml_string=xml_structuring(invoice,sales_invoice_doc)
 
                             print("jjjjjsdfjndkjfbdjkdfgkb")
                             with open(frappe.local.site + "/private/files/finalzatcaxml.xml", 'r') as file:
                                     file_content = file.read()
-                            
+                            print("hhhhhhhhhhh")
                             tag_removed_xml = removeTags(file_content)
                             canonicalized_xml = canonicalize_xml(tag_removed_xml)
                             hash1, encoded_hash = getInvoiceHash(canonicalized_xml)
@@ -253,19 +253,19 @@ def zatca_Background_on_submit(doc, method=None):
                                 if not item.item_tax_template:
                                     frappe.throw("If any one item has an Item Tax Template, all items must have an Item Tax Template.")
 
-                        for item in sales_invoice_doc.items:
-                            if item.item_tax_template:
-                                item_tax_template = frappe.get_doc('Item Tax Template', item.item_tax_template)
+                        # for item in sales_invoice_doc.items:
+                        #     if item.item_tax_template:
+                        #         item_tax_template = frappe.get_doc('Item Tax Template', item.item_tax_template)
 
-                                zatca_tax_category = item_tax_template.custom_zatca_tax_category
-                                for tax in item_tax_template.taxes:
-                                    tax_rate = float(tax.tax_rate)
+                        #         zatca_tax_category = item_tax_template.custom_zatca_tax_category
+                        #         for tax in item_tax_template.taxes:
+                        #             tax_rate = float(tax.tax_rate)
                                     
-                                    if f"{tax_rate:.2f}" not in ['5.00', '15.00'] and zatca_tax_category not in ["Zero Rated", "Exempted", "Services outside scope of tax / Not subject to VAT"]:
-                                        frappe.throw("Zatca tax category should be 'Zero Rated', 'Exempted' or 'Services outside scope of tax / Not subject to VAT' for items with tax rate not equal to 5.00 or 15.00.")
+                        #             if f"{tax_rate:.2f}" not in ['5.00', '15.00'] and zatca_tax_category not in ["Zero Rated", "Exempted", "Services outside scope of tax / Not subject to VAT"]:
+                        #                 frappe.throw("Zatca tax category should be 'Zero Rated', 'Exempted' or 'Services outside scope of tax / Not subject to VAT' for items with tax rate not equal to 5.00 or 15.00.")
                                     
-                                    if f"{tax_rate:.2f}" == '15.00' and zatca_tax_category != "Standard":
-                                        frappe.throw("Check the Zatca category code and enable it as standard.")
+                        #             if f"{tax_rate:.2f}" == '15.00' and zatca_tax_category != "Standard":
+                        #                 frappe.throw("Check the Zatca category code and enable it as standard.")
 
                         # if settings.zatca_invoice_enabled != 1:
                         #     frappe.throw("Zatca Invoice is not enabled in Zatca Settings, Please contact your system administrator")
