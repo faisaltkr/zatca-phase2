@@ -113,9 +113,10 @@ def getInvoiceHash(canonicalized_xml):
 
 def digital_signature(hash1):
                     try:
-                        settings = frappe.get_doc('Zatca ERPgulf Setting')
-                        company = settings.company
-                        company_name = frappe.db.get_value("Company", company, "abbr")
+                        settings = frappe.get_doc('CSR Settings')
+                        company = "mycompany"
+                        # company_name = frappe.db.get_value("Company", company, "abbr")
+                        company_name = "mycompany"
                         basic_auth = settings.get("private_key", "{}")
                         private_key_data   = json.loads(basic_auth)
                         key_file = get_private_key_for_company(private_key_data, company_name)
