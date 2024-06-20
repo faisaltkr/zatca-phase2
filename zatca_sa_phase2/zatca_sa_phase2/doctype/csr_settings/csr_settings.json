@@ -41,6 +41,7 @@
   "column_break_mhbt",
   "private_key",
   "compliance_request_id",
+  "secret",
   "zatca_onboarding_section",
   "enter_otp",
   "egs_onboard",
@@ -332,7 +333,7 @@
   {
    "fieldname": "csr",
    "fieldtype": "Text",
-   "label": "CSID",
+   "label": "CSR",
    "read_only": 1
   },
   {
@@ -355,12 +356,18 @@
   {
    "fieldname": "column_break_yapt",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "secret",
+   "fieldtype": "Small Text",
+   "label": "Secret",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-06-16 09:53:58.636679",
+ "modified": "2024-06-20 05:43:15.861355",
  "modified_by": "Administrator",
  "module": "Zatca Sa Phase2",
  "name": "CSR Settings",
