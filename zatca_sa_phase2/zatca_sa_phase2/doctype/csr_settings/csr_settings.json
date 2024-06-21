@@ -40,6 +40,7 @@
   "csr",
   "column_break_mhbt",
   "private_key",
+  "public_key",
   "compliance_request_id",
   "secret",
   "zatca_onboarding_section",
@@ -362,12 +363,17 @@
    "fieldtype": "Small Text",
    "label": "Secret",
    "read_only": 1
+  },
+  {
+   "fieldname": "public_key",
+   "fieldtype": "Small Text",
+   "label": "Public Key"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-06-20 05:43:15.861355",
+ "modified": "2024-06-21 06:35:46.751541",
  "modified_by": "Administrator",
  "module": "Zatca Sa Phase2",
  "name": "CSR Settings",
