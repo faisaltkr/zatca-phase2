@@ -29,10 +29,6 @@ frappe.ui.form.on('CSR Settings', {
             
                 // Print form data to the console
                 console.log(formData);
-                // Define what happens when the button is clicked
-                // frappe.msgprint(__('Custom button clicked!'));
-    
-                // Perform additional actions here
                 frappe.call({
                     method: 'zatca_sa_phase2.zatca_sa_phase2.doctype.csr_settings.utils.helpers.helpers',
                     args: {
@@ -42,9 +38,11 @@ frappe.ui.form.on('CSR Settings', {
                         if(r.message) {
                             frappe.msgprint({
                                 title: __('Success'),
-                                message: '<b style="color:green">' + r.message + '</b>',
+                                message: '<b style="color:green">' + r.message.message + '</b>',
                                 indicator: 'red'
                             });
+                            frm.set_value('private_key', r.message.key);
+
                         }
                     }
                 });
@@ -52,13 +50,6 @@ frappe.ui.form.on('CSR Settings', {
             frm.fields_dict['egs_onboard'].$input.on('click', function() {
                 console.log("button clicked")
                 let formData = frm.doc;
-            
-                // Print form data to the console
-                console.log(formData);
-                // Define what happens when the button is clicked
-                // frappe.msgprint(__('Custom button clicked!'));
-    
-                // Perform additional actions here
                 frappe.call({
                     method: 'zatca_sa_phase2.zatca_sa_phase2.doctype.csr_settings.utils.helpers.csid',
                     args: {
@@ -73,7 +64,8 @@ frappe.ui.form.on('CSR Settings', {
                             });
                             frm.set_value('compliance_request_id', r.message.compliance_request_id);
                             frm.set_value('csr', r.message.csr);
-                            frm.set_value('private_key',  r.message.private_key);
+                            frm.set_value('csid',r.message.csid);
+                            frm.set_value('secret',r.message.secret);
                         }
                     }
                 });
