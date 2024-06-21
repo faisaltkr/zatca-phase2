@@ -345,10 +345,10 @@ def create_public_key():
                     # company_name = frappe.db.get_value("Company", company, "abbr")
                     # certificate_data_str = settings.get("certificate", "{}")
                     company_name = "mycompany"
-                    key = frappe.get_all('CSR Settings', fields=['csid'])
+                    key = frappe.get_all('CSR Settings', fields=['csid','public_key'])
                     base_64 =  key[0]['csid']
-                    public_key =  key[0]['public_key']
-
+                    # base_64 =  key[0]['public_key']
+                    print(public_key)
                     # TODO public key
                     # try:
                     #     certificate_data = json.loads(certificate_data_str)
@@ -390,10 +390,14 @@ def get_public_key_for_company(data, company_name):
 
 def extract_public_key_data():
             try:
-                settings = frappe.get_doc('Zatca ERPgulf Setting')
-                company = settings.company
-                company_name = frappe.db.get_value("Company", company, "abbr")
-                public_key_data_str = settings.get("public_key", "{}")
+                # settings = frappe.get_doc('Zatca ERPgulf Setting')
+                # company = settings.company
+                # company_name = frappe.db.get_value("Company", company, "abbr")
+                # public_key_data_str = settings.get("public_key", "{}")
+                company_name = "mycompany"
+                key = frappe.get_all('CSR Settings', fields=['csid'])
+                base_64 =  key[0]['csid']
+                public_key_data_str =  key[0]['public_key']
         
                 try:
                     public_key_data = json.loads(public_key_data_str)
@@ -431,17 +435,20 @@ def tag8_publickey():
 def tag9_signature_ecdsa():
             try:
 
-                settings = frappe.get_doc('Zatca ERPgulf Setting')
-                company = settings.company
-                company_name = frappe.db.get_value("Company", company, "abbr")
-                certificate_data_str = settings.get("certificate", "{}")
-                try:
-                    certificate_data = json.loads(certificate_data_str)
-                except json.JSONDecodeError:
-                    frappe.throw("Certificate field contains invalid JSON")
+                # settings = frappe.get_doc('Zatca ERPgulf Setting')
+                # company = settings.company
+                # company_name = frappe.db.get_value("Company", company, "abbr")
+                # certificate_data_str = settings.get("certificate", "{}")
+                company_name = "mycompany"
+                key = frappe.get_all('CSR Settings', fields=['csid'])
+                certificate_content =  key[0]['csid']
+                # try:
+                #     certificate_data = json.loads(certificate_data_str)
+                # except json.JSONDecodeError:
+                #     frappe.throw("Certificate field contains invalid JSON")
                 
                 # Get the certificate for the specific company
-                certificate_content= get_certificate_for_company(certificate_data, company_name)
+                # certificate_content= get_certificate_for_company(certificate_data, company_name)
                 if not certificate_content:
                     frappe.throw(f"No certificate found for company in tag9 {company_name}")
                 formatted_certificate = "-----BEGIN CERTIFICATE-----\n"

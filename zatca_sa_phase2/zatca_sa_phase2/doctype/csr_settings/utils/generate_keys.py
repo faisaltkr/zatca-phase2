@@ -20,13 +20,15 @@ def generatekeys(path,config_dict,name):
         # Generate public key from private key
         subprocess.run([os.path.join(openssl_dir, 'openssl'), 'ec',
                         '-in', f'{name}/{path}_PrivateKey.pem', '-pubout', '-out', f'{name}/{path}_publickey.pem'])
+        
+        public_key_path = f'{name}/{path}_publickey.pem'
 
         # Generate CSR (Configuration file assumed to be present)
         subprocess.run([os.path.join(openssl_dir, 'openssl'), 'req', '-new', '-sha256', '-key', f'{name}/{path}_PrivateKey.pem', '-extensions', 'v3_req',
                         '-config', get_config(config_dict=config_dict), '-out', f'{name}/{path}_.csr'])
     
         private_key_path = f'{name}/{path}_PrivateKey.pem'
-        return True , private_key_path
+        return True , private_key_path, public_key_path
 
 
 def get_csid(unit,name,otp):

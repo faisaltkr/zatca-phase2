@@ -42,6 +42,8 @@ frappe.ui.form.on('CSR Settings', {
                                 indicator: 'red'
                             });
                             frm.set_value('private_key', r.message.key);
+                            frm.set_value('public_key', r.message.public_key);
+
 
                         }
                     }
