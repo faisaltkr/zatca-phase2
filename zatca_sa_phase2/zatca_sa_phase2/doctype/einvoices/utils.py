@@ -348,7 +348,7 @@ def create_public_key():
                     key = frappe.get_all('CSR Settings', fields=['csid','public_key'])
                     base_64 =  key[0]['csid']
                     # base_64 =  key[0]['public_key']
-                    print(public_key)
+                    # print(public_key)
                     # TODO public key
                     # try:
                     #     certificate_data = json.loads(certificate_data_str)
@@ -373,8 +373,8 @@ def create_public_key():
                     # if isinstance(settings.public_key, str):
                     #     settings.public_key = json.loads(settings.public_key)
                     
-                    updated_data = update_json_data_public_key(public_key, company_name, public_key_pem)
-                    public_key = json.dumps(updated_data)
+                    # updated_data = update_json_data_public_key(public_key, company_name, public_key_pem)
+                    # public_key = json.dumps(updated_data)
                     # settings.save(ignore_permissions=True)
                 except Exception as e:
                     frappe.throw(" error in public key creation: "+ str(e))
@@ -395,18 +395,18 @@ def extract_public_key_data():
                 # company_name = frappe.db.get_value("Company", company, "abbr")
                 # public_key_data_str = settings.get("public_key", "{}")
                 company_name = "mycompany"
-                key = frappe.get_all('CSR Settings', fields=['csid'])
+                key = frappe.get_all('CSR Settings', fields=['csid','public_key'])
                 base_64 =  key[0]['csid']
                 public_key_data_str =  key[0]['public_key']
         
-                try:
-                    public_key_data = json.loads(public_key_data_str)
-                except json.JSONDecodeError:
-                    frappe.throw("Public key field contains invalid JSON")
-                public_key_pem = get_public_key_for_company(public_key_data, company_name)
-                if not public_key_pem:
-                    frappe.throw(f"No public key found for company {company_name}")
-                lines = public_key_pem.splitlines()
+                # try:
+                #     public_key_data = json.loads(public_key_data_str)
+                # except json.JSONDecodeError:
+                #     frappe.throw("Public key field contains invalid JSON")
+                # public_key_pem = get_public_key_for_company(public_key_data, company_name)
+                # if not public_key_pem:
+                #     frappe.throw(f"No public key found for company {company_name}")
+                lines = public_key_data_str.splitlines()
                 key_data = ''.join(lines[1:-1])
                 key_data = key_data.replace('-----BEGIN PUBLIC KEY-----', '').replace('-----END PUBLIC KEY-----', '')
                 key_data = key_data.replace(' ', '').replace('\n', '')
