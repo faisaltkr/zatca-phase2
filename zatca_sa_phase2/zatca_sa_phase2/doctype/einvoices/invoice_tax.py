@@ -35,8 +35,10 @@ def get_Tax_for_Item(full_string,item):
 
 def tax_Data(invoice,sales_invoice_doc):
             try:
-
+                # print("sssssss11111",sales_invoice_doc.as_dict())
                 #for foreign currency
+
+
                 if sales_invoice_doc.currency != "SAR":
                     cac_TaxTotal = ET.SubElement(invoice, "cac:TaxTotal")
                     cbc_TaxAmount_SAR = ET.SubElement(cac_TaxTotal, "cbc:TaxAmount")
@@ -72,15 +74,16 @@ def tax_Data(invoice,sales_invoice_doc):
                 cbc_TaxAmount_2.text = str(tax_amount_without_retention) # str(abs(sales_invoice_doc.base_total_taxes_and_charges))
                 cac_TaxCategory_1 = ET.SubElement(cac_TaxSubtotal, "cac:TaxCategory")
                 cbc_ID_8 = ET.SubElement(cac_TaxCategory_1, "cbc:ID")
-                # if sales_invoice_doc.custom_zatca_tax_category == "Standard":
-                #     cbc_ID_8.text = "S"
-                # elif sales_invoice_doc.custom_zatca_tax_category == "Zero Rated":
-                #     cbc_ID_8.text = "Z"
-                # elif sales_invoice_doc.custom_zatca_tax_category == "Exempted":
-                #     cbc_ID_8.text = "E"
-                # elif sales_invoice_doc.custom_zatca_tax_category == "Services outside scope of tax / Not subject to VAT":
-                #     cbc_ID_8.text = "O"
-                cbc_ID_8.text = "S"
+
+                
+                if sales_invoice_doc.custom_zatca_tax_category == "Standard":
+                    cbc_ID_8.text = "S"
+                elif sales_invoice_doc.custom_zatca_tax_category == "Zero Rated":
+                    cbc_ID_8.text = "Z"
+                elif sales_invoice_doc.custom_zatca_tax_category == "Exempted":
+                    cbc_ID_8.text = "E"
+                elif sales_invoice_doc.custom_zatca_tax_category == "Services outside scope of tax / Not subject to VAT":
+                    cbc_ID_8.text = "O"
 
                 cbc_Percent_1 = ET.SubElement(cac_TaxCategory_1, "cbc:Percent")
                 # cbc_Percent_1.text = str(sales_invoice_doc.taxes[0].rate)
@@ -238,7 +241,10 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
 def get_tax_total_from_items(sales_invoice_doc):
             try:
                 total_tax = 0
+                print(sales_invoice_doc.as_dict(),"sddffsdfdf")
                 for single_item in sales_invoice_doc.items : 
+                    print(single_item.as_dict(),"single_item")
+                    print(sales_invoice_doc.taxes[0],'sales_invoice_doc.taxes[0]')
                     item_tax_amount,tax_percent =  get_Tax_for_Item(sales_invoice_doc.taxes[0].item_wise_tax_detail,single_item.item_code)
                     total_tax = total_tax + (single_item.net_amount * (tax_percent/100))
                 return total_tax 

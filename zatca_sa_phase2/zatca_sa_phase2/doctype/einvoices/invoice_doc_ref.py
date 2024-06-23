@@ -63,7 +63,7 @@ def additional_Reference(invoice):
                 
                 
                 # company = settings.company # TODO
-                company = "mycompany"
+                # company = "mycompany"
 
                 # company_name = frappe.db.get_value("Company", company, "abbr")
                 # pih_data_raw = settings.get("pih", "{}")
@@ -77,7 +77,7 @@ def additional_Reference(invoice):
                 
                 # cbc_EmbeddedDocumentBinaryObject.text = pih
 
-                cbc_EmbeddedDocumentBinaryObject.text = 'z7A3LdsYRnh3CaxgX97QRRKIEMa3l88+FOOMEolV6sg='
+                cbc_EmbeddedDocumentBinaryObject.text = 'NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ=='
 
                 # cbc_EmbeddedDocumentBinaryObject.text = "L0Awl814W4ycuFvjDVL/vIW08mNRNAwqfdlF5i/3dpU="
             # QR CODE ------------------------------------------------------------------------------------------------------------------------------------------------------------------

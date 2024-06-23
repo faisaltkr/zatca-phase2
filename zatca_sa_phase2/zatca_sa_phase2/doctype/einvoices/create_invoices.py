@@ -246,6 +246,7 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
 @frappe.whitelist(allow_guest=True)          
 def zatca_Background_on_submit(doc, method=None):              
 # def zatca_Background(invoice_number):
+                    print(doc.custom_zatca_tax_category)
                     print("jjjjjjjjj")
                     try:
                         sales_invoice_doc = doc
