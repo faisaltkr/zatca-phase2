@@ -2,10 +2,7 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('CSR Settings', {
-    onload: function (frm) {
-        // Check if the child table is empty before adding default rows
-
-        // Add default row with specified values
+    onload: function(frm) {
         let default_rows = [
             { id_name: 'Commercial Registration Number', type_code: 'CRN' },
             { id_name: 'MOMRAH LICENCE', type_code: 'MOM' },
@@ -19,10 +16,29 @@ frappe.ui.form.on('CSR Settings', {
         default_rows.forEach(row => {
             let child_row = frm.add_child('additional_ids', row);
         });
-
-        // Refresh the field to reflect changes on the UI
-        frm.refresh_field('additional_ids');
-
+        // Fetch value from the database asynchronously
+        frappe.call({
+            method: 'zatca_sa_phase2.zatca_sa_phase2.doctype.csr_settings.utils.get_values.get_company_name',
+            args: {
+                // Add any arguments needed for your method here
+            },
+            callback: function(response) {
+                // Check if the call was successful and the value was retrieved
+                console.log(response)
+                if (response.message) {
+                    // Set the value to the field
+                    frm.set_value('company_name', response.message.company_name);
+                    frm.set_value('street', response.message.address_line1);
+                    frm.set_value('building_number', response.message.address_line2);
+                    frm.set_value('city', response.message.city);
+                    frm.set_value('district', response.message.county);
+                    frm.set_value('postal_code', response.message.pincode);
+                    frm.set_value('vat_registration_number', response.message.tax_id);
+                } else {
+                    frappe.msgprint('Failed to get value from the database.');
+                }
+            }
+        });
     },
     refresh: function(frm) {
             // Bind the custom button click event
