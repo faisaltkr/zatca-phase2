@@ -3,6 +3,7 @@ import uuid
 import os
 import frappe
 import json
+from zatca_sa_phase2.zatca_sa_phase2.doctype.csr_settings.utils.get_values import get_additial_ids_zatca
 
 def has_all_keys(dictionary, key_list):
     return all(key in dictionary for key in key_list)
@@ -32,8 +33,22 @@ def helpers(name):
                         "select_invoice_type",
                     ]
     if not has_all_keys(current_dict, required_fields):
-        return "Please add all mandatory fields."  
+        return{
+            "message":"Please add all mandatory fields."  
     
+        } 
+    get_additional_doc = get_additial_ids_zatca()
+    print(get_additional_doc,"sdfjkhdkjfghkjdfhkjhdfjkgh")
+    if not get_additional_doc:
+        return {
+            "message":"Additional Ids required."
+        }
+    if all([get_additional_doc[0].get('id_name',False),get_additional_doc[0].get('type_code',False),get_additional_doc[0].get('valueid_number',False)]):
+        return {
+            "message":"all fields in the Additional Ids is required."
+        }
+                                                                                
+
     config_dict = {
     "oid_section": "OIDS",
     "OIDS": {

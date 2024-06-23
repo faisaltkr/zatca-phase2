@@ -3,19 +3,7 @@
 
 frappe.ui.form.on('CSR Settings', {
     onload: function(frm) {
-        let default_rows = [
-            { id_name: 'Commercial Registration Number', type_code: 'CRN' },
-            { id_name: 'MOMRAH LICENCE', type_code: 'MOM' },
-            { id_name: 'MHRSD LICENCE', type_code: 'MLS' },
-            { id_name: 'Seven Hundred Number', type_code: '700' },
-            { id_name: 'MISA LICENCE', type_code: 'SAG' },
-            { id_name: 'OTHER ID', type_code: 'OTH' }
-        ];
-
-        // Refresh the field to reflect changes on the UI
-        default_rows.forEach(row => {
-            let child_row = frm.add_child('additional_ids', row);
-        });
+    
         // Fetch value from the database asynchronously
         frappe.call({
             method: 'zatca_sa_phase2.zatca_sa_phase2.doctype.csr_settings.utils.get_values.get_company_name',
