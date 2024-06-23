@@ -2,25 +2,28 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on('CSR Settings', {
-    // onload: function(frm) {
-    //     // Fetch value from the database asynchronously
-    //     frappe.call({
-    //         method: 'zatca_sa_phase2.zatca_sa_phase2.doctype.csr_settings.utils.get_values.company',
-    //         args: {
-    //             // Add any arguments needed for your method here
-    //         },
-    //         callback: function(response) {
-    //             // Check if the call was successful and the value was retrieved
-    //             console.log(response)
-    //             if (response.message) {
-    //                 // Set the value to the field
-    //                 frm.set_value('company_name', response.message.name);
-    //             } else {
-    //                 frappe.msgprint('Failed to get value from the database.');
-    //             }
-    //         }
-    //     });
-    // },
+    onload: function (frm) {
+        // Check if the child table is empty before adding default rows
+
+        // Add default row with specified values
+        let default_rows = [
+            { id_name: 'Commercial Registration Number', type_code: 'CRN' },
+            { id_name: 'MOMRAH LICENCE', type_code: 'MOM' },
+            { id_name: 'MHRSD LICENCE', type_code: 'MLS' },
+            { id_name: 'Seven Hundred Number', type_code: '700' },
+            { id_name: 'MISA LICENCE', type_code: 'SAG' },
+            { id_name: 'OTHER ID', type_code: 'OTH' }
+        ];
+
+        // Refresh the field to reflect changes on the UI
+        default_rows.forEach(row => {
+            let child_row = frm.add_child('additional_ids', row);
+        });
+
+        // Refresh the field to reflect changes on the UI
+        frm.refresh_field('additional_ids');
+
+    },
     refresh: function(frm) {
             // Bind the custom button click event
             frm.fields_dict['generate_csr'].$input.on('click', function() {
