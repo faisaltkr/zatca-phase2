@@ -57,6 +57,7 @@ def get_csid(unit,name,otp):
     )
     if response.status_code == 200:
         csid = response.json()
+        print(csid)
         binarySecurityToken = response.json()['binarySecurityToken']
         decoded_token = base64.b64decode(binarySecurityToken).decode('utf-8')
         secret = response.json()['secret']

@@ -1,6 +1,7 @@
 import frappe
 import json
 import base64
+import requests
 
 def xml_base64_Decode(signed_xmlfile_name):
                     try:
@@ -66,32 +67,38 @@ def error_Log():
 def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_invoice_doc):
                     try:
                         # frappe.msgprint("Clearance API")
-                        settings = frappe.get_doc('Zatca ERPgulf Setting')
-                        company = settings.company
-                        company_name = frappe.db.get_value("Company", company, "abbr")
+                        key = frappe.get_all('CSR Settings', fields=['company_name','csid','secret'])
+                        company =  key[0]['company_name']                              # company = settings.company
+                        csid = key[0]['csid']
+                        company_name = company
+                        secret = key[0]['secret']
+
                         payload = json.dumps({
                         "invoiceHash": encoded_hash,
                         "uuid": uuid1,
                         "invoice": xml_base64_Decode(signed_xmlfile_name), })
-                        basic_auth_production = settings.get("basic_auth_production", "{}")
-                        basic_auth_production_data = json.loads(basic_auth_production)
-                        production_csid = get_production_csid_for_company(basic_auth_production_data, company_name)
-
+                        print(payload)
+                        # basic_auth_production = csid
+                        # basic_auth_production_data = json.loads(basic_auth_production)
+                        production_csid = csid
+                        print(production_csid)
                         if production_csid:
                             headers = {
                             'accept': 'application/json',
                             'accept-language': 'en',
                             'Clearance-Status': '1',
                             'Accept-Version': 'V2',
-                            'Authorization': 'Basic' + production_csid,
+                            'Authorization': 'Basic ' + production_csid + ':'+ secret,
                             # 'Authorization': 'Basic' + settings.basic_auth,
                             'Content-Type': 'application/json',
                             'Cookie': 'TS0106293e=0132a679c03c628e6c49de86c0f6bb76390abb4416868d6368d6d7c05da619c8326266f5bc262b7c0c65a6863cd3b19081d64eee99' }
                         else:
                             frappe.throw("Production CSID for company {} not found".format(company_name))
-                        response = requests.request("POST", url=get_API_url(base_url="invoices/clearance/single"), headers=headers, data=payload)
+                        response = requests.request("POST", url=get_API_url(url="invoices/clearance/single"), headers=headers, data=payload)
                         
                         # response.status_code = 400
+                        print(response.text)
+                        print(response.status_code)
                         
                         if response.status_code  in (400,405,406,409 ):
                             invoice_doc = frappe.get_doc('Sales Invoice' , invoice_number  )
@@ -131,10 +138,10 @@ def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                                 msg = msg + "Status Code: " + str(response.status_code) + "<br><br> "
                                 msg = msg + "Zatca Response: " + response.text + "<br><br> "
                                 frappe.msgprint(msg)
-                                pih_data = json.loads(settings.get("pih", "{}"))
-                                updated_pih_data = update_json_data_pih(pih_data, company_name,encoded_hash)
-                                settings.set("pih", json.dumps(updated_pih_data))
-                                settings.save(ignore_permissions=True)
+                                # pih_data = json.loads(settings.get("pih", "{}"))
+                                # updated_pih_data = update_json_data_pih(pih_data, company_name,encoded_hash)
+                                # settings.set("pih", json.dumps(updated_pih_data))
+                                # settings.save(ignore_permissions=True)
                                 
                                 invoice_doc = frappe.get_doc('Sales Invoice' , invoice_number )
                                 invoice_doc.db_set('custom_uuid' , uuid1 , commit=True  , update_modified=True)
@@ -161,5 +168,20 @@ def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                                 error_Log()
                             
                     except Exception as e:
-                        frappe.throw("error in clearance api:  " + str(e) )
+                        frappe.throw("error in clearance api: jjjjjjjjj " + str(e) )
+
+def get_API_url(url):
+                try:
+                    key = frappe.get_all('CSR Settings', fields=['select_environment'])
+                    env =  key[0]['select_environment']                    
+                    if env == "Sandbox":
+                        url = f"https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal/{url}"
+                    elif env == "Simulation":
+                        url = f"https://gw-fatoora.zatca.gov.sa/e-invoicing/simulation/{url}"
+                    else:
+                        url = f"https://gw-fatoora.zatca.gov.sa/e-invoicing/core/{url}"
+                    print(url,"kkkkkk")
+                    return url 
+                except Exception as e:
+                    frappe.throw(" getting url failed"+ str(e) ) 
 
