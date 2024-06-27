@@ -93,7 +93,7 @@ def helpers(name):
         from .generate_keys import generatekeys
         from .generate_keys import update_frappe_doc
 
-        status,p_path,pu_path = generatekeys(current_dict.get('name'),config_dict,current_dict.get('business_unit'))
+        status,p_path,pu_path,csr_path = generatekeys(current_dict.get('name'),config_dict,current_dict.get('business_unit'))
 
         with open(p_path, "r") as f:
             private_key = f.read()
@@ -105,17 +105,22 @@ def helpers(name):
 
             update_frappe_doc(current_dict.get('name'),'public_key',public_key)
 
+        with open(csr_path,"r") as f:
+            csr = f.read()
+            update_frappe_doc(current_dict.get('name'),'csr',csr)
+
+
         return {
             "message":"CSR Token Generated Successfully!",
             "key" : private_key,
-            "public_key":public_key
+            "public_key":public_key,
+            "csr":csr
 
         }
 
     except Exception as e:
         return "failed to generate csr "+ str(e)
     
-    return config_dict
 
 
 

@@ -28,7 +28,8 @@ def generatekeys(path,config_dict,name):
                         '-config', get_config(config_dict=config_dict), '-out', f'{name}/{path}_.csr'])
     
         private_key_path = f'{name}/{path}_PrivateKey.pem'
-        return True , private_key_path, public_key_path
+        csr_path = f'{name}/{path}_.csr'
+        return True , private_key_path, public_key_path,csr_path
 
 
 def get_csid(unit,name,otp):
