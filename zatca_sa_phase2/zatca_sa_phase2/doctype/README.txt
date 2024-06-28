@@ -15,3 +15,5 @@ signature; it is always encoded using base64 [RFC2045].
 
 ## Note
 tax exemption code and reason to be added in the invoice template
+
+#### previous invoice hash is remaining to attach in invoice xml

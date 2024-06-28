@@ -582,8 +582,17 @@ def structuring_signedxml():
 def attach_QR_Image(qrCodeB64,sales_invoice_doc):
                     try:
                         qr = pyqrcode.create(qrCodeB64)
+                        print(qrCodeB64,"qr code ")
                         temp_file_path = "qr_code.png"
                         qr_image=qr.png(temp_file_path, scale=5)
+                        print(frappe.get_doc({
+                            "doctype": "File",
+                            "file_name": f"QR_image_{sales_invoice_doc.name}.png",
+                            "attached_to_doctype": sales_invoice_doc.doctype,
+                            "attached_to_name": sales_invoice_doc.name,
+                            "content": open(temp_file_path, "rb").read()
+                           
+                        }))
                         file = frappe.get_doc({
                             "doctype": "File",
                             "file_name": f"QR_image_{sales_invoice_doc.name}.png",
