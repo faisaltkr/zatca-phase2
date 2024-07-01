@@ -1,6 +1,39 @@
 // Copyright (c) 2024, Insys Softwares and contributors
 // For license information, please see license.txt
 
+// frappe.your_hook_name = function(cur_doc) {
+//     // Replace with your actual HTML content for the extra tab
+//     var html_content = `
+//       <div class="custom-tab">
+//         <h2>Extra Tab</h2>
+//         <p>This is the content of the extra tab. You can display data from your library management app here using JavaScript.</p>
+//         <div id="dynamic-content"></div>  </div>
+//     `;
+  
+//     // Inject the HTML content into the sales invoice form using jQuery
+//     if (cur_doc.doctype === "Sales Invoice") {
+//       $(document).ready(function() {
+//         // Replace with the appropriate selector to target the desired location in the form
+//         $("#sales_invoice_form").find(".frappe-form-group").last().after(html_content);
+  
+//         // Example: Fetch data from library management app using frappe.get_doc (replace with your logic)
+//         var library_item_code = cur_doc.get("library_item_code");  // Assuming a library item code field exists
+//         if (library_item_code) {
+//           frappe.get_doc("Library Item", library_item_code, function(library_item) {
+//             var content = `
+//               <p>Borrower Name: ${library_item.borrower_name}</p>
+//               <p>Due Date: ${library_item.due_date}</p>
+//             `;
+//             $("#dynamic-content").html(content);  // Update the placeholder with fetched data
+//           });
+//         }
+//       });
+//     }
+//   };
+
+console.log("jjjjjjjjjjjjj")
+
+
 frappe.ui.form.on('CSR Settings', {
     onload: function(frm) {
     
@@ -81,3 +114,11 @@ frappe.ui.form.on('CSR Settings', {
             });
         }
 });
+
+
+
+frappe.ui.form.on('CSR Settings', {
+    onload: function(frm) {
+
+
+}});
