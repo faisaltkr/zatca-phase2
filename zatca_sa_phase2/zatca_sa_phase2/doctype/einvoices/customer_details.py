@@ -5,10 +5,11 @@ import frappe
 def customer_Data(invoice,sales_invoice_doc):
             try:
                 customer_doc= frappe.get_doc("Customer",sales_invoice_doc.customer)
+                cac_AccountingCustomerParty = ET.SubElement(invoice, "cac:AccountingCustomerParty")
+
                 # print(customer_doc.custom_b2c,compliance_type,'3')
                 if not customer_doc.custom_b2c:
                     customer_doc= frappe.get_doc("Customer",sales_invoice_doc.customer)
-                    cac_AccountingCustomerParty = ET.SubElement(invoice, "cac:AccountingCustomerParty")
                     cac_Party_2 = ET.SubElement(cac_AccountingCustomerParty, "cac:Party")
                     cac_PartyIdentification_1 = ET.SubElement(cac_Party_2, "cac:PartyIdentification")
                     cbc_ID_4 = ET.SubElement(cac_PartyIdentification_1, "cbc:ID")
