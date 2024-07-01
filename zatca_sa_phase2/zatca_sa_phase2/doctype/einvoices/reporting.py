@@ -24,18 +24,20 @@ def xml_base64_Decode(signed_xmlfile_name):
                     except Exception as e:
                         frappe.msgprint("Error in xml base64:  " + str(e) )
 
-def get_API_url(base_url):
+def get_API_url(url):
                 try:
-                    settings =  frappe.get_doc('Zatca ERPgulf Setting')
-                    if settings.select == "Sandbox":
-                        url = settings.sandbox_url + base_url
-                    elif settings.select == "Simulation":
-                        url = settings.simulation_url + base_url
+                    key = frappe.get_all('CSR Settings', fields=['select_environment'])
+                    env =  key[0]['select_environment']                    
+                    if env == "Sandbox":
+                        url = f"https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal/{url}"
+                    elif env == "Simulation":
+                        url = f"https://gw-fatoora.zatca.gov.sa/e-invoicing/simulation/{url}"
                     else:
-                        url = settings.production_url + base_url
+                        url = f"https://gw-fatoora.zatca.gov.sa/e-invoicing/core/{url}"
+                    print(url,"kkkkkk")
                     return url 
                 except Exception as e:
-                    frappe.throw(" getting url failed"+ str(e) ) 
+                    frappe.throw(" getting url failed"+ str(e) )
 
 def update_json_data_pih(existing_data, company_name, pih):
                     try:
@@ -112,7 +114,9 @@ def reporting_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                         else:
                             frappe.throw("Production CSID for company {} not found".format(company_name))
                         try:
-                            response = requests.request("POST", url=get_API_url(base_url="invoices/reporting/single"), headers=headers, data=payload)
+                            response = requests.request("POST", url=get_API_url(url="invoices/reporting/single"), headers=headers, data=payload)
+                            print(response.text)
+                            print(response.status_code,"ResposeCode")
                             if response.status_code  in (400,405,406,409 ):
                                 invoice_doc = frappe.get_doc('Sales Invoice' , invoice_number )
                                 invoice_doc.db_set('custom_uuid' , 'Not Submitted' , commit=True  , update_modified=True)
