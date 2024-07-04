@@ -1,7 +1,7 @@
 import frappe
 import re
 import xml.etree.ElementTree as ET
-import json
+from .qrcode import generate_qr_code_base_64
 
 def get_ICV_code(invoice_number):
                 try:
@@ -51,7 +51,7 @@ def get_pih_for_company(pih_data, company_name):
                         frappe.throw("Error in getting PIH of company for production:  " + str(e) )
 
 
-def additional_Reference(invoice):
+def additional_Reference(invoice,customer_doc,invoice_number):
             try:
                 # settings = frappe.get_doc('Zatca ERPgulf Setting')
                 cac_AdditionalDocumentReference2 = ET.SubElement(invoice, "cac:AdditionalDocumentReference")
@@ -87,7 +87,11 @@ def additional_Reference(invoice):
                 cac_Attachment22 = ET.SubElement(cac_AdditionalDocumentReference22, "cac:Attachment")
                 cbc_EmbeddedDocumentBinaryObject22 = ET.SubElement(cac_Attachment22, "cbc:EmbeddedDocumentBinaryObject")
                 cbc_EmbeddedDocumentBinaryObject22.set("mimeCode", "text/plain")
-                cbc_EmbeddedDocumentBinaryObject22.text = "GsiuvGjvchjbFhibcDhjv1886G"
+
+                if customer_doc.custom_b2c == 1:
+                    cbc_EmbeddedDocumentBinaryObject22.text = generate_qr_code_base_64(invoice_number=invoice_number)
+                else:
+                    cbc_EmbeddedDocumentBinaryObject22.text = "GsiuvGjvchjbFhibcDhjv1886G"
             #END  QR CODE ------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 cac_sign = ET.SubElement(invoice, "cac:Signature")
                 cbc_id_sign = ET.SubElement(cac_sign, "cbc:ID")

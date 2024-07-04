@@ -39,7 +39,7 @@ from .customer_details import customer_Data
 from .invoice_pay_means import delivery_And_PaymentMeans,delivery_And_PaymentMeans_for_Compliance
 from .invoice_tax import tax_Data,tax_Data_with_template
 from .invoice_items import item_data, item_data_with_template
-
+from .qrcode import generate_qr_code_base_64
 
 class SimplifiedInvoice:
 
@@ -139,7 +139,7 @@ def removeTags(finalzatcaxml):
 
 # @frappe.whitelist(allow_guest=True) 
 def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= False):
-        
+                    # generate_qr_code_base_64(invoice_number=invoice_number)
                     compliance_type = "0"
                     try:    
                             # create_compliance_x509()
@@ -148,13 +148,9 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                             if not frappe.db.exists("Sales Invoice", invoice_number):
                                 frappe.throw("Invoice Number is NOT Valid:  " + str(invoice_number))
                             invoice= xml_tags()
-                            print(invoice,"dddddd")
-                            print("jjjjjjjjsdjhfdjsfgjdgfhj")
                             invoice,uuid1,sales_invoice_doc=salesinvoice_data(invoice,invoice_number)
-                            print(invoice,'2')
                             customer_doc= frappe.get_doc("Customer",sales_invoice_doc.customer)
-                            print(customer_doc.custom_b2c,compliance_type,'3')
-
+                            
                             if compliance_type == "0":
                                     # frappe.throw(str("here 7 " + str(compliance_type))) 
                                     if customer_doc.custom_b2c == 1:
@@ -165,57 +161,33 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                                 # frappe.throw(str("here 8 " + str(compliance_type))) 
                                 invoice = invoice_Typecode_Compliance(invoice, compliance_type)
 
-                            print(invoice,"fjdfjgfjgfjjfjk")
                             invoice=doc_Reference(invoice,sales_invoice_doc,invoice_number)
-                            print(invoice,"dsjfhdfjkghkjdfhgjk")
-                            invoice=additional_Reference(invoice)
-                            print(invoice,"dsjfhdfjkghkjdfhgjk,jjfjfjjfjfjfjfjfjfjj")
+                            invoice=additional_Reference(invoice,customer_doc,invoice_number)
                             invoice=company_Data(invoice,sales_invoice_doc)
-                            print(invoice,"dsjfhdfjkghkjdfhgjk,jjfjfjjfjfjfjfjfjfjj")
                             invoice=customer_Data(invoice,sales_invoice_doc)
-                            print(invoice,"dsjfhdfjkghkjdfhgjk,jjfjfjjfjfjfjfjfjfjj")
                             invoice=delivery_And_PaymentMeans(invoice,sales_invoice_doc, sales_invoice_doc.is_return) 
-                            print(invoice,"dsjfhdfjkghkjdfhgjk,jjfjfjjfjfjfjfj,dfkgdfj")
                             if not any_item_has_tax_template:
-                                print("dffdgdfg")
                                 invoice = tax_Data(invoice, sales_invoice_doc)
                             else:
-                                print("dfgjdhfgjdhfg")
                                 invoice = tax_Data_with_template(invoice, sales_invoice_doc)
                             if not any_item_has_tax_template:
-                                print("dfgjkhdfgh")
                                 invoice=item_data(invoice,sales_invoice_doc)
                             else:
-                                   print("sdfjkhdfgj")
                                    item_data_with_template(invoice,sales_invoice_doc)
                             pretty_xml_string=xml_structuring(invoice,sales_invoice_doc)
 
-                            print("jjjjjsdfjndkjfbdjkdfgkb")
                             with open(frappe.local.site + "/private/files/finalzatcaxml.xml", 'r') as file:
                                     file_content = file.read()
-                            print("hhhhhhhhhhh")
                             tag_removed_xml = removeTags(file_content)
-                            print(1)
                             canonicalized_xml = canonicalize_xml(tag_removed_xml)
-                            print(2)
                             hash1, encoded_hash = getInvoiceHash(canonicalized_xml)
-                            print(3)
                             encoded_signature = digital_signature(hash1)
-                            print(4)
                             issuer_name,serial_number = extract_certificate_details()
-                            print(5)
                             encoded_certificate_hash=certificate_hash()
-                            print(6)
                             namespaces,signing_time=signxml_modify()
-                            print(7)
                             signed_properties_base64=generate_Signed_Properties_Hash(signing_time,issuer_name,serial_number,encoded_certificate_hash)
-                            print(8)
                             populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_properties_base64,encoded_hash)
-                            print(9)
-                            print(signed_properties_base64)
-                            print(10)
                             tlv_data = generate_tlv_xml()
-                            print(11)
                             # print(tlv_data)
                             tagsBufsArray = []
                             for tag_num, tag_value in tlv_data.items():
@@ -246,11 +218,9 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
 @frappe.whitelist(allow_guest=True)          
 def zatca_Background_on_submit(doc, method=None):              
 # def zatca_Background(invoice_number):
-                    print(doc.custom_zatca_tax_category)
-                    print("jjjjjjjjj")
+                    # print(doc.custom_zatca_tax_category)
                     try:
                         sales_invoice_doc = doc
-                        print(doc)
                         invoice_number = sales_invoice_doc.name
                         sales_invoice_doc= frappe.get_doc("Sales Invoice",invoice_number )
                         # settings = frappe.get_doc('Zatca ERPgulf Setting')
@@ -294,9 +264,7 @@ def zatca_Background_on_submit(doc, method=None):
                         if sales_invoice_doc.custom_zatca_status == "REPORTED" or sales_invoice_doc.custom_zatca_status == "CLEARED":
                             frappe.throw("Already submitted to Zakat and Tax Authority")
                         
-                        print("kjkkkkkkkk")
                         zatca_Call(invoice_number,0,any_item_has_tax_template)
-                        print("hi")
                         
                     except Exception as e:
                         frappe.throw("Error in background call:  " + str(e) )
