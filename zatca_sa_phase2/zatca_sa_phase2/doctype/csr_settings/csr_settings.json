@@ -52,6 +52,8 @@
   "select_invoice_type",
   "sample_invoice_number_to_test",
   "perform_compliance_check",
+  "issuer_name",
+  "issuer_serial_number",
   "section_break_qfnh",
   "enter_prodution_otp",
   "get_production_csid",
@@ -368,12 +370,22 @@
    "fieldname": "public_key",
    "fieldtype": "Small Text",
    "label": "Public Key"
+  },
+  {
+   "fieldname": "issuer_name",
+   "fieldtype": "Data",
+   "label": "Issuer Name"
+  },
+  {
+   "fieldname": "issuer_serial_number",
+   "fieldtype": "Data",
+   "label": "Issuer Serial Number"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-06-21 06:35:46.751541",
+ "modified": "2024-07-06 17:06:53.388063",
  "modified_by": "Administrator",
  "module": "Zatca Sa Phase2",
  "name": "CSR Settings",
