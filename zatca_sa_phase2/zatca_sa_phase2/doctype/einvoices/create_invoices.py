@@ -193,18 +193,19 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                             for tag_num, tag_value in tlv_data.items():
                                 tagsBufsArray.append(get_tlv_for_value(tag_num, tag_value))
                             qrCodeBuf = b"".join(tagsBufsArray)
-                            # print(qrCodeBuf)
+                            print(qrCodeBuf)
                             qrCodeB64 = base64.b64encode(qrCodeBuf).decode('utf-8')
-                            # print(qrCodeB64)
+                            print(qrCodeB64,"sdfsdfdsfgdfgdfgdfgdfdfgdgdgdgdgdgfdfg")
                             update_Qr_toXml(qrCodeB64)
                             signed_xmlfile_name=structuring_signedxml()
                             
-                            
+                            # generate_xml_hash()
                             if compliance_type == "0":
                                 if customer_doc.custom_b2c == 1:
                                     reporting_API(uuid1, encoded_hash, signed_xmlfile_name,invoice_number,sales_invoice_doc)
                                     attach_QR_Image(qrCodeB64,sales_invoice_doc)
                                 else:
+
                                     xml_cleared=clearance_API(uuid1, encoded_hash, signed_xmlfile_name,invoice_number,sales_invoice_doc)
                                     attach_QR_Image(qrCodeB64,sales_invoice_doc)
                             else:  # if it a compliance test
