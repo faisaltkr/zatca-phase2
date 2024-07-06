@@ -64,7 +64,7 @@ def get_company_name():
 
 
 def get_zatca_settings():
-    doc = frappe.get_all('CSR Settings',fields = ['company_name','street','building_number','city','district','postal_code','vat_registration_number'])
+    doc = frappe.get_all('CSR Settings',fields = ['company_name','street','building_number','city','district','postal_code','vat_registration_number','issuer_name','issuer_serial_number'])
     return doc[0]
 
 

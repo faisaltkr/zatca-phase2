@@ -84,6 +84,9 @@ frappe.ui.form.on('CSR Settings', {
                             frm.set_value('private_key', r.message.key);
                             frm.set_value('public_key', r.message.public_key);
                             frm.set_value('csr', r.message.csr);
+                            frm.set_value('issuer_name', r.message.issuer_name);
+                            frm.set_value('issuer_serial_number', r.message.s_no);
+
 
                         }
                     }

@@ -12,6 +12,7 @@ from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 import binascii
 import pyqrcode
+from zatca_sa_phase2.zatca_sa_phase2.doctype.csr_settings.utils.get_values import get_zatca_settings
 
 
 # Get the current date
@@ -153,8 +154,7 @@ def get_certificate_for_company(certificate_content, company_name):
                     except Exception as e:
                         frappe.throw("Error in getting certificate for company: " + str(e))
 
-def extract_certificate_details():
-            
+def extract_certificate_details(customer_doc):
             try:    
                     # settings = frappe.get_doc('Zatca ERPgulf Setting')  
                     company_name = "mycompany"
@@ -176,8 +176,16 @@ def extract_certificate_details():
                     certificate_bytes = formatted_certificate.encode('utf-8')
                     cert = x509.load_pem_x509_certificate(certificate_bytes, default_backend())
                     formatted_issuer_name = cert.issuer.rfc4514_string()
-                    issuer_name = ", ".join([x.strip() for x in formatted_issuer_name.split(',')])
-                    serial_number = cert.serial_number
+
+                    if customer_doc.custom_b2c == 1:
+                        company_details = get_zatca_settings()
+                        issuer_name = company_details['issuer_name']
+                        serial_number = company_details['issuer_serial_number']
+                        # serial_number = cert.serial_number
+
+                    else:
+                        issuer_name = ", ".join([x.strip() for x in formatted_issuer_name.split(',')])
+                        serial_number = cert.serial_number
                     return issuer_name, serial_number
             except Exception as e:
                              frappe.throw(" error in extracting certificate details: "+ str(e) )
@@ -211,10 +219,10 @@ def certificate_hash():
                     frappe.throw("error in obtaining certificate hash: "+ str(e) )
 
 
-def signxml_modify():
+def signxml_modify(customer_doc):
                 try:
                     encoded_certificate_hash= certificate_hash()
-                    issuer_name, serial_number = extract_certificate_details()
+                    issuer_name, serial_number = extract_certificate_details(customer_doc=customer_doc)
                     original_invoice_xml = etree.parse(frappe.local.site + '/private/files/finalzatcaxml.xml')
                     root = original_invoice_xml.getroot()
                     namespaces = {
