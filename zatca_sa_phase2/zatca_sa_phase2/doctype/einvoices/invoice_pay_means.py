@@ -12,12 +12,13 @@ def delivery_And_PaymentMeans(invoice,sales_invoice_doc, is_return):
                     cbc_PaymentMeansCode = ET.SubElement(cac_PaymentMeans, "cbc:PaymentMeansCode")
                     cbc_PaymentMeansCode.text = "30"
                 
-                if is_return == 1:
+                if is_return == 1 or sales_invoice_doc.is_debit_note==1:
+                    # cac_PaymentMeans = ET.SubElement(invoice, "cac:PaymentMeans")
                     cbc_InstructionNote = ET.SubElement(cac_PaymentMeans, "cbc:InstructionNote")
-                    cbc_InstructionNote.text = "Cancellation"    
+                    cbc_InstructionNote.text = "CANCELLATION_OR_TERMINATION"    
                 return invoice
             except Exception as e:
-                    frappe.throw("Delivery and payment means failed"+ str(e) )
+                    frappe.throw("Delivery and payment means failed jjj    "+ str(e) )
                     
 def delivery_And_PaymentMeans_for_Compliance(invoice,sales_invoice_doc, compliance_type):
             try:

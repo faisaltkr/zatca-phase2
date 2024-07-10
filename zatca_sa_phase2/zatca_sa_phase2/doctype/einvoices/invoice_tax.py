@@ -67,11 +67,17 @@ def tax_Data(invoice,sales_invoice_doc):
                 cac_TaxSubtotal = ET.SubElement(cac_TaxTotal, "cac:TaxSubtotal")
                 cbc_TaxableAmount = ET.SubElement(cac_TaxSubtotal, "cbc:TaxableAmount")
                 cbc_TaxableAmount.set("currencyID", sales_invoice_doc.currency)
-                cbc_TaxableAmount.text =str(abs(round(sales_invoice_doc.base_net_total,2)))
+                ###
+                # cbc_TaxableAmount.text =str(abs(round(sales_invoice_doc.base_net_total,2)))
+                cbc_TaxableAmount.text =str(round(sales_invoice_doc.total,2))
+
                 cbc_TaxAmount_2 = ET.SubElement(cac_TaxSubtotal, "cbc:TaxAmount")
                 cbc_TaxAmount_2.set("currencyID", sales_invoice_doc.currency)
-                
-                cbc_TaxAmount_2.text = str(tax_amount_without_retention) # str(abs(sales_invoice_doc.base_total_taxes_and_charges))
+                ###
+                # cbc_TaxAmount_2.text = str(tax_amount_without_retention) # str(abs(sales_invoice_doc.base_total_taxes_and_charges))
+                cbc_TaxAmount_2.text = str(round(sales_invoice_doc.total_taxes_and_charges,2)) # str(abs(sales_invoice_doc.base_total_taxes_and_charges))
+                # cbc_TaxAmount_2.text = "sdfdfdfgdfg" # str(abs(sales_invoice_doc.base_total_taxes_and_charges))
+
                 cac_TaxCategory_1 = ET.SubElement(cac_TaxSubtotal, "cac:TaxCategory")
                 cbc_ID_8 = ET.SubElement(cac_TaxCategory_1, "cbc:ID")
 
@@ -177,11 +183,12 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
                         cac_TaxSubtotal = ET.SubElement(cac_TaxTotal, "cac:TaxSubtotal")
                         cbc_TaxableAmount = ET.SubElement(cac_TaxSubtotal, "cbc:TaxableAmount")
                         cbc_TaxableAmount.set("currencyID", sales_invoice_doc.currency)
-                        cbc_TaxableAmount.text = str(abs(item.base_net_amount))
+                        # cbc_TaxableAmount.text = str(abs(item.base_net_amount))
+                        cbc_TaxableAmount.text = str(round(sales_invoice_doc.total,2))
                         cbc_TaxAmount_2 = ET.SubElement(cac_TaxSubtotal, "cbc:TaxAmount")
                         cbc_TaxAmount_2.set("currencyID", sales_invoice_doc.currency)
-                        cbc_TaxAmount_2.text =str(abs(round(item_tax_percentage * item.base_net_amount / 100,2)))
-
+                        # cbc_TaxAmount_2.text =str(abs(round(item_tax_percentage * item.base_net_amount / 100,2)))
+                        cbc_TaxAmount_2.text = str(round(sales_invoice_doc.total_taxes_and_charges,2))
                         cac_TaxCategory_1 = ET.SubElement(cac_TaxSubtotal, "cac:TaxCategory")
                         cbc_ID_8 = ET.SubElement(cac_TaxCategory_1, "cbc:ID")
 

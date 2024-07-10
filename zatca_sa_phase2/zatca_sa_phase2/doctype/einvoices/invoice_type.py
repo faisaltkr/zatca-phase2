@@ -4,12 +4,18 @@ import frappe
 def invoice_Typecode_Simplified(invoice,sales_invoice_doc):
             try:                             
                 cbc_InvoiceTypeCode = ET.SubElement(invoice, "cbc:InvoiceTypeCode")
-                if sales_invoice_doc.is_return == 0:         
+                if sales_invoice_doc.is_return == 0 and sales_invoice_doc.is_debit_note !=1:         
                     cbc_InvoiceTypeCode.set("name", "0200000") # Simplified
                     cbc_InvoiceTypeCode.text = "388"
                 elif sales_invoice_doc.is_return == 1:       # return items and simplified invoice
                     cbc_InvoiceTypeCode.set("name", "0200000")  # Simplified
                     cbc_InvoiceTypeCode.text = "381"  # Credit note
+                elif sales_invoice_doc.is_debit_note == 1:
+                        cbc_InvoiceTypeCode.text = "383" # Debit note
+                        cbc_billing_reference = ET.SubElement(invoice,"cac:BillingReference")
+                        cbc_cac_InvoiceDocumentReference  = ET.SubElement(cbc_billing_reference,"cac:InvoiceDocumentReference")
+                        cbc_id = ET.SubElement(cbc_cac_InvoiceDocumentReference,"cbc:ID")
+                        cbc_id.text = sales_invoice_doc.return_against
                 return invoice
             except Exception as e:
                     frappe.throw("error occured in simplified invoice typecode"+ str(e) )
@@ -18,10 +24,20 @@ def invoice_Typecode_Standard(invoice,sales_invoice_doc):
             try:
                     cbc_InvoiceTypeCode = ET.SubElement(invoice, "cbc:InvoiceTypeCode")
                     cbc_InvoiceTypeCode.set("name", "0100000") # Standard
-                    if sales_invoice_doc.is_return == 0:
+                    print(sales_invoice_doc.is_debit_note,"kjjkjjknkkj")
+                    # frappe.throw("Error in standard invoice type code: ")
+
+                    if sales_invoice_doc.is_return == 0 and sales_invoice_doc.is_debit_note !=1:
                         cbc_InvoiceTypeCode.text = "388"
                     elif sales_invoice_doc.is_return == 1:     # return items and simplified invoice
                         cbc_InvoiceTypeCode.text = "381" # Credit note
+                    elif sales_invoice_doc.is_debit_note == 1:
+                        cbc_InvoiceTypeCode.text = "383" # Debit note
+                        cbc_billing_reference = ET.SubElement(invoice,"cac:BillingReference")
+                        cbc_cac_InvoiceDocumentReference  = ET.SubElement(cbc_billing_reference,"cac:InvoiceDocumentReference")
+                        cbc_id = ET.SubElement(cbc_cac_InvoiceDocumentReference,"cbc:ID")
+                        cbc_id.text = sales_invoice_doc.return_against
+
                     return invoice
             except Exception as e:
                     frappe.throw("Error in standard invoice type code: "+ str(e))
