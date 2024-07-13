@@ -13,9 +13,12 @@ def company():
 def get_company_name():
         # Get the document
     doc = frappe.get_all('Company',fields = ['name','country','default_currency','tax_id','domain',])
-
+    print(doc)
     company_billing_addresses = []
-    set_additional_ids()
+    try:
+        set_additional_ids()
+    except Exception as e:
+        print(str(e),"sdkjfsldflsdnfl")
     for company in doc:
         # Get billing addresses linked to the current company
         billing_addresses = frappe.get_all('Address', 
@@ -42,7 +45,6 @@ def get_company_name():
                 'domain':doc[0]['domain'],
             }
             company_billing_addresses.append(company_billing_address)
-    
     return company_billing_addresses[0]
 
 # Call the function to get all company billing addresses
@@ -75,27 +77,35 @@ def get_additial_ids_zatca():
 # print(get_additial_ids_zatca())
 def set_additional_ids():
     doc = frappe.get_all('Additional IDs-Zatca',fields = ['id_name','type_code','valueid_number',])
+    print(doc,"kjkjdjhhjjhjhjhjhjhjh")
     if not doc:
         doc_values = [
             { 'id_name': 'Commercial Registration Number', 'type_code': 'CRN' },
-            { 'id_name': 'MOMRAH LICENCE', 'type_code': 'MOM' },
-            { 'id_name': 'MHRSD LICENCE', 'type_code': 'MLS' },
+            { 'id_name': 'MOMRAH LICENCE', 'type_code': 'MOM'},
+            { 'id_name': 'MHRSD LICENCE', 'type_code': 'MLS'},
             { 'id_name': 'Seven Hundred Number', 'type_code': '700' },
-            { 'id_name': 'MISA LICENCE', 'type_code': 'SAG' },
+            { 'id_name': 'MISA LICENCE', 'type_code': 'SAG'},
             { 'id_name': 'OTHER ID', 'type_code': 'OTH' }
             ]
         for values in doc_values:
-            insert_new_doc('Additional IDs-Zatca',values)
+            try:
+                insert_new_doc('Additional IDs-Zatca',values)
+            except Exception as e:
+                print(str(e),"kkkkkkkk")
     return True
 
 def insert_new_doc(doctype, doc_values):
     # Create a new document with the specified doctype and values
     new_doc = frappe.get_doc({
         'doctype': doctype,
+        'parent':1,
+        'parenttype':1,
         **doc_values
     })
     
     # Insert the new document into the database
     new_doc.insert()
+    frappe.db.commit()
+
     
     return new_doc
