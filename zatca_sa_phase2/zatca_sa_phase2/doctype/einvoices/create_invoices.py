@@ -166,9 +166,9 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                             invoice=doc_Reference(invoice,sales_invoice_doc,invoice_number)
                             invoice=additional_Reference(invoice,customer_doc,invoice_number)
                             invoice=company_Data(invoice,sales_invoice_doc)
-                            invoice=discount_and_charge(invoice,sales_invoice_doc)
                             invoice=customer_Data(invoice,sales_invoice_doc)
                             invoice=delivery_And_PaymentMeans(invoice,sales_invoice_doc, sales_invoice_doc.is_return) 
+                            invoice=discount_and_charge(invoice,sales_invoice_doc)
                             if not any_item_has_tax_template:
                                 invoice = tax_Data(invoice, sales_invoice_doc)
                             else:
