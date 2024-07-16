@@ -43,10 +43,10 @@ def helpers(name):
         return {
             "message":"Additional Ids required."
         }
-    if all([get_additional_doc[0].get('id_name',False),get_additional_doc[0].get('type_code',False),get_additional_doc[0].get('valueid_number',False)]):
-        return {
-            "message":"all fields in the Additional Ids is required."
-        }
+    # if all([get_additional_doc[0].get('id_name',False),get_additional_doc[0].get('type_code',False),get_additional_doc[0].get('valueid_number',False)]):
+    #     return {
+    #         "message":"all fields in the Additional Ids is required."
+    #     }
                                                                                 
 
     config_dict = {

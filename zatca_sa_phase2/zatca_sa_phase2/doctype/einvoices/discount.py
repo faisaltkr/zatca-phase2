@@ -55,32 +55,34 @@ def discount_and_charge(invoice,sales_invoice_doc):
 
                 if sales_invoice_doc.as_dict()['discount_amount']:
                     sdict = sales_invoice_doc.as_dict()
-                    discount_amount = sdict['discount_amount']
-                    print(discount_amount,"gjghjghjghjkj")
+                    get_code = sdict['additional_discount_account']
+                    total_amount = sdict['total']
                     additional_discount_percentage = sdict['additional_discount_percentage']
+                    discount_amount = sdict['discount_amount']
+                    discount_percent = get_discount_percentage(total_amount,discount_amount,additional_discount_percentage)
+                    discount_code =  get_discount_code(code=get_code)
+                    print(discount_amount,"gjghjghjghjkj")
                     print(additional_discount_percentage,"fhfhfghfghfgh")
                     cac_allowance = ET.SubElement(invoice, "cac:AllowanceCharge")
                     cbc_chargeindicator =  ET.SubElement(cac_allowance,"cbc:ChargeIndicator")
                     cbc_chargeindicator.text =  'false'
                     cbc_allowance_charge_reason_code = ET.SubElement(cac_allowance,"cbc:AllowanceChargeReasonCode")
-                    cbc_allowance_charge_reason_code.text = '95'
+                    cbc_allowance_charge_reason_code.text = str(discount_code['custom_code'])
                     cbc_allowance_charge_reason = ET.SubElement(cac_allowance,"cbc:AllowanceChargeReason")
                     cbc_allowance_charge_reason.text = 'discount'
                     cbc_multifactor_numeric = ET.SubElement(cac_allowance,"cbc:MultiplierFactorNumeric")
-                    cbc_multifactor_numeric.text = str(additional_discount_percentage)
+                    cbc_multifactor_numeric.text = str(round(discount_percent,2))
                     cbc_amount =  ET.SubElement(cac_allowance,"cbc:Amount")
-                    cbc_amount.text = str(discount_amount)
+                    cbc_amount.text = str(round(discount_amount,2))
                     cbc_amount.set("currencyID", "SAR")
                     # cbc_base_amount = ET.SubElement(cac_allowance,"cbc:BaseAmount")                
                     # cbc_base_amount.set("currencyID", "SAR")
-                    # print("dgfhfhfghfhf")
-                    # cbc_base_amount.text = str(charges['base_total'])
-                    print("vgffhfgh")
+                    # cbc_base_amount.text = str(sales_invoice_doc.total)
                     cac_tax_category = ET.SubElement(cac_allowance,"cac:TaxCategory")
                     cbc_id =  ET.SubElement(cac_tax_category,"cbc:ID")
                     cbc_id.text = 'S'
                     cbc_percent = ET.SubElement(cac_tax_category,"cbc:Percent")
-                    cbc_percent.text = '15'
+                    cbc_percent.text = str(round(discount_code['tax_rate'],2))
                     cac_tax_scheme = ET.SubElement(cac_tax_category,"cac:TaxScheme")
                     cbc_id = ET.SubElement(cac_tax_scheme,"cbc:ID")
                     cbc_id.text = 'VAT'
@@ -88,3 +90,29 @@ def discount_and_charge(invoice,sales_invoice_doc):
                 return invoice
             except Exception as e:
                     frappe.throw("error occured in discount data"+ str(e) )
+
+
+
+def get_discount_code(code):
+    try:
+        # Fetch the document using doctype and name
+        doc = frappe.get_doc("Account", code)
+        
+        # Convert the document to a dictionary to get its values
+        doc_values = doc.as_dict()
+        
+        return doc_values
+    except frappe.DoesNotExistError:
+        print(f"Document of type  with name  does not exist.")
+        return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+    
+def get_discount_percentage(total_amount,discount,discount_percentage=0):
+     if discount_percentage:
+          return round(discount_percentage,2)
+     else:
+          return round((discount*100)/total_amount,2)
+          
+          
