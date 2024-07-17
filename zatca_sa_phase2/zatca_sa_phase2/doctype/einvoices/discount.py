@@ -75,9 +75,9 @@ def discount_and_charge(invoice,sales_invoice_doc):
                     cbc_amount =  ET.SubElement(cac_allowance,"cbc:Amount")
                     cbc_amount.text = str(round(discount_amount,2))
                     cbc_amount.set("currencyID", "SAR")
-                    # cbc_base_amount = ET.SubElement(cac_allowance,"cbc:BaseAmount")                
-                    # cbc_base_amount.set("currencyID", "SAR")
-                    # cbc_base_amount.text = str(sales_invoice_doc.total)
+                    cbc_base_amount = ET.SubElement(cac_allowance,"cbc:BaseAmount")                
+                    cbc_base_amount.set("currencyID", "SAR")
+                    cbc_base_amount.text = str(round(sales_invoice_doc.total-discount_amount,2))
                     cac_tax_category = ET.SubElement(cac_allowance,"cac:TaxCategory")
                     cbc_id =  ET.SubElement(cac_tax_category,"cbc:ID")
                     cbc_id.text = 'S'

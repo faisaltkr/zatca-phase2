@@ -12,8 +12,9 @@ def get_Tax_for_Item(full_string,item):
                     frappe.throw("error occured in tax for item"+ str(e) )
 
 def item_data(invoice,sales_invoice_doc):
-            try:
+            try:    
                 for single_item in sales_invoice_doc.items : 
+                    print(single_item.as_dict(),"djfdjfjdjfgjgjdfjfjjjjjjj")
                     item_tax_amount,item_tax_percentage =  get_Tax_for_Item(sales_invoice_doc.taxes[0].item_wise_tax_detail,single_item.item_code)
                     cac_InvoiceLine = ET.SubElement(invoice, "cac:InvoiceLine")
                     cbc_ID_10 = ET.SubElement(cac_InvoiceLine, "cbc:ID")
@@ -23,14 +24,14 @@ def item_data(invoice,sales_invoice_doc):
                     cbc_InvoicedQuantity.text = str(abs(single_item.qty))
                     cbc_LineExtensionAmount_1 = ET.SubElement(cac_InvoiceLine, "cbc:LineExtensionAmount")
                     cbc_LineExtensionAmount_1.set("currencyID", sales_invoice_doc.currency)
-                    cbc_LineExtensionAmount_1.text=  str(abs(single_item.base_net_amount))
+                    cbc_LineExtensionAmount_1.text=  str(abs(single_item.amount))
                     cac_TaxTotal_2 = ET.SubElement(cac_InvoiceLine, "cac:TaxTotal")
                     cbc_TaxAmount_3 = ET.SubElement(cac_TaxTotal_2, "cbc:TaxAmount")
                     cbc_TaxAmount_3.set("currencyID", sales_invoice_doc.currency)
-                    cbc_TaxAmount_3.text = str(abs(round(item_tax_percentage * single_item.base_net_amount / 100,2)))
+                    cbc_TaxAmount_3.text = str(abs(round(item_tax_percentage * single_item.amount / 100,2)))
                     cbc_RoundingAmount = ET.SubElement(cac_TaxTotal_2, "cbc:RoundingAmount")
                     cbc_RoundingAmount.set("currencyID", sales_invoice_doc.currency)
-                    cbc_RoundingAmount.text=str(abs(round(single_item.base_net_amount + (item_tax_percentage * single_item.base_net_amount / 100),2)))
+                    cbc_RoundingAmount.text=str(abs(round(single_item.amount + (item_tax_percentage * single_item.amount / 100),2)))
                     cac_Item = ET.SubElement(cac_InvoiceLine, "cac:Item")
                     cbc_Name = ET.SubElement(cac_Item, "cbc:Name")
                     cbc_Name.text = single_item.item_code
@@ -52,7 +53,7 @@ def item_data(invoice,sales_invoice_doc):
                     cac_Price = ET.SubElement(cac_InvoiceLine, "cac:Price")
                     cbc_PriceAmount = ET.SubElement(cac_Price, "cbc:PriceAmount")
                     cbc_PriceAmount.set("currencyID", sales_invoice_doc.currency)
-                    cbc_PriceAmount.text =  str(abs(single_item.base_net_rate))
+                    cbc_PriceAmount.text =  str(abs(single_item.amount))
                     
                 return invoice
             except Exception as e:
@@ -61,6 +62,7 @@ def item_data(invoice,sales_invoice_doc):
 def item_data_with_template(invoice, sales_invoice_doc):
     try:
         for single_item in sales_invoice_doc.items:
+            print(single_item.as_dict(),"djfdjfjdjfgjgjdfjfjjjjjjj")
             item_tax_template = frappe.get_doc('Item Tax Template', single_item.item_tax_template)
             item_tax_percentage = item_tax_template.taxes[0].tax_rate if item_tax_template.taxes else 15
             
@@ -72,15 +74,15 @@ def item_data_with_template(invoice, sales_invoice_doc):
             cbc_InvoicedQuantity.text = str(abs(single_item.qty))
             cbc_LineExtensionAmount_1 = ET.SubElement(cac_InvoiceLine, "cbc:LineExtensionAmount")
             cbc_LineExtensionAmount_1.set("currencyID", sales_invoice_doc.currency)
-            cbc_LineExtensionAmount_1.text = str(abs(single_item.base_net_amount))
+            cbc_LineExtensionAmount_1.text = str(abs(single_item.amount))
             
             cac_TaxTotal_2 = ET.SubElement(cac_InvoiceLine, "cac:TaxTotal")
             cbc_TaxAmount_3 = ET.SubElement(cac_TaxTotal_2, "cbc:TaxAmount")
             cbc_TaxAmount_3.set("currencyID", sales_invoice_doc.currency)
-            cbc_TaxAmount_3.text = str(abs(round(item_tax_percentage * single_item.base_net_amount / 100, 2)))
+            cbc_TaxAmount_3.text = str(abs(round(item_tax_percentage * single_item.amount / 100, 2)))
             cbc_RoundingAmount = ET.SubElement(cac_TaxTotal_2, "cbc:RoundingAmount")
             cbc_RoundingAmount.set("currencyID", sales_invoice_doc.currency)
-            cbc_RoundingAmount.text = str(abs(round(single_item.base_net_amount + (item_tax_percentage * single_item.base_net_amount / 100), 2)))
+            cbc_RoundingAmount.text = str(abs(round(single_item.amount + (item_tax_percentage * single_item.amount / 100), 2)))
             
             cac_Item = ET.SubElement(cac_InvoiceLine, "cac:Item")
             cbc_Name = ET.SubElement(cac_Item, "cbc:Name")
@@ -109,7 +111,7 @@ def item_data_with_template(invoice, sales_invoice_doc):
             cac_Price = ET.SubElement(cac_InvoiceLine, "cac:Price")
             cbc_PriceAmount = ET.SubElement(cac_Price, "cbc:PriceAmount")
             cbc_PriceAmount.set("currencyID", sales_invoice_doc.currency)
-            cbc_PriceAmount.text = str(abs(single_item.base_net_rate))
+            cbc_PriceAmount.text = str(abs(single_item.amount))
             
         return invoice
     except Exception as e:
