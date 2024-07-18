@@ -55,14 +55,14 @@ class SimplifiedInvoice:
             self.pih = base_64_hash('0')
         
 
-    def create_simplified_invoice(self):
-        """
-        invoice generate for simplified
-        """
-        xml_tags = generate_xml_tags()
-        inv_data = salesinvoice_data(xml_tags)
-        cur = currency_data(inv_data)
-        return cur
+    # def create_simplified_invoice(self):
+    #     """
+    #     invoice generate for simplified
+    #     """
+    #     xml_tags = generate_xml_tags()
+    #     inv_data = salesinvoice_data(xml_tags)
+    #     cur = currency_data(inv_data)
+    #     return cur
     
 # file name  - vatnumber-datetime-invoicenumber //yyyy-mm-dd-hh-mm-ss //3xxxxxxxxx1xxx3_20210526T132400_2021-05-26-23555.xml
 def create_invoice(doc,method):
