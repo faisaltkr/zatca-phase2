@@ -238,17 +238,33 @@ doc_events = {
 
 
 #"filters": [["module", "=", "Zatca Sa Phase2"]],
-fixtures = [ 
-    {"dt": "Custom Field",
-               "filters": [["name", "in", [
-            "Sales Invoice-custom_field_1",
-            "Sales Invoice-custom_field_2"
-        ]]]
-              }
-              
-              ]
+fixtures = [
+    {
+        "dt": "Custom Field",
+        "filters": [
+            [
+                "name", "in", [
+                    "Account-custom_code"
+                ],
+                "name", "in", [
+                    "Sales Invoice-e_invoicing_details_tab"
+                    "Sales Invoice-zatca_details_section"
+                    "Sales Invoice-custom_zatca_status",
+                    "Sales Invoice-custom_zatca_tax_category",
+                    "Sales Invoice-custom_pih",
+                    "Sales Invoice-custom_ih",
+                    "Sales Invoice-custom_submit_time",
+                    "Sales Invoice-custom_icv",
+                    "Sales Invoice-custom_xml_file",
+                    "Sales Invoice-custom_qr_code_file",
+                    "Sales Invoice-custom_zatca_validation_result",
+                    "Sales Invoice-custom_invoice_transaction_type1",
+                    "Sales Invoice-custom_invoice_transaction_type2"
+                ]
+            ]
+        ]
+    }
+]
 
 
 
-
-app_include_css = "/private/files/custom.css"

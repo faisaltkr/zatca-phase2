@@ -118,24 +118,24 @@ frappe.ui.form.on('CSR Settings', {
         }
 });
 
-frappe.ui.form.on(‘Sales Invoice’, {
-    refresh: function(frm) {
-    frm.add_custom_button(__(‘Delivery Trip’), function(){
-    create_delivery_trip(frm)
-    }, __(“Create”));
-    }
-    });
+// frappe.ui.form.on(‘Sales Invoice’, {
+//     refresh: function(frm) {
+//     frm.add_custom_button(__(‘Delivery Trip’), function(){
+//     create_delivery_trip(frm)
+//     }, __(“Create”));
+//     }
+//     });
     
-    function create_delivery_trip(frm) {
-    frappe.call({
-    method: “document.document.overide.sales_invoice.set_delivery_trip”,
-    args:{
-    sales_invoice: frm.doc.name
-    },
-    callback: function(r) {
-    frappe.model.sync(pick_list);
-    frappe.set_route(‘Form’, sales_invoice.doctype, sales_invoice.name)
-    }
-    })
+//     function create_delivery_trip(frm) {
+//     frappe.call({
+//     method: “document.document.overide.sales_invoice.set_delivery_trip”,
+//     args:{
+//     sales_invoice: frm.doc.name
+//     },
+//     callback: function(r) {
+//     frappe.model.sync(pick_list);
+//     frappe.set_route(‘Form’, sales_invoice.doctype, sales_invoice.name)
+//     }
+//     })
     
     
