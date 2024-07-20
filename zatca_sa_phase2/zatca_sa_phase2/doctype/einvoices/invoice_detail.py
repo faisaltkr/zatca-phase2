@@ -20,12 +20,18 @@ def salesinvoice_data(invoice,invoice_number):
                 cbc_ID = ET.SubElement(invoice, "cbc:ID")
                 cbc_ID.text = str(sales_invoice_doc.name)
                 cbc_UUID = ET.SubElement(invoice, "cbc:UUID")
-                cbc_UUID.text =  str(uuid.uuid1())
+                uuid_val = str(uuid.uuid1())
+                cbc_UUID.text =  uuid_val
+                doc = frappe.get_doc('Sales Invoice', sales_invoice_doc.name)
+                doc.set("custom_uuid", str(uuid_val))
                 uuid1= cbc_UUID.text
                 cbc_IssueDate = ET.SubElement(invoice, "cbc:IssueDate")
                 cbc_IssueDate.text = str(sales_invoice_doc.posting_date)
                 cbc_IssueTime = ET.SubElement(invoice, "cbc:IssueTime")
-                cbc_IssueTime.text = get_Issue_Time(invoice_number)
+                issue_time = get_Issue_Time(invoice_number)
+                cbc_IssueTime.text = issue_time
+                doc.set("custom_submit_time", str((str(sales_invoice_doc.posting_date))+" "+issue_time))
+                doc.save()
                 return invoice ,uuid1 ,sales_invoice_doc
             except Exception as e:
                     frappe.throw("error occured in salesinvoice data"+ str(e) )

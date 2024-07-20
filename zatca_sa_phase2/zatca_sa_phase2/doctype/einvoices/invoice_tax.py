@@ -127,6 +127,10 @@ def tax_Data(invoice,sales_invoice_doc):
                 # sdict = sales_invoice_doc.as_dict()
                 # discount_amount = sdict['discount_amount']               
                 cbc_AllowanceTotalAmount.text = str(round(sales_invoice_doc.discount_amount,2))
+                # <cbc:PrepaidAmount currencyID="USD">0.00</cbc:PrepaidAmount>
+                
+
+
                 cbc_PayableAmount = ET.SubElement(cac_LegalMonetaryTotal, "cbc:PayableAmount")
                 cbc_PayableAmount.set("currencyID", sales_invoice_doc.currency)
                 cbc_PayableAmount.text = str(round(abs(sales_invoice_doc.base_total) + abs(sales_json['taxes'][0]['tax_amount'])  - abs(sales_invoice_doc.base_discount_amount) ,2))
@@ -139,7 +143,7 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
        
             try:
                 sales_json = sales_invoice_doc.as_dict()
-                print(sales_json,)
+                print(sales_json,"jjjjjjjjjjjjj")
                 total_tax = sum(single_item.net_amount * (frappe.get_doc('Item Tax Template', single_item.item_tax_template).taxes[0].tax_rate / 100)
                     for single_item in sales_invoice_doc.items)
                 #for foreign currency

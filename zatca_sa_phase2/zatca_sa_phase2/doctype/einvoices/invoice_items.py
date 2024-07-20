@@ -111,7 +111,7 @@ def item_data_with_template(invoice, sales_invoice_doc):
             cac_Price = ET.SubElement(cac_InvoiceLine, "cac:Price")
             cbc_PriceAmount = ET.SubElement(cac_Price, "cbc:PriceAmount")
             cbc_PriceAmount.set("currencyID", sales_invoice_doc.currency)
-            cbc_PriceAmount.text = str(abs(single_item.amount))
+            cbc_PriceAmount.text = str(abs(single_item.rate))
             
         return invoice
     except Exception as e:

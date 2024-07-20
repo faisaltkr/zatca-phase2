@@ -33,10 +33,10 @@ def invoice_Typecode_Simplified(invoice,sales_invoice_doc):
                     cbc_InvoiceTypeCode.text = "381"  # Credit note
                 elif sales_invoice_doc.is_debit_note == 1:
                         cbc_InvoiceTypeCode.text = "383" # Debit note
-                        cbc_billing_reference = ET.SubElement(invoice,"cac:BillingReference")
-                        cbc_cac_InvoiceDocumentReference  = ET.SubElement(cbc_billing_reference,"cac:InvoiceDocumentReference")
-                        cbc_id = ET.SubElement(cbc_cac_InvoiceDocumentReference,"cbc:ID")
-                        cbc_id.text = sales_invoice_doc.return_against
+                        # cbc_billing_reference = ET.SubElement(invoice,"cac:BillingReference")
+                        # cbc_cac_InvoiceDocumentReference  = ET.SubElement(cbc_billing_reference,"cac:InvoiceDocumentReference")
+                        # cbc_id = ET.SubElement(cbc_cac_InvoiceDocumentReference,"cbc:ID")
+                        # cbc_id.text = sales_invoice_doc.return_against
                 return invoice
             except Exception as e:
                     frappe.throw("error occured in simplified invoice typecode"+ str(e) )
@@ -50,7 +50,6 @@ def invoice_Typecode_Standard(invoice,sales_invoice_doc):
                           type_code = "0100000"
                     cbc_InvoiceTypeCode = ET.SubElement(invoice, "cbc:InvoiceTypeCode")
                     cbc_InvoiceTypeCode.set("name", type_code) # Standard
-                    print(sales_invoice_doc.is_debit_note,"kjjkjjknkkj")
                     # frappe.throw("Error in standard invoice type code: ")
 
                     if sales_invoice_doc.is_return == 0 and sales_invoice_doc.is_debit_note !=1:
@@ -59,10 +58,10 @@ def invoice_Typecode_Standard(invoice,sales_invoice_doc):
                         cbc_InvoiceTypeCode.text = "381" # Credit note
                     elif sales_invoice_doc.is_debit_note == 1:
                         cbc_InvoiceTypeCode.text = "383" # Debit note
-                        cbc_billing_reference = ET.SubElement(invoice,"cac:BillingReference")
-                        cbc_cac_InvoiceDocumentReference  = ET.SubElement(cbc_billing_reference,"cac:InvoiceDocumentReference")
-                        cbc_id = ET.SubElement(cbc_cac_InvoiceDocumentReference,"cbc:ID")
-                        cbc_id.text = sales_invoice_doc.return_against
+                        # cbc_billing_reference = ET.SubElement(invoice,"cac:BillingReference")
+                        # cbc_cac_InvoiceDocumentReference  = ET.SubElement(cbc_billing_reference,"cac:InvoiceDocumentReference")
+                        # cbc_id = ET.SubElement(cbc_cac_InvoiceDocumentReference,"cbc:ID")
+                        # cbc_id.text = sales_invoice_doc.return_against
 
                     return invoice
             except Exception as e:

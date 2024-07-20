@@ -33,7 +33,7 @@
         "unique": 0
     },
     {
-        "depends_on":"eval:doc.custom_zatca_status=='Cleared' || doc.custom_zatca_status=='Reported'",
+        "depends_on":"eval:doc.custom_zatca_status=='CLEARED' || doc.custom_zatca_status=='REPORTED'",
         "allow_on_submit": 0,
         "doctype": "Custom Field",
         "dt": "Sales Invoice",
@@ -86,7 +86,6 @@
     },
     {
         "allow_on_submit": 1,
-        "default": "Cleared",
         "doctype": "Custom Field",
         "dt": "Sales Invoice",
         "fieldname": "custom_zatca_status",
@@ -154,8 +153,7 @@
         "unique": 0
     },
     {
-        "default": "Not submitted",
-        "allow_on_submit": 0,
+        "allow_on_submit": 1,
         "doctype": "Custom Field",
         "dt": "Sales Invoice",
         "fieldname": "custom_submit_time",
