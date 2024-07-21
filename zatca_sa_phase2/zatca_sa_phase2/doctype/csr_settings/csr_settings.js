@@ -137,5 +137,5 @@ frappe.ui.form.on('CSR Settings', {
 //     frappe.set_route(‘Form’, sales_invoice.doctype, sales_invoice.name)
 //     }
 //     })
-    
+
     

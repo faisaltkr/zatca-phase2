@@ -45,7 +45,7 @@ def tax_Data(invoice,sales_invoice_doc):
                     cbc_TaxAmount_SAR = ET.SubElement(cac_TaxTotal, "cbc:TaxAmount")
                     cbc_TaxAmount_SAR.set("currencyID", "SAR") # SAR is as zatca requires tax amount in SAR
                     # tax_amount_without_retention_sar =  round(sales_invoice_doc.conversion_rate * abs(get_tax_total_from_items(sales_invoice_doc)),2)
-                    cbc_TaxAmount_SAR.text = str(round( sales_json['taxes'][0]['tax_amount'] ,2))     # str( abs(sales_invoice_doc.base_total_taxes_and_charges))
+                    cbc_TaxAmount_SAR.text = str(abs(round( sales_json['taxes'][0]['tax_amount'] ,2)))     # str( abs(sales_invoice_doc.base_total_taxes_and_charges))
                 #end for foreign currency
                 
                 
@@ -55,7 +55,7 @@ def tax_Data(invoice,sales_invoice_doc):
                     cbc_TaxAmount_SAR = ET.SubElement(cac_TaxTotal, "cbc:TaxAmount")
                     cbc_TaxAmount_SAR.set("currencyID", "SAR") # SAR is as zatca requires tax amount in SAR
                     # tax_amount_without_retention_sar =  round(abs(get_tax_total_from_items(sales_invoice_doc)),2)
-                    cbc_TaxAmount_SAR.text = str(round( sales_json['taxes'][0]['tax_amount'] ,2))     # str( abs(sales_invoice_doc.base_total_taxes_and_charges))
+                    cbc_TaxAmount_SAR.text = str(abs(round( sales_json['taxes'][0]['tax_amount'] ,2)))     # str( abs(sales_invoice_doc.base_total_taxes_and_charges))
                 #end for SAR currency
                 
                 
@@ -64,13 +64,13 @@ def tax_Data(invoice,sales_invoice_doc):
                 cbc_TaxAmount = ET.SubElement(cac_TaxTotal, "cbc:TaxAmount")
                 cbc_TaxAmount.set("currencyID", sales_invoice_doc.currency) # SAR is as zatca requires tax amount in SAR
                 tax_amount_without_retention =  round(abs(get_tax_total_from_items(sales_invoice_doc)),2)
-                cbc_TaxAmount.text = str(round( sales_json['taxes'][0]['tax_amount'] ,2))   # str( abs(sales_invoice_doc.base_total_taxes_and_charges))
+                cbc_TaxAmount.text = str(abs(round( sales_json['taxes'][0]['tax_amount'] ,2)))   # str( abs(sales_invoice_doc.base_total_taxes_and_charges))
                 cac_TaxSubtotal = ET.SubElement(cac_TaxTotal, "cac:TaxSubtotal")
                 cbc_TaxableAmount = ET.SubElement(cac_TaxSubtotal, "cbc:TaxableAmount")
                 cbc_TaxableAmount.set("currencyID", sales_invoice_doc.currency)
                 ###
                 # cbc_TaxableAmount.text =str(abs(round(sales_invoice_doc.base_net_total,2)))
-                cbc_TaxableAmount.text =str(round(sales_invoice_doc.total,2))
+                cbc_TaxableAmount.text =str(abs(round(sales_invoice_doc.total,2)))
 
                 cbc_TaxAmount_2 = ET.SubElement(cac_TaxSubtotal, "cbc:TaxAmount")
                 cbc_TaxAmount_2.set("currencyID", sales_invoice_doc.currency)
@@ -152,7 +152,7 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
                     cbc_TaxAmount_SAR = ET.SubElement(cac_TaxTotal, "cbc:TaxAmount")
                     cbc_TaxAmount_SAR.set("currencyID", "SAR") # SAR is as zatca requires tax amount in SAR
                     # tax_amount_without_retention_sar =  round(sales_invoice_doc.conversion_rate * abs(total_tax),2)
-                    cbc_TaxAmount_SAR.text = str(round( sales_json['taxes'][0]['tax_amount'] ,2))     # str( abs(sales_invoice_doc.base_total_taxes_and_charges))
+                    cbc_TaxAmount_SAR.text = str(abs(round( sales_json['taxes'][0]['tax_amount'] ,2)))     # str( abs(sales_invoice_doc.base_total_taxes_and_charges))
                 #end for foreign currency
                 
                 
@@ -162,7 +162,7 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
                     cbc_TaxAmount_SAR = ET.SubElement(cac_TaxTotal, "cbc:TaxAmount")
                     cbc_TaxAmount_SAR.set("currencyID", "SAR") # SAR is as zatca requires tax amount in SAR
                     tax_amount_without_retention_sar =  round(abs(total_tax),2)
-                    cbc_TaxAmount_SAR.text = str(round( sales_json['taxes'][0]['tax_amount'] ,2))     # str( abs(sales_invoice_doc.base_total_taxes_and_charges))
+                    cbc_TaxAmount_SAR.text = str(abs(round( sales_json['taxes'][0]['tax_amount'] ,2)))     # str( abs(sales_invoice_doc.base_total_taxes_and_charges))
                 #end for SAR currency
                 
                 
@@ -171,7 +171,7 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
                 cbc_TaxAmount = ET.SubElement(cac_TaxTotal, "cbc:TaxAmount")
                 cbc_TaxAmount.set("currencyID", sales_invoice_doc.currency) # SAR is as zatca requires tax amount in SAR
                 tax_amount_without_retention =  round(abs(total_tax),2)
-                cbc_TaxAmount.text = str(round( sales_json['taxes'][0]['tax_amount'] ,2))     # str( abs(sales_invoice_doc.base_total_taxes_and_charges))
+                cbc_TaxAmount.text = str(abs(round( sales_json['taxes'][0]['tax_amount'] ,2)))     # str( abs(sales_invoice_doc.base_total_taxes_and_charges))
                 processed_tax_templates = set()
 
                 for item in sales_invoice_doc.items:
@@ -192,11 +192,11 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
                         cbc_TaxableAmount = ET.SubElement(cac_TaxSubtotal, "cbc:TaxableAmount")
                         cbc_TaxableAmount.set("currencyID", sales_invoice_doc.currency)
                         # cbc_TaxableAmount.text = str(abs(item.base_net_amount))
-                        cbc_TaxableAmount.text = str(round(sales_invoice_doc.total,2))
+                        cbc_TaxableAmount.text = str(abs(round(sales_invoice_doc.total,2)))
                         cbc_TaxAmount_2 = ET.SubElement(cac_TaxSubtotal, "cbc:TaxAmount")
                         cbc_TaxAmount_2.set("currencyID", sales_invoice_doc.currency)
                         # cbc_TaxAmount_2.text =str(abs(round(item_tax_percentage * item.base_net_amount / 100,2)))
-                        cbc_TaxAmount_2.text =  str(round( sales_json['taxes'][0]['tax_amount'] ,2))
+                        cbc_TaxAmount_2.text =  str(abs(round( sales_json['taxes'][0]['tax_amount'] ,2)))
                         cac_TaxCategory_1 = ET.SubElement(cac_TaxSubtotal, "cac:TaxCategory")
                         cbc_ID_8 = ET.SubElement(cac_TaxCategory_1, "cbc:ID")
 
