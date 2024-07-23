@@ -25,11 +25,14 @@ def invoice_Typecode_Simplified(invoice,sales_invoice_doc):
                     type_code = invoice_Typecode_Simplified_dict[sales_invoice_doc.custom_invoice_transaction_type1]
                 else:
                     type_code = "0200000"
-                if sales_invoice_doc.is_return == 0 and sales_invoice_doc.is_debit_note !=1:         
-                    cbc_InvoiceTypeCode.set("name", type_code) # Simplified
+                cbc_InvoiceTypeCode.set("name", type_code) # Simplified
+
+                if sales_invoice_doc.is_return == 0 and sales_invoice_doc.is_debit_note !=1: 
+
+                    # cbc_InvoiceTypeCode.set("name", type_code) # Simplified
                     cbc_InvoiceTypeCode.text = "388"
                 elif sales_invoice_doc.is_return == 1:       # return items and simplified invoice
-                    cbc_InvoiceTypeCode.set("name", type_code)  # Simplified
+                    # cbc_InvoiceTypeCode.set("name", type_code)  # Simplified,
                     cbc_InvoiceTypeCode.text = "381"  # Credit note
                 elif sales_invoice_doc.is_debit_note == 1:
                         cbc_InvoiceTypeCode.text = "383" # Debit note

@@ -4,15 +4,15 @@ import frappe
 def delivery_And_PaymentMeans(invoice,sales_invoice_doc, is_return):
             try:
                 customer_doc= frappe.get_doc("Customer",sales_invoice_doc.customer)
-                if not customer_doc.custom_b2c:
-                    cac_Delivery = ET.SubElement(invoice, "cac:Delivery")
-                    cbc_ActualDeliveryDate = ET.SubElement(cac_Delivery, "cbc:ActualDeliveryDate")
-                    cbc_ActualDeliveryDate.text = str(sales_invoice_doc.due_date)
-                    cac_PaymentMeans = ET.SubElement(invoice, "cac:PaymentMeans")
-                    cbc_PaymentMeansCode = ET.SubElement(cac_PaymentMeans, "cbc:PaymentMeansCode")
-                    cbc_PaymentMeansCode.text = "30"
+                # if not customer_doc.custom_b2c:
+                cac_Delivery = ET.SubElement(invoice, "cac:Delivery")
+                cbc_ActualDeliveryDate = ET.SubElement(cac_Delivery, "cbc:ActualDeliveryDate")
+                cbc_ActualDeliveryDate.text = str(sales_invoice_doc.due_date)
+                cac_PaymentMeans = ET.SubElement(invoice, "cac:PaymentMeans")
+                cbc_PaymentMeansCode = ET.SubElement(cac_PaymentMeans, "cbc:PaymentMeansCode")
+                cbc_PaymentMeansCode.text = "30"
                 
-                if is_return == 1 or sales_invoice_doc.is_debit_note==1 or sales_invoice_doc.is_return==1:
+                if is_return == 1 or sales_invoice_doc.is_debit_note==1 or sales_invoice_doc.is_debit_note==1:
                     # cac_PaymentMeans = ET.SubElement(invoice, "cac:PaymentMeans")
                     cbc_InstructionNote = ET.SubElement(cac_PaymentMeans, "cbc:InstructionNote")
                     cbc_InstructionNote.text = "CANCELLATION_OR_TERMINATION"    
