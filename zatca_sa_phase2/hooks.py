@@ -232,39 +232,40 @@ doc_events = {
         'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.einvoices.create_invoices.zatca_Background_on_submit'
     },
     'Purchase Invoice': {
-        'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.einvoices.create_invoices.zatca_Background_on_submit'
-    }
+        'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.purchase.submit.on_submit'
+    },
+    # "*": {
+    #     "after_migrate": "zatca_sa_phase2.zatca_sa_phase2.doctype.rename_fields"
+    # }
 }
 
+after_install = "zatca_sa_phase2.zatca_sa_phase2.doctype.rename_fields"
 
 #"filters": [["module", "=", "Zatca Sa Phase2"]],
 fixtures = [
     {
         "dt": "Custom Field",
         "filters": [
-            [
-                "name", "in", [
-                    "Account-custom_code"
-                ],
-                "name", "in", [
-                    "Sales Invoice-e_invoicing_details_tab"
-                    "Sales Invoice-zatca_details_section"
-                    "Sales Invoice-custom_zatca_status",
-                    "Sales Invoice-custom_zatca_tax_category",
-                    "Sales Invoice-custom_pih",
-                    "Sales Invoice-custom_ih",
-                    "Sales Invoice-custom_submit_time",
-                    "Sales Invoice-custom_icv",
-                    "Sales Invoice-custom_xml_file",
-                    "Sales Invoice-custom_qr_code_file",
-                    "Sales Invoice-custom_zatca_validation_result",
-                    "Sales Invoice-custom_invoice_transaction_type1",
-                    "Sales Invoice-custom_invoice_transaction_type2"
-                ]
-            ]
+            ["name", "in", ["Account-custom_code"]],
+            ["name", "in", [
+                "Sales Invoice-e_invoicing_details_tab",
+                "Sales Invoice-zatca_details_section",
+                "Sales Invoice-custom_zatca_status",
+                "Sales Invoice-custom_zatca_tax_category",
+                "Sales Invoice-custom_pih",
+                "Sales Invoice-custom_ih",
+                "Sales Invoice-custom_submit_time",
+                "Sales Invoice-custom_icv",
+                "Sales Invoice-custom_xml_file",
+                "Sales Invoice-custom_qr_code_file",
+                "Sales Invoice-custom_zatca_validation_result",
+                "Sales Invoice-custom_invoice_transaction_type1",
+                "Sales Invoice-custom_invoice_transaction_type2"
+            ]]
         ]
     }
 ]
+
 
 
 
