@@ -239,7 +239,7 @@ doc_events = {
     # }
 }
 
-after_install = "zatca_sa_phase2.zatca_sa_phase2.doctype.rename_fields"
+# after_install = "zatca_sa_phase2.zatca_sa_phase2.doctype.rename_fields"
 
 #"filters": [["module", "=", "Zatca Sa Phase2"]],
 fixtures = [
