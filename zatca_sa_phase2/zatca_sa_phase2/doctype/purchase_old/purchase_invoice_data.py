@@ -6,8 +6,11 @@ from frappe.utils.data import  get_time
 def  get_Issue_Time(invoice_number): 
                 doc = frappe.get_doc("Purchase Invoice", invoice_number)
                 time = get_time(doc.posting_time)
-                issue_time = time.strftime("%H:%M:%S")
+                issue_time = time.strftime("%H:%M:%S")  #time in format of  hour,mints,secnds
+                # utc_now = datetime.utcnow().replace(tzinfo=timezone.utc)
+                # issue_time = utc_now.strftime('%H:%M:%SZ') 
                 return issue_time
+  
 
 def purchase_invoice_data(invoice,invoice_number):
             try:
@@ -31,4 +34,4 @@ def purchase_invoice_data(invoice,invoice_number):
                 doc.save()
                 return invoice ,uuid1 ,purchase_invoice_doc
             except Exception as e:
-                    frappe.throw("error occured in purchase invoice data"+ str(e) )
+                    frappe.throw("error occured in salesinvoice data"+ str(e) )

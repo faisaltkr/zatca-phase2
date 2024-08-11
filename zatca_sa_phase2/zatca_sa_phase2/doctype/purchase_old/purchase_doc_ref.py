@@ -10,13 +10,13 @@ def get_ICV_code(invoice_number):
                 except Exception as e:
                     frappe.throw("error in getting icv number:  "+ str(e) )
 
-def billing_reference_for_credit_and_debit_note(invoice,p_invoice_doc):
+def billing_reference_for_credit_and_debit_note(invoice,sales_invoice_doc):
             try:
                 #details of original invoice
                 cac_BillingReference = ET.SubElement(invoice, "cac:BillingReference")
                 cac_InvoiceDocumentReference = ET.SubElement(cac_BillingReference, "cac:InvoiceDocumentReference")
                 cbc_ID13 = ET.SubElement(cac_InvoiceDocumentReference, "cbc:ID")
-                cbc_ID13.text = p_invoice_doc.return_against  # field from return against invoice. 
+                cbc_ID13.text = sales_invoice_doc.return_against  # field from return against invoice. 
                 
                 return invoice
             except Exception as e:
@@ -30,7 +30,7 @@ def doc_Reference(invoice,p_invoice_doc,invoice_number):
                 cbc_TaxCurrencyCode.text = "SAR"  # SAR is as zatca requires tax amount in SAR
 
                 print("sldhdkjhgkdhfgjkdhkghdjkghkjdfhgkdfhgkhdkghdkh")
-                if p_invoice_doc.is_return == 1:
+                if p_invoice_doc.is_debit_note == 1 or p_invoice_doc.is_return == 1:
                                 invoice=billing_reference_for_credit_and_debit_note(invoice,p_invoice_doc)
                 cac_AdditionalDocumentReference = ET.SubElement(invoice, "cac:AdditionalDocumentReference")
                 cbc_ID_1 = ET.SubElement(cac_AdditionalDocumentReference, "cbc:ID")
