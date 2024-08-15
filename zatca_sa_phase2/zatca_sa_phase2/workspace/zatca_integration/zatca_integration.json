@@ -1,0 +1,49 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"b10WwhE6m_\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Zatca Integration</span>\",\"col\":12}},{\"id\":\"JQKUPqwHft\",\"type\":\"card\",\"data\":{\"card_name\":\"CSR Settings\",\"col\":4}}]",
+ "creation": "2024-08-15 07:53:02.675041",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "income",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Zatca Integration",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "CSR Settings",
+   "link_count": 1,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "CSR Settings",
+   "link_count": 0,
+   "link_to": "CSR Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2024-08-15 08:08:57.873610",
+ "modified_by": "Administrator",
+ "module": "Zatca Sa Phase2",
+ "name": "Zatca Integration",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 24.0,
+ "shortcuts": [],
+ "title": "Zatca Integration"
+}
