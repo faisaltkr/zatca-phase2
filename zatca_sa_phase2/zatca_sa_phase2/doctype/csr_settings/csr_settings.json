@@ -17,6 +17,10 @@
   "country_code",
   "currency_code",
   "business_transaction_type",
+  "registration_scheme_section",
+  "additional_id",
+  "column_break_ilzt",
+  "value_number",
   "address_details_section",
   "column_break_bmuw",
   "street",
@@ -33,9 +37,6 @@
   "integration_details_tab",
   "configuration_section",
   "select_environment",
-  "sandbox_url",
-  "simulation_url",
-  "production_url",
   "generate_csr",
   "csr",
   "column_break_mhbt",
@@ -47,18 +48,25 @@
   "enter_otp",
   "egs_onboard",
   "csid",
-  "created_time",
-  "column_break_trih",
-  "select_invoice_type",
-  "sample_invoice_number_to_test",
-  "perform_compliance_check",
-  "issuer_name",
-  "issuer_serial_number",
   "section_break_qfnh",
   "enter_prodution_otp",
   "get_production_csid",
   "production_csid_pcsid",
-  "prodcution_request_id"
+  "created_time",
+  "prodcution_request_id",
+  "section_break_qazh",
+  "column_break_trih",
+  "select_customer",
+  "perform_compliance_check",
+  "standard_invoice",
+  "standard_debit_note",
+  "standard_credit_note",
+  "simplified_invoice",
+  "simplified_debit_note",
+  "simplified_credit_note",
+  "other_fields_tab",
+  "issuer_name",
+  "issuer_serial_number"
  ],
  "fields": [
   {
@@ -284,18 +292,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "select_invoice_type",
-   "fieldtype": "Select",
-   "label": "Select Invoice Type",
-   "options": "Standard Tax Invoice\nStandard Credit Note\nStandard Debit Note\nSimplified Tax Invoice\nSimplified Credit Note\nSimplified Debit Note"
-  },
-  {
-   "description": "Need to link sales invoice number to this field",
-   "fieldname": "sample_invoice_number_to_test",
-   "fieldtype": "Data",
-   "label": "Sample Invoice Number to Test"
-  },
-  {
    "fieldname": "section_break_qfnh",
    "fieldtype": "Section Break",
    "label": "Get Production CSID"
@@ -305,27 +301,6 @@
    "fieldtype": "Select",
    "label": "Select Environment",
    "options": "Sandbox\nSimulation\nProduction"
-  },
-  {
-   "default": "https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal/",
-   "depends_on": "eval:doc.select_environment==\"SandBox\"",
-   "fieldname": "sandbox_url",
-   "fieldtype": "Data",
-   "label": "Sandbox URL"
-  },
-  {
-   "default": "https://gw-fatoora.zatca.gov.sa/e-invoicing/simulation/",
-   "depends_on": "doc.select_environment==\"Simulation\";",
-   "fieldname": "simulation_url",
-   "fieldtype": "Data",
-   "label": "Simulation URL"
-  },
-  {
-   "default": "https://gw-fatoora.zatca.gov.sa/e-invoicing/core/",
-   "depends_on": "doc.select_environment==\"Production\"",
-   "fieldname": "production_url",
-   "fieldtype": "Data",
-   "label": "Production URL"
   },
   {
    "description": "Generate a CSR and make a compliance CSID Request through ZATCA",
@@ -380,12 +355,92 @@
    "fieldname": "issuer_serial_number",
    "fieldtype": "Data",
    "label": "Issuer Serial Number"
+  },
+  {
+   "fieldname": "section_break_qazh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "description": "Need to link sales invoice number to this field",
+   "fieldname": "select_customer",
+   "fieldtype": "Link",
+   "label": "Select Customer",
+   "options": "Customer"
+  },
+  {
+   "default": "0",
+   "fieldname": "standard_invoice",
+   "fieldtype": "Check",
+   "label": "Standard Invoice",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "standard_debit_note",
+   "fieldtype": "Check",
+   "label": "Standard Debit Note",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "standard_credit_note",
+   "fieldtype": "Check",
+   "label": "Standard Credit Note",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "simplified_invoice",
+   "fieldtype": "Check",
+   "label": "Simplified Invoice",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "simplified_debit_note",
+   "fieldtype": "Check",
+   "label": "Simplified Debit Note",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "simplified_credit_note",
+   "fieldtype": "Check",
+   "label": "Simplified Credit Note",
+   "read_only": 1
+  },
+  {
+   "fieldname": "other_fields_tab",
+   "fieldtype": "Tab Break",
+   "label": "Other Fields"
+  },
+  {
+   "fieldname": "registration_scheme_section",
+   "fieldtype": "Section Break",
+   "label": "Registration Scheme"
+  },
+  {
+   "fieldname": "column_break_ilzt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "value_number",
+   "fieldtype": "Data",
+   "label": "Value Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "additional_id",
+   "fieldtype": "Select",
+   "label": "Additional Id",
+   "options": "Commercial Registration Number(CRN)\nMOMRA LICENCE(MOM)\nMHRSD LICENCE(MLS)\n700 Number(700)\nMISA LICENCE(SAG)\nOther OD(OTH)",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-07-06 17:06:53.388063",
+ "modified": "2024-08-17 17:29:25.278498",
  "modified_by": "Administrator",
  "module": "Zatca Sa Phase2",
  "name": "CSR Settings",

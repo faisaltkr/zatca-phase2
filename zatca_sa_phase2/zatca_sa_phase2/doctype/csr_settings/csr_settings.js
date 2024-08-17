@@ -115,8 +115,26 @@ frappe.ui.form.on('CSR Settings', {
                     }
                 });
             });
-        }
+        },
+        additional_id: function(frm) {
+            // Check if the select field has a value
+            //alert('hhhhh')
+            if (frm.doc.additional_id) {
+                $(frm.fields_dict.value_number.input).focus();
+                
+            }
+        },
+
 });
+
+// function validate_value_number(frm) {
+//     const value_number = frm.doc.value_number_fieldname;
+
+//     if (value_number=='Commercial Registration Number(CRN)') {
+//         frappe.msgprint(__('Value Number must be 10 Digit'));
+//         frappe.validated = false;
+//     }
+// }
 
 // frappe.ui.form.on(‘Sales Invoice’, {
 //     refresh: function(frm) {
