@@ -13,8 +13,7 @@ def company_Data(invoice,sales_invoice_doc):
                 cbc_ID_2 = ET.SubElement(cac_PartyIdentification, "cbc:ID")
                 cbc_ID_2.set("schemeID", "CRN")
                 doc = frappe.get_all('Additional IDs-Zatca',fields = ['id_name','type_code','valueid_number',])
-
-                [{'id_name': 'MISA LICENCE', 'type_code': 'SAG', 'valueid_number': None}, {'id_name': 'MHRSD LICENCE', 'type_code': 'MLS', 'valueid_number': None}, {'id_name': 'MOMRAH LICENCE', 'type_code': 'MOM', 'valueid_number': None}, {'id_name': 'OTHER ID', 'type_code': 'OTH', 'valueid_number': None}, {'id_name': 'Commercial Registration Number', 'type_code': 'CRN', 'valueid_number': 'sssss'}, {'id_name': 'Seven Hundred Number', 'type_code': '700', 'valueid_number': None}]
+                datas = [{'id_name': 'MISA LICENCE', 'type_code': 'SAG', 'valueid_number': None}, {'id_name': 'MHRSD LICENCE', 'type_code': 'MLS', 'valueid_number': None}, {'id_name': 'MOMRAH LICENCE', 'type_code': 'MOM', 'valueid_number': None}, {'id_name': 'OTHER ID', 'type_code': 'OTH', 'valueid_number': None}, {'id_name': 'Commercial Registration Number', 'type_code': 'CRN', 'valueid_number': 'sssss'}, {'id_name': 'Seven Hundred Number', 'type_code': '700', 'valueid_number': None}]
                 
                 for datas in doc:
                     if datas['type_code'] == 'CRN':
