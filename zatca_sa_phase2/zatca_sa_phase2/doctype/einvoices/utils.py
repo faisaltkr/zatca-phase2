@@ -351,19 +351,27 @@ def create_public_key():
                     # settings = frappe.get_doc('Zatca ERPgulf Setting')
                     # company = settings.company
                     # company_name = frappe.db.get_value("Company", company, "abbr")
-                    # certificate_data_str = settings.get("certificate", "{}")
-                    company_name = "mycompany"
-                    key = frappe.get_all('CSR Settings', fields=['csid','public_key'])
+                    certificate_data_str = "MIICGjCCAb+gAwIBAgIGAZFWof7gMAoGCCqGSM49BAMCMBUxEzARBgNVBAMMCmVJbnZvaWNpbmcwHhcNMjQwODE1MTUyMjE3WhcNMjkwODE0MjEwMDAwWjBiMQswCQYDVQQGEwJTQTEWMBQGA1UECwwNUml5YWRoIEJyYW5jaDETMBEGA1UECgwKRXhvbmUgVGVjaDEmMCQGA1UEAwwdVFNULTg4NjQzMTE0NS0zOTk5OTk5OTk5MDAwMDMwVjAQBgcqhkjOPQIBBgUrgQQACgNCAASwEDiQG88p6iIz4DjJkDURlkJBkf/CRlnfDWD9B2mDjI+J4cCXBh+WCjT+ScCnxwMeqKW4ROcguS/hIO6VQBYeo4GwMIGtMAwGA1UdEwEB/wQCMAAwgZwGA1UdEQSBlDCBkaSBjjCBizE7MDkGA1UEBAwyMS1UU1R8Mi1UU1R8My1lZDIyZjFkOC1lNmEyLTExMTgtOWI1OC1kOWE4ZjExZTQ0NWYxHzAdBgoJkiaJk/IsZAEBDA8zOTk5OTk5OTk5MDAwMDMxDTALBgNVBAwMBDExMDAxDzANBgNVBBoMBlJpeWFkaDELMAkGA1UEDwwCSVQwCgYIKoZIzj0EAwIDSQAwRgIhAMBs0bS3fKmGdoj+l+xRkVZUcp1QtJL3DjvG7BOXNixGAiEAsu1i9NuDUcobfbqrjKY9ywI9YOxwa2xAfvwDNycjDsE="
+                    # company_name = "mycompany"
+                    key = frappe.get_all('CSR Settings', fields=['company_name','csid','public_key'])
+                    print(key)
                     base_64 =  key[0]['csid']
+                    print(base_64 ,'csidddddd')
+                    company_name = key[0]['company_name']
+
+                    base_64 = key[0]['public_key']
+                    print(base_64 ,'publickeyyy')
+
+                    # print(base_64 ,)
                     # base_64 =  key[0]['public_key']
                     # print(public_key)
                     # TODO public key
-                    # try:
-                    #     certificate_data = json.loads(certificate_data_str)
-                    # except json.JSONDecodeError:
-                    #     frappe.throw("Certificate field contains invalid JSON")
+                    try:
+                        certificate_data = json.loads(certificate_data_str)
+                    except json.JSONDecodeError:
+                        frappe.throw("Certificate field contains invalid JSON")
                     
-                    # base_64 = get_certificate_for_company(certificate_data, company_name)
+                    base_64 = get_certificate_for_company(certificate_data, company_name)
                     if not base_64:
                         frappe.throw(f"No certificate found for company in public key creation{company_name}")
                     cert_base64 = """
@@ -402,7 +410,7 @@ def extract_public_key_data():
                 # company = settings.company
                 # company_name = frappe.db.get_value("Company", company, "abbr")
                 # public_key_data_str = settings.get("public_key", "{}")
-                company_name = "mycompany"
+                # company_name = "mycompany"
                 key = frappe.get_all('CSR Settings', fields=['csid','public_key'])
                 base_64 =  key[0]['csid']
                 public_key_data_str =  key[0]['public_key']
@@ -425,7 +433,7 @@ def extract_public_key_data():
 
 def tag8_publickey():
                     try:
-                        create_public_key()
+                        # create_public_key()
                         base64_encoded = extract_public_key_data() 
                         
                         byte_data = base64.b64decode(base64_encoded)
@@ -448,8 +456,13 @@ def tag9_signature_ecdsa():
                 # company_name = frappe.db.get_value("Company", company, "abbr")
                 # certificate_data_str = settings.get("certificate", "{}")
                 company_name = "mycompany"
-                key = frappe.get_all('CSR Settings', fields=['csid'])
+                key = frappe.get_all('CSR Settings', fields=['csid','csr'])
                 certificate_content =  key[0]['csid']
+                # certificate_content =  key[0]['csr']
+                # print(certificate_content,"certificate content")
+
+                # certificate_content = "MIIB9TCCAZsCAQAwYjELMAkGA1UEBhMCU0ExFjAUBgNVBAsMDVJpeWFkaCBCcmFuY2gxEzARBgNVBAoMCkV4b25lIFRlY2gxJjAkBgNVBAMMHVRTVC04ODY0MzExNDUtMzk5OTk5OTk5OTAwMDAzMFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAEUcQJ/ZhKExLCP5IU7+2OfQ5nuqYkLpCJoYWb9hHRtFwEDLuV6NSkWE/2SaDH4oaMqiyi12tjBwV1xmorxZJ1PaCB2TCB1gYJKoZIhvcNAQkOMYHIMIHFMCQGCSsGAQQBgjcUAgQXExVQUkVaQVRDQS1jb2RlLVNpZ25pbmcwgZwGA1UdEQSBlDCBkaSBjjCBizE7MDkGA1UEBAwyMS1UU1R8Mi1UU1R8My1lZDIyZjFkOC1lNmEyLTExMTgtOWI1OC1kOWE4ZjExZTQ0NWYxHzAdBgoJkiaJk/IsZAEBDA8zOTk5OTk5OTk5MDAwMDMxDTALBgNVBAwMBDExMDAxDzANBgNVBBoMBlJpeWFkaDELMAkGA1UEDwwCSVQwCgYIKoZIzj0EAwIDSAAwRQIgax3Th6JMFrHRbp2vDzZbOmgyZm2/Yx6bfz/Zim3ZgSwCIQDpTCpYP5BkkY4IFZOEJ50ite2gmJxkIlgzxZcJLrzauQ=="
+
                 # try:
                 #     certificate_data = json.loads(certificate_data_str)
                 # except json.JSONDecodeError:

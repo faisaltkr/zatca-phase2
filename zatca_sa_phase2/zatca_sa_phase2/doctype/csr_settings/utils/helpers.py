@@ -11,6 +11,7 @@ def has_all_keys(dictionary, key_list):
 @frappe.whitelist()
 def helpers(name):
     current_dict = json.loads(name)
+    print(current_dict,"dfdf")
     required_fields = [
                         "name",
                         "company_name",
@@ -30,7 +31,7 @@ def helpers(name):
                         "company_namearabic",
                         "vat_registration_number",
                         "select_environment",
-                        "select_invoice_type",
+                        # "select_invoice_type",
                     ]
     if not has_all_keys(current_dict, required_fields):
         return{

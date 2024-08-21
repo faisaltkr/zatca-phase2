@@ -39,7 +39,7 @@ import base64
 def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= False):
                     # generate_qr_code_base_64(invoice_number=invoice_number)
                     
-                    compliance_type = "0"
+                    compliance_type = "1"
                     try:    
                             # create_compliance_x509()
                             # frappe.throw("Created compliance x509 certificate")
