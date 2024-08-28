@@ -27,7 +27,7 @@ def helpers(name):
                         "city",
                         "district",
                         "postal_code",
-                        "business_transaction_type",
+                        # "business_transaction_type",
                         "company_namearabic",
                         "vat_registration_number",
                         "select_environment",
