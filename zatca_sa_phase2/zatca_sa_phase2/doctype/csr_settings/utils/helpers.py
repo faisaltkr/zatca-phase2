@@ -140,6 +140,7 @@ def helpers(name):
 def csid(dict):
     current_dict = json.loads(dict)
     from .generate_keys import get_csid
+    print(current_dict,"current_dict")
     # name = 
     try:
         env = current_dict.get('select_environment')
@@ -152,10 +153,14 @@ def csid(dict):
             "csid":csid[1],
             "csr":csid[3],
             'secret':csid[0],
+            "success":"true"
         }
 
     except Exception as e:
-        return "failed to generate csid "+ str(e)
+        return {
+            "error" :csid,
+            "success":"false"
+        }
 
 def get_uuid():
     """

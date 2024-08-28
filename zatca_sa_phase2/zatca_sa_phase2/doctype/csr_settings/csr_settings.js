@@ -101,7 +101,7 @@ frappe.ui.form.on('CSR Settings', {
                         dict:formData
                     },
                     callback: function(r) {
-                        if(r.message) {
+                        if(r.message.success ==='true') {
                             frappe.msgprint({
                                 title: __('Success'),
                                 message: '<b style="color:green">' + r.message.message + '</b>',
@@ -111,6 +111,13 @@ frappe.ui.form.on('CSR Settings', {
                             frm.set_value('csr', r.message.csr);
                             frm.set_value('csid',r.message.csid);
                             frm.set_value('secret',r.message.secret);
+                        }
+                        else{
+                            frappe.msgprint({
+                                title: __('Failed'),
+                                message: '<b style="color:red">' + r.message.error.errors + '</b>',
+                                indicator: 'red'
+                            });
                         }
                     }
                 });

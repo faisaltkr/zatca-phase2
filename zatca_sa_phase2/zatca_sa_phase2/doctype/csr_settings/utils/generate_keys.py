@@ -37,9 +37,10 @@ def get_csid(unit,name,otp):
         with open(f"keys_{unit}/{name}_.csr", "r") as f:
             csr_contents = f.read()
     except Exception as e:
-        print(str(e))
+        print(str(e),"dkkdkdkdkdkk")
 
     csr = base64.b64encode(csr_contents.encode("utf-8")).decode("utf-8")
+    print(csr,"csr details")
     headers = {
         'accept': 'application/json',
         'OTP': str(otp),
@@ -56,6 +57,7 @@ def get_csid(unit,name,otp):
         headers=headers,
         json=json_data,
     )
+    print(response.text,"response text")
     if response.status_code == 200:
         csid = response.json()
         print(csid)
@@ -83,9 +85,9 @@ def get_csid(unit,name,otp):
 
         print('secret.txt'+' saved')
     else:
-        print(
-            f"Error: received {response.status_code} status code with message {response.json()['dispositionMessage']}")
-
+        print( 
+            f"Error: received {response.status_code} status code with message {response.json()}")
+        return response.json()
     return secret,decoded_token,response.json()['requestID'],csr
 
 def update_frappe_doc(docname, fieldname, value):
