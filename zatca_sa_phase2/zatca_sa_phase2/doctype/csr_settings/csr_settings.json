@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:common_name",
  "creation": "2024-05-30 09:53:25.031739",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -26,6 +27,7 @@
   "street",
   "building_number",
   "city",
+  "iscompliancechecked",
   "column_break_yapt",
   "district",
   "postal_code",
@@ -320,7 +322,8 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Common Name",
-   "reqd": 1
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "column_break_xfal",
@@ -433,17 +436,25 @@
    "fieldname": "additional_id",
    "fieldtype": "Select",
    "label": "Additional Id",
-   "options": "Commercial Registration Number(CRN)\nMOMRA LICENCE(MOM)\nMHRSD LICENCE(MLS)\n700 Number(700)\nMISA LICENCE(SAG)\nOther OD(OTH)",
+   "options": "Select Option\nCommercial Registration Number(CRN)\nMOMRA LICENCE(MOM)\nMHRSD LICENCE(MLS)\n700 Number(700)\nMISA LICENCE(SAG)\nOther OD(OTH)",
    "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "iscompliancechecked",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "IsComplianceChecked"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-08-17 17:29:25.278498",
+ "modified": "2024-08-29 06:02:49.318873",
  "modified_by": "Administrator",
  "module": "Zatca Sa Phase2",
  "name": "CSR Settings",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
