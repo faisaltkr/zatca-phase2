@@ -10,19 +10,21 @@ def company_Data(invoice,sales_invoice_doc):
                 cac_AccountingSupplierParty = ET.SubElement(invoice, "cac:AccountingSupplierParty")
                 cac_Party_1 = ET.SubElement(cac_AccountingSupplierParty, "cac:Party")
                 cac_PartyIdentification = ET.SubElement(cac_Party_1, "cac:PartyIdentification")
-                cbc_ID_2 = ET.SubElement(cac_PartyIdentification, "cbc:ID")
-                cbc_ID_2.set("schemeID", "CRN")
-                doc = frappe.get_all('Additional IDs-Zatca',fields = ['id_name','type_code','valueid_number',])
-                datas = [{'id_name': 'MISA LICENCE', 'type_code': 'SAG', 'valueid_number': None}, {'id_name': 'MHRSD LICENCE', 'type_code': 'MLS', 'valueid_number': None}, {'id_name': 'MOMRAH LICENCE', 'type_code': 'MOM', 'valueid_number': None}, {'id_name': 'OTHER ID', 'type_code': 'OTH', 'valueid_number': None}, {'id_name': 'Commercial Registration Number', 'type_code': 'CRN', 'valueid_number': 'sssss'}, {'id_name': 'Seven Hundred Number', 'type_code': '700', 'valueid_number': None}]
-                
-                for datas in doc:
-                    if datas['type_code'] == 'CRN':
-                        crn = datas['valueid_number']
-                        
                 company_details = get_zatca_settings()
+                scheme = company_details['additional_id'][-4:-1:1]
+                scheme_value = company_details['value_number']
+                cbc_ID_2 = ET.SubElement(cac_PartyIdentification, "cbc:ID")
+                cbc_ID_2.set("schemeID", scheme)
+                # doc = frappe.get_all('Additional IDs-Zatca',fields = ['id_name','type_code','valueid_number',])
+                # datas = [{'id_name': 'MISA LICENCE', 'type_code': 'SAG', 'valueid_number': None}, {'id_name': 'MHRSD LICENCE', 'type_code': 'MLS', 'valueid_number': None}, {'id_name': 'MOMRAH LICENCE', 'type_code': 'MOM', 'valueid_number': None}, {'id_name': 'OTHER ID', 'type_code': 'OTH', 'valueid_number': None}, {'id_name': 'Commercial Registration Number', 'type_code': 'CRN', 'valueid_number': 'sssss'}, {'id_name': 'Seven Hundred Number', 'type_code': '700', 'valueid_number': None}]
+                
+                # for datas in doc:
+                #     if datas['type_code'] == 'CRN':
+                #         crn = datas['valueid_number']
+                        
                 # cbc_ID_2.text =company_doc.tax_id   # COmpany CR - Need to have a field in company doctype called company_registration 
                 
-                cbc_ID_2.text = crn  # COmpany CR - Need to have a field in company doctype called company_registration 
+                cbc_ID_2.text = scheme_value  # COmpany CR - Need to have a field in company doctype called company_registration 
 
                 # address_list = frappe.get_list("Address", filters={"is_your_company_address": "1"}, fields=["address_line1", "address_line2","city","pincode","state"])
                 # if len(address_list) == 0:

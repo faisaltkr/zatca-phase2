@@ -314,7 +314,7 @@
         "label": "Exemption Reason",
         "module": "Zatca Sa Phase2",
         "name": "Item Tax Template-custom_exemption_reason",
-        "options": "Financial services mentioned in Article 29 of the VAT Regulations\nLife insurance services mentioned in Article 29 of the VAT Regulations\nReal estate transactions mentioned in Article 30 of the VAT Regulations\nExport of goods\nExport of services\nThe international transport of Goods\ninternational transport of passengers",
+        "options": "Select Reason\nFinancial services mentioned in Article 29 of the VAT Regulations\nLife insurance services mentioned in Article 29 of the VAT Regulations\nReal estate transactions mentioned in Article 30 of the VAT Regulations\nExport of goods\nExport of services\nThe international transport of Goods\ninternational transport of passengers",
         "read_only": 0,
         "translatable": 1,
         "unique": 0

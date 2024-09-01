@@ -140,9 +140,10 @@ def removeTags(finalzatcaxml):
 
 
 # @frappe.whitelist(allow_guest=True) 
-def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= False):
+def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= False):
                     # generate_qr_code_base_64(invoice_number=invoice_number)
-                    compliance_type = "1"
+                    print(compliance_type,"comp")
+                    # compliance_type = "1"
                     try:    
                             # create_compliance_x509()
                             # frappe.throw("Created compliance x509 certificate")
@@ -153,7 +154,7 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                             invoice,uuid1,sales_invoice_doc=salesinvoice_data(invoice,invoice_number)
                             customer_doc= frappe.get_doc("Customer",sales_invoice_doc.customer)
                             
-                            if compliance_type == "0":
+                            if not compliance_type :
                                     # frappe.throw(str("here 7 " + str(compliance_type))) 
                                     if customer_doc.custom_b2c == 1:
                                         invoice = invoice_Typecode_Simplified(invoice, sales_invoice_doc)
@@ -203,7 +204,8 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                             signed_xmlfile_name=structuring_signedxml()
                             
                             # generate_xml_hash()
-                            if compliance_type == "0":
+                            print(compliance_type,"comsdflkjsdlkfjdklfjn",type(compliance_type))
+                            if not compliance_type:
                                 if customer_doc.custom_b2c == 1:
                                     reporting_API(uuid1, encoded_hash, signed_xmlfile_name,invoice_number,sales_invoice_doc)
                                     attach_QR_Image(qrCodeB64,sales_invoice_doc)

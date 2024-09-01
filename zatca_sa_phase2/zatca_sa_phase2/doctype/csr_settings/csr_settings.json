@@ -27,7 +27,6 @@
   "street",
   "building_number",
   "city",
-  "iscompliancechecked",
   "column_break_yapt",
   "district",
   "postal_code",
@@ -106,6 +105,14 @@
    "in_list_view": 1,
    "label": "EGS Unit Serial",
    "reqd": 1
+  },
+  {
+   "fieldname": "common_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Common Name",
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "company_category",
@@ -317,15 +324,6 @@
    "read_only": 1
   },
   {
-   "description": "Name or asset tracking number for the solution unit",
-   "fieldname": "common_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Common Name",
-   "reqd": 1,
-   "unique": 1
-  },
-  {
    "fieldname": "column_break_xfal",
    "fieldtype": "Column Break"
   },
@@ -438,19 +436,12 @@
    "label": "Additional Id",
    "options": "Select Option\nCommercial Registration Number(CRN)\nMOMRA LICENCE(MOM)\nMHRSD LICENCE(MLS)\n700 Number(700)\nMISA LICENCE(SAG)\nOther OD(OTH)",
    "reqd": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "iscompliancecheck",
-   "fieldtype": "Check",
-   "hidden": 0,
-   "label": "IsComplianceCheck"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-08-29 06:02:49.318873",
+ "modified": "2024-09-01 10:11:05.758060",
  "modified_by": "Administrator",
  "module": "Zatca Sa Phase2",
  "name": "CSR Settings",
