@@ -441,10 +441,10 @@
   },
   {
    "default": "0",
-   "fieldname": "iscompliancechecked",
+   "fieldname": "iscompliancecheck",
    "fieldtype": "Check",
-   "hidden": 1,
-   "label": "IsComplianceChecked"
+   "hidden": 0,
+   "label": "IsComplianceCheck"
   }
  ],
  "index_web_pages_for_search": 1,
