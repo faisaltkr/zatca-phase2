@@ -150,9 +150,10 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
                             
                             if not frappe.db.exists("Sales Invoice", invoice_number):
                                 frappe.throw("Invoice Number is NOT Valid:  " + str(invoice_number))
+                            customer_doc= frappe.get_doc("Customer",sales_invoice_doc.customer)
+                            is_b2c  = customer_doc.custom_b2c
                             invoice= xml_tags()
                             invoice,uuid1,sales_invoice_doc=salesinvoice_data(invoice,invoice_number)
-                            customer_doc= frappe.get_doc("Customer",sales_invoice_doc.customer)
                             
                             if not compliance_type :
                                     # frappe.throw(str("here 7 " + str(compliance_type))) 

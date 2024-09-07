@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 # from .invoice_pay_means_cmp import delivery_And_PaymentMeans_for_Compliance
 import frappe
 
-def xml_tags():
+def xml_tags(is_b2c):
             try: 
                 invoice = ET.Element("Invoice", xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" )
                 invoice.set("xmlns:cac", "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2")
@@ -90,9 +90,10 @@ def xml_tags():
                 IssuerSerial = ET.SubElement(Cert , "xades:IssuerSerial"  )
                 X509IssuerName = ET.SubElement(IssuerSerial , "ds:X509IssuerName"  )
                 X509SerialNumber = ET.SubElement(IssuerSerial , "ds:X509SerialNumber"  )
-                X509IssuerName.text = "CN=PRZEINVOICESCA4-CA, DC=extgazt, DC=gov, DC=local"
-
-
+                if not is_b2c:
+                    X509IssuerName.text = "CN=PRZEINVOICESCA4-CA, DC=extgazt, DC=gov, DC=local"
+                else:
+                    X509IssuerName.text  =  'CN=TSZEINVOICE-SubCA-1, DC=extgazt, DC=gov, DC=local'
                 # X509IssuerName.text = "CN=TSZEINVOICE-SubCA-1, DC=extgazt, DC=gov, DC=local"
                 X509SerialNumber.text = "2475382886904809774818644480820936050208702411"
                 return invoice
