@@ -1,0 +1,24 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Address",
+  "enabled": 1,
+  "modified": "2024-09-07 19:34:12.405705",
+  "module": "Zatca Sa Phase2",
+  "name": "Label Change",
+  "script": "frappe.ui.form.on('Address', {\n\tonload: function(frm) {\n        // Change the label of the address_line2 field\n        frm.set_df_property('address_line1', 'label', 'Street Name');\n        frm.set_df_property('address_line2', 'label', 'Building Number');\n    }\n})",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Sales Invoice",
+  "enabled": 1,
+  "modified": "2024-09-07 19:42:52.986978",
+  "module": "Zatca Sa Phase2",
+  "name": "Make Readonly",
+  "script": "frappe.ui.form.on('Sales Invoice', {\n    onload: function(frm) {\n        // Make the is_return field read-only\n        frm.set_df_property('is_return', 'read_only', 1);\n    }\n});",
+  "view": "Form"
+ }
+]

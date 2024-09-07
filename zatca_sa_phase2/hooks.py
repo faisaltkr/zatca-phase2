@@ -233,10 +233,7 @@ doc_events = {
     },
     'Purchase Invoice': {
         'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.purchase.submit.on_submit'
-    },
-    # "*": {
-    #     "after_migrate": "zatca_sa_phase2.zatca_sa_phase2.doctype.rename_fields"
-    # }
+    }
 }
 
 # after_install = "zatca_sa_phase2.zatca_sa_phase2.doctype.rename_fields"
@@ -263,8 +260,10 @@ fixtures = [
                 "Sales Invoice-custom_invoice_transaction_type2"
             ]]
         ]
-    }
+    },
+    {"dt": "Client Script", "filters": [["name", "in", ["Label Change","Make Readonly"]]]}
 ]
+
 
 
 
