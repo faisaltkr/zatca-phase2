@@ -147,13 +147,18 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
                     try:    
                             # create_compliance_x509()
                             # frappe.throw("Created compliance x509 certificate")
-                            
+                            sales_invoice_doc = frappe.get_doc('Sales Invoice' ,invoice_number)
                             if not frappe.db.exists("Sales Invoice", invoice_number):
                                 frappe.throw("Invoice Number is NOT Valid:  " + str(invoice_number))
-                            customer_doc= frappe.get_doc("Customer",sales_invoice_doc.customer)
-                            is_b2c  = customer_doc.custom_b2c
+                            print(0)
+                            try:
+                                customer_doc = frappe.get_doc("Customer",sales_invoice_doc.customer)
+                                is_b2c  = customer_doc.custom_b2c
+                            except Exception as e:
+                                  print(str(e))
+                            print(1)
                             invoice= xml_tags(is_b2c=is_b2c)
-                            
+                            print(2)
                             invoice,uuid1,sales_invoice_doc=salesinvoice_data(invoice,invoice_number)
                             
                             if not compliance_type :
@@ -227,6 +232,7 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
 def zatca_Background_on_submit(doc, method=None):              
 # def zatca_Background(invoice_number):
                     # print(doc.custom_zatca_tax_category)
+                    print("hiiiiiii")
                     try:
                         sales_invoice_doc = doc
                         invoice_number = sales_invoice_doc.name
