@@ -64,9 +64,9 @@ frappe.ui.form.on('CSR Settings', {
     refresh: function(frm) {
             // Bind the custom button click event
             frm.fields_dict['generate_csr'].$input.on('click', function() {
-                console.log("button clicked")
                 let formData = frm.doc;
-            
+                frappe.show_alert({message: __("Generating CSR..."), indicator: 'green'}, 5);
+
                 // Print form data to the console
                 console.log(formData);
                 frappe.call({
@@ -92,8 +92,23 @@ frappe.ui.form.on('CSR Settings', {
                     }
                 });
             });
+            frm.fields_dict['perform_compliance_check'].$input.on('click',function(){
+                console.log("compliance button clicked");
+                let formData =  frm.doc
+                frappe.show_alert({message: __("Checking Compliance..."), indicator: 'blue'}, 5);
+
+                frappe.call({
+                    method: 'zatca_sa_phase2.zatca_sa_phase2.doctype.compliance.compliance.check_compliance',
+                    args:{
+                        data : formData
+                    },
+                    callback: function(r) {
+                        console.log("hi")
+                    }
+                })
+            });
             frm.fields_dict['egs_onboard'].$input.on('click', function() {
-                console.log("button clicked")
+                frappe.show_alert({message: __("Generating CSID..."), indicator: 'green'}, 5);
                 let formData = frm.doc;
                 frappe.call({
                     method: 'zatca_sa_phase2.zatca_sa_phase2.doctype.csr_settings.utils.helpers.csid',

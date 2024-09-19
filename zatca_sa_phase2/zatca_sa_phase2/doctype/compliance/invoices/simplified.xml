@@ -51,7 +51,7 @@
                             <ds:DigestValue>YTJkM2JhYTcwZTBhZTAxOGYwODMyNzY3NTdkZDM3YzhjY2IxOTIyZDZhM2RlZGJiMGY0NDUzZWJhYWI4MDhmYg==</ds:DigestValue>
                           </xades:CertDigest>
                           <xades:IssuerSerial>
-                            <ds:X509IssuerName>CN=PRZEINVOICESCA4-CA, DC=extgazt, DC=gov, DC=local</ds:X509IssuerName>
+                            <ds:X509IssuerName>CN=TSZEINVOICE-SubCA-1, DC=extgazt, DC=gov, DC=local</ds:X509IssuerName>
                             <ds:X509SerialNumber>2475382886904809774818644480820936050208702411</ds:X509SerialNumber>
                           </xades:IssuerSerial>
                         </xades:Cert>
@@ -67,16 +67,16 @@
     </ext:UBLExtension>
   </ext:UBLExtensions>
   <cbc:ProfileID>reporting:1.0</cbc:ProfileID>
-  <cbc:ID>ACC-SINV-2024-00029</cbc:ID>
-  <cbc:UUID>bc027c76-5d6e-11ef-9a81-52f2fd5ad71b</cbc:UUID>
-  <cbc:IssueDate>2024-08-18</cbc:IssueDate>
-  <cbc:IssueTime>17:32:45</cbc:IssueTime>
+  <cbc:ID>ACC-SINV-2024-00053</cbc:ID>
+  <cbc:UUID>56ac7930-6f8e-11ef-8540-0b746763ac9b</cbc:UUID>
+  <cbc:IssueDate>2024-09-10</cbc:IssueDate>
+  <cbc:IssueTime>19:04:18</cbc:IssueTime>
   <cbc:InvoiceTypeCode name="0200000">388</cbc:InvoiceTypeCode>
   <cbc:DocumentCurrencyCode>SAR</cbc:DocumentCurrencyCode>
   <cbc:TaxCurrencyCode>SAR</cbc:TaxCurrencyCode>
   <cac:AdditionalDocumentReference>
     <cbc:ID>ICV</cbc:ID>
-    <cbc:UUID>202400029</cbc:UUID>
+    <cbc:UUID>202400053</cbc:UUID>
   </cac:AdditionalDocumentReference>
   <cac:AdditionalDocumentReference>
     <cbc:ID>PIH</cbc:ID>
@@ -87,7 +87,7 @@
   <cac:AdditionalDocumentReference>
     <cbc:ID>QR</cbc:ID>
     <cac:Attachment>
-      <cbc:EmbeddedDocumentBinaryObject mimeCode="text/plain">AQpFeG9uZSBUZWNoAg8zOTk5OTk5OTk5MDAwMDMDFDIwMjQtMDgtMThUMTQ6MzI6NDVaBAUxMDAuMAUEMTUuMAYFMTE1LjA=</cbc:EmbeddedDocumentBinaryObject>
+      <cbc:EmbeddedDocumentBinaryObject mimeCode="text/plain">ARJFeG9uZSBUZWNobm9sb2dpZXMCDzM5OTk5OTk5OTkwMDAwMwMUMjAyNC0wOS0xMFQxNjowNDoyMFoEBjEyMDAuMAUFMTgwLjAGBjEzODAuMA==</cbc:EmbeddedDocumentBinaryObject>
     </cac:Attachment>
   </cac:AdditionalDocumentReference>
   <cac:Signature>
@@ -97,14 +97,14 @@
   <cac:AccountingSupplierParty>
     <cac:Party>
       <cac:PartyIdentification>
-        <cbc:ID schemeID="CRN">1234567893</cbc:ID>
+        <cbc:ID schemeID="CRN">6574893856</cbc:ID>
       </cac:PartyIdentification>
       <cac:PostalAddress>
-        <cbc:StreetName>Company address Line 1</cbc:StreetName>
-        <cbc:BuildingNumber>4423</cbc:BuildingNumber>
-        <cbc:CitySubdivisionName>Company county</cbc:CitySubdivisionName>
+        <cbc:StreetName>Company address line 1</cbc:StreetName>
+        <cbc:BuildingNumber>2342</cbc:BuildingNumber>
+        <cbc:CitySubdivisionName>Riyadh</cbc:CitySubdivisionName>
         <cbc:CityName>Riyadh</cbc:CityName>
-        <cbc:PostalZone>59233</cbc:PostalZone>
+        <cbc:PostalZone>65732</cbc:PostalZone>
         <cac:Country>
           <cbc:IdentificationCode>SA</cbc:IdentificationCode>
         </cac:Country>
@@ -116,25 +116,25 @@
         </cac:TaxScheme>
       </cac:PartyTaxScheme>
       <cac:PartyLegalEntity>
-        <cbc:RegistrationName>Exone Tech</cbc:RegistrationName>
+        <cbc:RegistrationName>Exone Technologies</cbc:RegistrationName>
       </cac:PartyLegalEntity>
     </cac:Party>
   </cac:AccountingSupplierParty>
   <cac:AccountingCustomerParty/>
   <cac:Delivery>
-    <cbc:ActualDeliveryDate>2024-08-18</cbc:ActualDeliveryDate>
+    <cbc:ActualDeliveryDate>2024-09-10</cbc:ActualDeliveryDate>
   </cac:Delivery>
   <cac:PaymentMeans>
     <cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>
   </cac:PaymentMeans>
   <cac:TaxTotal>
-    <cbc:TaxAmount currencyID="SAR">15.0</cbc:TaxAmount>
+    <cbc:TaxAmount currencyID="SAR">180.0</cbc:TaxAmount>
   </cac:TaxTotal>
   <cac:TaxTotal>
-    <cbc:TaxAmount currencyID="SAR">15.0</cbc:TaxAmount>
+    <cbc:TaxAmount currencyID="SAR">180.0</cbc:TaxAmount>
     <cac:TaxSubtotal>
-      <cbc:TaxableAmount currencyID="SAR">100.0</cbc:TaxableAmount>
-      <cbc:TaxAmount currencyID="SAR">15.0</cbc:TaxAmount>
+      <cbc:TaxableAmount currencyID="SAR">1200.0</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="SAR">180.0</cbc:TaxAmount>
       <cac:TaxCategory>
         <cbc:ID>S</cbc:ID>
         <cbc:Percent>15.00</cbc:Percent>
@@ -145,22 +145,22 @@
     </cac:TaxSubtotal>
   </cac:TaxTotal>
   <cac:LegalMonetaryTotal>
-    <cbc:LineExtensionAmount currencyID="SAR">100.0</cbc:LineExtensionAmount>
-    <cbc:TaxExclusiveAmount currencyID="SAR">100.0</cbc:TaxExclusiveAmount>
-    <cbc:TaxInclusiveAmount currencyID="SAR">115.0</cbc:TaxInclusiveAmount>
+    <cbc:LineExtensionAmount currencyID="SAR">1200.0</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="SAR">1200.0</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="SAR">1380.0</cbc:TaxInclusiveAmount>
     <cbc:AllowanceTotalAmount currencyID="SAR">0.0</cbc:AllowanceTotalAmount>
-    <cbc:PayableAmount currencyID="SAR">115.0</cbc:PayableAmount>
+    <cbc:PayableAmount currencyID="SAR">1380.0</cbc:PayableAmount>
   </cac:LegalMonetaryTotal>
   <cac:InvoiceLine>
     <cbc:ID>1</cbc:ID>
     <cbc:InvoicedQuantity unitCode="Nos">1.0</cbc:InvoicedQuantity>
-    <cbc:LineExtensionAmount currencyID="SAR">100.0</cbc:LineExtensionAmount>
+    <cbc:LineExtensionAmount currencyID="SAR">1200.0</cbc:LineExtensionAmount>
     <cac:TaxTotal>
-      <cbc:TaxAmount currencyID="SAR">15.0</cbc:TaxAmount>
-      <cbc:RoundingAmount currencyID="SAR">115.0</cbc:RoundingAmount>
+      <cbc:TaxAmount currencyID="SAR">180.0</cbc:TaxAmount>
+      <cbc:RoundingAmount currencyID="SAR">1380.0</cbc:RoundingAmount>
     </cac:TaxTotal>
     <cac:Item>
-      <cbc:Name>001</cbc:Name>
+      <cbc:Name>1001</cbc:Name>
       <cac:ClassifiedTaxCategory>
         <cbc:ID>S</cbc:ID>
         <cbc:Percent>15.00</cbc:Percent>
@@ -170,7 +170,7 @@
       </cac:ClassifiedTaxCategory>
     </cac:Item>
     <cac:Price>
-      <cbc:PriceAmount currencyID="SAR">100.0</cbc:PriceAmount>
+      <cbc:PriceAmount currencyID="SAR">1200.0</cbc:PriceAmount>
     </cac:Price>
   </cac:InvoiceLine>
 </Invoice>

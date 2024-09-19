@@ -372,43 +372,37 @@
    "default": "0",
    "fieldname": "standard_invoice",
    "fieldtype": "Check",
-   "label": "Standard Invoice",
-   "read_only": 1
+   "label": "Standard Invoice"
   },
   {
    "default": "0",
    "fieldname": "standard_debit_note",
    "fieldtype": "Check",
-   "label": "Standard Debit Note",
-   "read_only": 1
+   "label": "Standard Debit Note"
   },
   {
    "default": "0",
    "fieldname": "standard_credit_note",
    "fieldtype": "Check",
-   "label": "Standard Credit Note",
-   "read_only": 1
+   "label": "Standard Credit Note"
   },
   {
    "default": "0",
    "fieldname": "simplified_invoice",
    "fieldtype": "Check",
-   "label": "Simplified Invoice",
-   "read_only": 1
+   "label": "Simplified Invoice"
   },
   {
    "default": "0",
    "fieldname": "simplified_debit_note",
    "fieldtype": "Check",
-   "label": "Simplified Debit Note",
-   "read_only": 1
+   "label": "Simplified Debit Note"
   },
   {
    "default": "0",
    "fieldname": "simplified_credit_note",
    "fieldtype": "Check",
-   "label": "Simplified Credit Note",
-   "read_only": 1
+   "label": "Simplified Credit Note"
   },
   {
    "fieldname": "other_fields_tab",
@@ -441,7 +435,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-09-01 10:11:05.758060",
+ "modified": "2024-09-14 09:01:47.230348",
  "modified_by": "Administrator",
  "module": "Zatca Sa Phase2",
  "name": "CSR Settings",
