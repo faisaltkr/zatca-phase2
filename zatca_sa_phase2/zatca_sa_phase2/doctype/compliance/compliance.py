@@ -11,6 +11,7 @@ from ..einvoices.utils import (
 )
 import base64
 import lxml.etree as MyTree
+from .complianceapi import compliance_api_call
 
 basepath =  frappe.get_app_path('zatca_sa_phase2', 'zatca_sa_phase2')
 
@@ -31,7 +32,6 @@ invoice_type_list = ['simplified-credit','simplified','standard-credit','standar
 @frappe.whitelist()
 def check_compliance(data):
     data = json.loads(data)
-    print(data,"data")
     invoices = {
         "standard":data['standard_invoice'],
         "standard-debit": data['standard_debit_note'],
@@ -40,13 +40,36 @@ def check_compliance(data):
         "simplified-debit":data['simplified_debit_note'],
         "simplified-credit":data['simplified_credit_note']
     }
-    customer = data['select_customer']
+    try:
+        customer = data['select_customer']
+    except Exception as e:
+        frappe.throw("Please select a customer")
+
     check_invoice(invoices,customer)
 
+def getuuid(xml_data):
+    root = etree.fromstring(xml_data)
+    namespaces = {
+        'ubl': 'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2',
+        'cac': 'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2',
+        'cbc': 'urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2',
+        'ext': 'urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2',
+        'sig': 'urn:oasis:names:specification:ubl:schema:xsd:CommonSignatureComponents-2',
+        'sac': 'urn:oasis:names:specification:ubl:schema:xsd:SignatureAggregateComponents-2',
+        'ds': 'http://www.w3.org/2000/09/xmldsig#'
+    }
+    uuid_element = root.find('.//cbc:UUID', namespaces=namespaces)
+
+    # Get the UUID value if the element exists
+    if uuid_element is not None:
+        invoice_uuid = uuid_element.text
+        print(f"Invoice UUID: {invoice_uuid}")
+    else:
+        frappe.throw("uuid not found")
+
+    return uuid_element
 
 def check_invoice(invoices,customer):
-    print(invoices)
-    print(os.getcwd())
     for key, value in invoices.items():
         if value:
             xml_file_path= f'{basepath}/doctype/compliance/invoices/{invoice_files[key]}'
@@ -55,7 +78,9 @@ def check_invoice(invoices,customer):
                 customer_doc = frappe.get_doc("Customer",customer)
 
                 with open(xml_file_path, 'r') as file:
-                                    file_content = file.read()
+                    file_content = file.read()
+                uuid1 = getuuid(file_content)
+                # print(file_content)
                 tag_removed_xml = removeTags(file_content)
                 canonicalized_xml = canonicalize_xml(tag_removed_xml)
                 hash1, encoded_hash = getInvoiceHash(canonicalized_xml)
@@ -72,10 +97,12 @@ def check_invoice(invoices,customer):
                     tagsBufsArray.append(get_tlv_for_value(tag_num, tag_value))
                 qrCodeBuf = b"".join(tagsBufsArray)
                 qrCodeB64 = base64.b64encode(qrCodeBuf).decode('utf-8')
-                print(qrCodeB64,"sdfsdfdsfgdfgdfgdfgdfdfgdgdgdgdgdgfdfg")
                 update_Qr_toXml(qrCodeB64)
                 signed_xmlfile_name=structuring_signedxml()
                 print(signed_xmlfile_name)
+                print(encoded_hash,"hash")
+                print(signed_xmlfile_name)
+                compliance_api_call(uuid1, encoded_hash, signed_xmlfile_name)
                             # generate_xml_hash()
             #     xml_tree = etree.parse(xml_file_path)
             #     # print(xml_tree)

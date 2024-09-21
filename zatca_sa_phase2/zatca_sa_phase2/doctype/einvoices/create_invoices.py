@@ -152,7 +152,7 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
                                 frappe.throw("Invoice Number is NOT Valid:  " + str(invoice_number))
                             print(0)
                             try:
-                                print(sales_invoice_doc.customer,"hhhhhh")
+                                print(sales_invoice_doc.customer,"hhhhhhw")
                                 customer_doc = frappe.get_doc("Customer",sales_invoice_doc.customer)
                                 is_b2c  = customer_doc.custom_b2c
                             except Exception as e:
@@ -210,7 +210,7 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
                             print(qrCodeB64,"sdfsdfdsfgdfgdfgdfgdfdfgdgdgdgdgdgfdfg")
                             update_Qr_toXml(qrCodeB64)
                             signed_xmlfile_name=structuring_signedxml()
-                            
+                            print(signed_xmlfile_name)
                             # generate_xml_hash()
                             print(compliance_type,"comsdflkjsdlkfjdklfjn",type(compliance_type))
                             if not compliance_type:
