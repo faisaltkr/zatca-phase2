@@ -219,12 +219,16 @@ def certificate_hash():
                     frappe.throw("error in obtaining certificate hash: "+ str(e) )
 
 
-def signxml_modify(customer_doc):
+def signxml_modify(customer_doc,xml):
                 try:
                     encoded_certificate_hash= certificate_hash()
                     issuer_name, serial_number = extract_certificate_details(customer_doc=customer_doc)
-                    original_invoice_xml = etree.parse(frappe.local.site + f'/private/files/finalzatcaxml.xml')
-                    root = original_invoice_xml.getroot()
+                    # original_invoice_xml = etree.parse(frappe.local.site + f'/private/files/finalzatcaxml.xml')
+                    # original_invoice_xml =  etree.fromstring(xml)
+                    # print(original_invoice_xml,"original invoice xml")
+                    root = etree.fromstring(xml)
+                    tree = etree.ElementTree(root)
+
                     namespaces = {
                     'ext': 'urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2',
                     'sig': 'urn:oasis:names:specification:ubl:schema:xsd:CommonSignatureComponents-2',
@@ -248,7 +252,7 @@ def signxml_modify(customer_doc):
                     element_in.text = issuer_name
                     element_sn.text = str(serial_number)
                     with open(frappe.local.site + f"/private/files/after_step_4.xml", 'wb') as file:
-                        original_invoice_xml.write(file,encoding='utf-8',xml_declaration=True,)
+                        tree.write(file,encoding='utf-8',xml_declaration=True,)
                     return namespaces ,signing_time
                 except Exception as e:
                     frappe.throw(" error in modification of xml sign part: "+ str(e) )
@@ -558,10 +562,14 @@ def get_tlv_for_value(tag_num, tag_value):
 
 
 
-def update_Qr_toXml(qrCodeB64):
+def update_Qr_toXml(qrCodeB64,uuid):
                     try:
                         xml_file_path = frappe.local.site + f"/private/files/final_xml_after_sign.xml"
                         xml_tree = etree.parse(xml_file_path)
+                        uuid_element = xml_tree.find('.//cbc:UUID', namespaces={'cac': 'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2', 'cbc': 'urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2'})
+                        print(uuid_element.text,"uuid")
+                        if uuid_element is not None:
+                               uuid_element.text = uuid
                         qr_code_element = xml_tree.find('.//cac:AdditionalDocumentReference[cbc:ID="QR"]/cac:Attachment/cbc:EmbeddedDocumentBinaryObject', namespaces={'cac': 'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2', 'cbc': 'urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2'})
                         if qr_code_element is not None:
                             qr_code_element.text =qrCodeB64
