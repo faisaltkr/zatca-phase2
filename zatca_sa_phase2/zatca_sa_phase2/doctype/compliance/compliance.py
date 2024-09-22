@@ -118,7 +118,6 @@ def check_invoice(invoices,customer):
                 # print(signed_xmlfile_name)
                 # print(encoded_hash,"hash")
                 # print(signed_xmlfile_name)
-                print(uuid1,"uuuuuuuu")
                 compliance_api_call(uuid1, encoded_hash, signed_xmlfile_name)
                             # generate_xml_hash()
             #     xml_tree = etree.parse(xml_file_path)
