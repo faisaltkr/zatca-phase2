@@ -49,13 +49,13 @@
   "enter_otp",
   "egs_onboard",
   "csid",
-  "section_break_qfnh",
-  "enter_prodution_otp",
-  "get_production_csid",
   "production_csid_pcsid",
   "created_time",
   "prodcution_request_id",
   "section_break_qazh",
+  "section_break_qfnh",
+  "production_csid",
+  "get_production_csid",
   "column_break_trih",
   "select_customer",
   "perform_compliance_check",
@@ -272,11 +272,6 @@
    "label": "Get Production CSID"
   },
   {
-   "fieldname": "enter_prodution_otp",
-   "fieldtype": "Data",
-   "label": "Enter OTP"
-  },
-  {
    "fieldname": "prodcution_request_id",
    "fieldtype": "Data",
    "label": "Prodcution Request ID",
@@ -430,12 +425,18 @@
    "label": "Additional Id",
    "options": "Select Option\nCommercial Registration Number(CRN)\nMOMRA LICENCE(MOM)\nMHRSD LICENCE(MLS)\n700 Number(700)\nMISA LICENCE(SAG)\nOther OD(OTH)",
    "reqd": 1
+  },
+  {
+   "fieldname": "production_csid",
+   "fieldtype": "Text",
+   "label": "Production CSID",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-09-14 09:01:47.230348",
+ "modified": "2024-09-22 09:37:24.586811",
  "modified_by": "Administrator",
  "module": "Zatca Sa Phase2",
  "name": "CSR Settings",

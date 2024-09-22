@@ -56,13 +56,13 @@ def xml_structuring(invoice,p_invoice_doc):
             try:
                 xml_declaration = "<?xml version='1.0' encoding='UTF-8'?>\n"
                 tree = ET.ElementTree(invoice)
-                with open(frappe.local.site + "/private/files/xml_files.xml", 'wb') as file:
+                with open(frappe.local.site + f"/private/files/xml_files_{p_invoice_doc.name}.xml", 'wb') as file:
                     tree.write(file, encoding='utf-8', xml_declaration=True)
-                with open(frappe.local.site + "/private/files/xml_files.xml", 'r') as file:
+                with open(frappe.local.site + f"/private/files/xml_files_{p_invoice_doc.name}.xml", 'r') as file:
                     xml_string = file.read()
                 xml_dom = minidom.parseString(xml_string)
                 pretty_xml_string = xml_dom.toprettyxml(indent="  ")   # created xml into formatted xml form 
-                with open(frappe.local.site + "/private/files/finalzatcaxml.xml", 'w') as file:
+                with open(frappe.local.site + f"/private/files/finalzatcaxml_{p_invoice_doc.name}.xml", 'w') as file:
                     file.write(pretty_xml_string)
                           # Attach the getting xml for each invoice
                 try:
