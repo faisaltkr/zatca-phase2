@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 import frappe
 import json
 import os
-from ..einvoices.utils import (
+from .helper import (
      canonicalize_xml,getInvoiceHash,digital_signature,extract_certificate_details,
      certificate_hash,signxml_modify,generate_Signed_Properties_Hash,populate_The_UBL_Extensions_Output,
      generate_tlv_xml,get_tlv_for_value,update_Qr_toXml,structuring_signedxml
@@ -15,7 +15,6 @@ from .complianceapi import compliance_api_call
 
 basepath =  frappe.get_app_path('zatca_sa_phase2', 'zatca_sa_phase2')
 
-print(basepath,"basepath")
 
 invoice_files = {
     'simplified-credit' : 'simplified-credit.xml',
@@ -44,8 +43,12 @@ def check_compliance(data):
         customer = data['select_customer']
     except Exception as e:
         frappe.throw("Please select a customer")
+    try:
+        print("sdfdfdfg")
+        check_invoice(invoices,customer)
+    except Exception as e:
+        frappe.throw(str(e))
 
-    check_invoice(invoices,customer)
 
 def getuuid(xml_data):
     root = etree.fromstring(xml_data)
@@ -67,29 +70,42 @@ def getuuid(xml_data):
     else:
         frappe.throw("uuid not found")
 
-    return uuid_element
+    return invoice_uuid
 
 def check_invoice(invoices,customer):
     for key, value in invoices.items():
         if value:
             xml_file_path= f'{basepath}/doctype/compliance/invoices/{invoice_files[key]}'
-            # print(xml_file_path)
+            print(xml_file_path)
             try:
                 customer_doc = frappe.get_doc("Customer",customer)
-
+                print("ddd")
                 with open(xml_file_path, 'r') as file:
                     file_content = file.read()
+                    print(file_content)
+                print("dddd")
                 uuid1 = getuuid(file_content)
+                print(uuid1)
                 # print(file_content)
+                print(1)
                 tag_removed_xml = removeTags(file_content)
+                print(2)
                 canonicalized_xml = canonicalize_xml(tag_removed_xml)
+                print(3)
                 hash1, encoded_hash = getInvoiceHash(canonicalized_xml)
+                print(4)
                 encoded_signature = digital_signature(hash1)
+                print(5)
                 issuer_name,serial_number = extract_certificate_details(customer_doc=customer_doc)
+                print(6)
                 encoded_certificate_hash=certificate_hash()
+                print(7)
                 namespaces,signing_time=signxml_modify(customer_doc=customer_doc)
+                print(8)
                 signed_properties_base64=generate_Signed_Properties_Hash(signing_time,issuer_name,serial_number,encoded_certificate_hash)
+                print(9)
                 populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_properties_base64,encoded_hash)
+                print(10)
                 tlv_data = generate_tlv_xml()
                 # print(tlv_data)
                 tagsBufsArray = []
@@ -99,9 +115,10 @@ def check_invoice(invoices,customer):
                 qrCodeB64 = base64.b64encode(qrCodeBuf).decode('utf-8')
                 update_Qr_toXml(qrCodeB64)
                 signed_xmlfile_name=structuring_signedxml()
-                print(signed_xmlfile_name)
-                print(encoded_hash,"hash")
-                print(signed_xmlfile_name)
+                # print(signed_xmlfile_name)
+                # print(encoded_hash,"hash")
+                # print(signed_xmlfile_name)
+                print(uuid1,"uuuuuuuu")
                 compliance_api_call(uuid1, encoded_hash, signed_xmlfile_name)
                             # generate_xml_hash()
             #     xml_tree = etree.parse(xml_file_path)
@@ -206,3 +223,32 @@ def customer_Data(invoice,sales_invoice_doc):
                 return invoice
             except Exception as e:
                     frappe.throw("error occured in customer data"+ str(e) )
+
+
+# def structuring_signedxml(xml):
+#                 try:
+#                     with open(frappe.local.site + '/private/files/final_xml_after_sign.xml', 'r') as file:
+#                         xml_content = file.readlines()
+#                     print(xml_content,"sd")
+#                     print(xml)
+#                     xml_content = xml
+#                     indentations = {
+#                         29: ['<xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Target="signature">','</xades:QualifyingProperties>'],
+#                         33: ['<xades:SignedProperties Id="xadesSignedProperties">', '</xades:SignedProperties>'],
+#                         37: ['<xades:SignedSignatureProperties>','</xades:SignedSignatureProperties>'],
+#                         41: ['<xades:SigningTime>', '<xades:SigningCertificate>','</xades:SigningCertificate>'],
+#                         45: ['<xades:Cert>','</xades:Cert>'],
+#                         49: ['<xades:CertDigest>', '<xades:IssuerSerial>', '</xades:CertDigest>', '</xades:IssuerSerial>'],
+#                         53: ['<ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>', '<ds:DigestValue>', '<ds:X509IssuerName>', '<ds:X509SerialNumber>']
+#                     }
+#                     def adjust_indentation(line):
+#                         for col, tags in indentations.items():
+#                             for tag in tags:
+#                                 if line.strip().startswith(tag):
+#                                     return ' ' * (col - 1) + line.lstrip()
+#                         return line
+#                     adjusted_xml_content = [adjust_indentation(line) for line in xml_content]
+
+#                     return adjusted_xml_content
+#                 except Exception as e:
+#                     frappe.throw(" error in structuring signed xml: "+ str(e) )

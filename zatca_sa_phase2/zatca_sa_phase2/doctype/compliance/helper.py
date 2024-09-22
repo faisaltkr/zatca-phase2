@@ -55,13 +55,13 @@ def xml_structuring(invoice,sales_invoice_doc):
             try:
                 xml_declaration = "<?xml version='1.0' encoding='UTF-8'?>\n"
                 tree = ET.ElementTree(invoice)
-                with open(frappe.local.site + f"/private/files/xml_files_{sales_invoice_doc.name}.xml", 'wb') as file:
+                with open(frappe.local.site + f"/private/files/xml_files.xml", 'wb') as file:
                     tree.write(file, encoding='utf-8', xml_declaration=True)
-                with open(frappe.local.site + f"/private/files/xml_files_{sales_invoice_doc.name}.xml", 'r') as file:
+                with open(frappe.local.site + f"/private/files/xml_files.xml", 'r') as file:
                     xml_string = file.read()
                 xml_dom = minidom.parseString(xml_string)
                 pretty_xml_string = xml_dom.toprettyxml(indent="  ")   # created xml into formatted xml form 
-                with open(frappe.local.site + f"/private/files/finalzatcaxml_{sales_invoice_doc.name}.xml", 'w') as file:
+                with open(frappe.local.site + f"/private/files/finalzatcaxml.xml", 'w') as file:
                     file.write(pretty_xml_string)
                           # Attach the getting xml for each invoice
                 try:
@@ -219,11 +219,11 @@ def certificate_hash():
                     frappe.throw("error in obtaining certificate hash: "+ str(e) )
 
 
-def signxml_modify(customer_doc,sales_invoice_doc):
+def signxml_modify(customer_doc):
                 try:
                     encoded_certificate_hash= certificate_hash()
                     issuer_name, serial_number = extract_certificate_details(customer_doc=customer_doc)
-                    original_invoice_xml = etree.parse(frappe.local.site + f'/private/files/finalzatcaxml_{sales_invoice_doc.name}.xml')
+                    original_invoice_xml = etree.parse(frappe.local.site + f'/private/files/finalzatcaxml.xml')
                     root = original_invoice_xml.getroot()
                     namespaces = {
                     'ext': 'urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2',
@@ -247,7 +247,7 @@ def signxml_modify(customer_doc,sales_invoice_doc):
                     signing_time =element_st.text
                     element_in.text = issuer_name
                     element_sn.text = str(serial_number)
-                    with open(frappe.local.site + f"/private/files/after_step_4_{sales_invoice_doc.name}.xml", 'wb') as file:
+                    with open(frappe.local.site + f"/private/files/after_step_4.xml", 'wb') as file:
                         original_invoice_xml.write(file,encoding='utf-8',xml_declaration=True,)
                     return namespaces ,signing_time
                 except Exception as e:
@@ -286,10 +286,10 @@ def generate_Signed_Properties_Hash(signing_time,issuer_name,serial_number,encod
                     frappe.throw(" error in generating signed properties hash: "+ str(e) )
 
 
-def populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_properties_base64,encoded_hash,sales_invoice_doc):
+def populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_properties_base64,encoded_hash):
         try:
             
-            updated_invoice_xml = etree.parse(frappe.local.site + f'/private/files/after_step_4_{sales_invoice_doc.name}.xml')
+            updated_invoice_xml = etree.parse(frappe.local.site + f'/private/files/after_step_4.xml')
             root3 = updated_invoice_xml.getroot()
             company_name = "mycompany"
             key = frappe.get_all('CSR Settings', fields=['csid'])
@@ -318,7 +318,7 @@ def populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_prope
             x509Certificate6.text = content
             digestvalue6.text = (signed_properties_base64)
             digestvalue6_2.text =(encoded_hash)
-            with open(frappe.local.site + f"/private/files/final_xml_after_sign_{sales_invoice_doc.name}.xml", 'wb') as file:
+            with open(frappe.local.site + f"/private/files/final_xml_after_sign.xml", 'wb') as file:
                 updated_invoice_xml.write(file,encoding='utf-8',xml_declaration=True,)
         except Exception as e:
                     frappe.throw(" error in populate ubl extension output: "+ str(e) )
@@ -487,9 +487,9 @@ def tag9_signature_ecdsa():
             except Exception as e:
                     frappe.throw(" error in tag 9 (signaturetag): "+ str(e) )
 
-def generate_tlv_xml(sales_invoice_doc):
+def generate_tlv_xml():
                     try:
-                            with open(frappe.local.site + f"/private/files/final_xml_after_sign_{sales_invoice_doc.name}.xml", 'rb') as file:
+                            with open(frappe.local.site + f"/private/files/final_xml_after_sign.xml", 'rb') as file:
                                 xml_data = file.read()
                             root = etree.fromstring(xml_data)
                             namespaces = {
@@ -558,9 +558,9 @@ def get_tlv_for_value(tag_num, tag_value):
 
 
 
-def update_Qr_toXml(qrCodeB64,sales_invoice_doc):
+def update_Qr_toXml(qrCodeB64):
                     try:
-                        xml_file_path = frappe.local.site + f"/private/files/final_xml_after_sign_{sales_invoice_doc.name}.xml"
+                        xml_file_path = frappe.local.site + f"/private/files/final_xml_after_sign.xml"
                         xml_tree = etree.parse(xml_file_path)
                         qr_code_element = xml_tree.find('.//cac:AdditionalDocumentReference[cbc:ID="QR"]/cac:Attachment/cbc:EmbeddedDocumentBinaryObject', namespaces={'cac': 'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2', 'cbc': 'urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2'})
                         if qr_code_element is not None:
@@ -572,9 +572,9 @@ def update_Qr_toXml(qrCodeB64,sales_invoice_doc):
                     except Exception as e:
                             frappe.throw(" error in saving tlv data to xml: "+ str(e) )
 
-def structuring_signedxml(sales_invoice_doc):
+def structuring_signedxml():
                 try:
-                    with open(frappe.local.site + f'/private/files/final_xml_after_sign_{sales_invoice_doc.name}.xml', 'r') as file:
+                    with open(frappe.local.site + f'/private/files/final_xml_after_sign.xml', 'r') as file:
                         xml_content = file.readlines()
                     indentations = {
                         29: ['<xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" Target="signature">','</xades:QualifyingProperties>'],
@@ -592,9 +592,9 @@ def structuring_signedxml(sales_invoice_doc):
                                     return ' ' * (col - 1) + line.lstrip()
                         return line
                     adjusted_xml_content = [adjust_indentation(line) for line in xml_content]
-                    with open(frappe.local.site + f'/private/files/final_xml_after_indent_{sales_invoice_doc.name}.xml', 'w') as file:
+                    with open(frappe.local.site + f'/private/files/final_xml_after_indent.xml', 'w') as file:
                         file.writelines(adjusted_xml_content)
-                    signed_xmlfile_name = frappe.local.site + f'/private/files/final_xml_after_indent_{sales_invoice_doc.name}.xml'
+                    signed_xmlfile_name = frappe.local.site + f'/private/files/final_xml_after_indent.xml'
                     return signed_xmlfile_name
                 except Exception as e:
                     frappe.throw(" error in structuring signed xml: "+ str(e) )

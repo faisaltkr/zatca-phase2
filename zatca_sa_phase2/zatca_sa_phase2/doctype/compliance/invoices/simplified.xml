@@ -67,16 +67,16 @@
     </ext:UBLExtension>
   </ext:UBLExtensions>
   <cbc:ProfileID>reporting:1.0</cbc:ProfileID>
-  <cbc:ID>ACC-SINV-2024-00053</cbc:ID>
-  <cbc:UUID>56ac7930-6f8e-11ef-8540-0b746763ac9b</cbc:UUID>
-  <cbc:IssueDate>2024-09-10</cbc:IssueDate>
-  <cbc:IssueTime>19:04:18</cbc:IssueTime>
+  <cbc:ID>ACC-SINV-2024-00069</cbc:ID>
+  <cbc:UUID>c9a01e80-77c5-11ef-8540-0b746763ac9b</cbc:UUID>
+  <cbc:IssueDate>2024-09-21</cbc:IssueDate>
+  <cbc:IssueTime>06:01:23</cbc:IssueTime>
   <cbc:InvoiceTypeCode name="0200000">388</cbc:InvoiceTypeCode>
   <cbc:DocumentCurrencyCode>SAR</cbc:DocumentCurrencyCode>
   <cbc:TaxCurrencyCode>SAR</cbc:TaxCurrencyCode>
   <cac:AdditionalDocumentReference>
     <cbc:ID>ICV</cbc:ID>
-    <cbc:UUID>202400053</cbc:UUID>
+    <cbc:UUID>202400069</cbc:UUID>
   </cac:AdditionalDocumentReference>
   <cac:AdditionalDocumentReference>
     <cbc:ID>PIH</cbc:ID>
@@ -87,7 +87,7 @@
   <cac:AdditionalDocumentReference>
     <cbc:ID>QR</cbc:ID>
     <cac:Attachment>
-      <cbc:EmbeddedDocumentBinaryObject mimeCode="text/plain">ARJFeG9uZSBUZWNobm9sb2dpZXMCDzM5OTk5OTk5OTkwMDAwMwMUMjAyNC0wOS0xMFQxNjowNDoyMFoEBjEyMDAuMAUFMTgwLjAGBjEzODAuMA==</cbc:EmbeddedDocumentBinaryObject>
+      <cbc:EmbeddedDocumentBinaryObject mimeCode="text/plain">ARJFeG9uZSBUZWNobm9sb2dpZXMCDzM5OTk5OTk5OTkwMDAwMwMUMjAyNC0wOS0yMVQwMzowMToyNVoEBjEyMDAuMAUFMTgwLjAGBjEzODAuMA==</cbc:EmbeddedDocumentBinaryObject>
     </cac:Attachment>
   </cac:AdditionalDocumentReference>
   <cac:Signature>
@@ -122,7 +122,7 @@
   </cac:AccountingSupplierParty>
   <cac:AccountingCustomerParty/>
   <cac:Delivery>
-    <cbc:ActualDeliveryDate>2024-09-10</cbc:ActualDeliveryDate>
+    <cbc:ActualDeliveryDate>2024-09-21</cbc:ActualDeliveryDate>
   </cac:Delivery>
   <cac:PaymentMeans>
     <cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>

@@ -67,16 +67,16 @@
     </ext:UBLExtension>
   </ext:UBLExtensions>
   <cbc:ProfileID>reporting:1.0</cbc:ProfileID>
-  <cbc:ID>ACC-SINV-2024-00051</cbc:ID>
-  <cbc:UUID>417e4f12-6f8d-11ef-8540-0b746763ac9b</cbc:UUID>
-  <cbc:IssueDate>2024-09-10</cbc:IssueDate>
-  <cbc:IssueTime>18:56:33</cbc:IssueTime>
+  <cbc:ID>ACC-SINV-2024-00076</cbc:ID>
+  <cbc:UUID>6a5652ea-781b-11ef-8540-0b746763ac9b</cbc:UUID>
+  <cbc:IssueDate>2024-09-21</cbc:IssueDate>
+  <cbc:IssueTime>16:14:20</cbc:IssueTime>
   <cbc:InvoiceTypeCode name="0100000">388</cbc:InvoiceTypeCode>
   <cbc:DocumentCurrencyCode>SAR</cbc:DocumentCurrencyCode>
   <cbc:TaxCurrencyCode>SAR</cbc:TaxCurrencyCode>
   <cac:AdditionalDocumentReference>
     <cbc:ID>ICV</cbc:ID>
-    <cbc:UUID>202400051</cbc:UUID>
+    <cbc:UUID>202400076</cbc:UUID>
   </cac:AdditionalDocumentReference>
   <cac:AdditionalDocumentReference>
     <cbc:ID>PIH</cbc:ID>
@@ -146,19 +146,19 @@
     </cac:Party>
   </cac:AccountingCustomerParty>
   <cac:Delivery>
-    <cbc:ActualDeliveryDate>2024-09-10</cbc:ActualDeliveryDate>
+    <cbc:ActualDeliveryDate>2024-09-21</cbc:ActualDeliveryDate>
   </cac:Delivery>
   <cac:PaymentMeans>
     <cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>
   </cac:PaymentMeans>
   <cac:TaxTotal>
-    <cbc:TaxAmount currencyID="SAR">225.0</cbc:TaxAmount>
+    <cbc:TaxAmount currencyID="SAR">180.0</cbc:TaxAmount>
   </cac:TaxTotal>
   <cac:TaxTotal>
-    <cbc:TaxAmount currencyID="SAR">225.0</cbc:TaxAmount>
+    <cbc:TaxAmount currencyID="SAR">180.0</cbc:TaxAmount>
     <cac:TaxSubtotal>
-      <cbc:TaxableAmount currencyID="SAR">1500.0</cbc:TaxableAmount>
-      <cbc:TaxAmount currencyID="SAR">225.0</cbc:TaxAmount>
+      <cbc:TaxableAmount currencyID="SAR">1200.0</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="SAR">180.0</cbc:TaxAmount>
       <cac:TaxCategory>
         <cbc:ID>S</cbc:ID>
         <cbc:Percent>15.00</cbc:Percent>
@@ -169,22 +169,22 @@
     </cac:TaxSubtotal>
   </cac:TaxTotal>
   <cac:LegalMonetaryTotal>
-    <cbc:LineExtensionAmount currencyID="SAR">1500.0</cbc:LineExtensionAmount>
-    <cbc:TaxExclusiveAmount currencyID="SAR">1500.0</cbc:TaxExclusiveAmount>
-    <cbc:TaxInclusiveAmount currencyID="SAR">1725.0</cbc:TaxInclusiveAmount>
+    <cbc:LineExtensionAmount currencyID="SAR">1200.0</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount currencyID="SAR">1200.0</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="SAR">1380.0</cbc:TaxInclusiveAmount>
     <cbc:AllowanceTotalAmount currencyID="SAR">0.0</cbc:AllowanceTotalAmount>
-    <cbc:PayableAmount currencyID="SAR">1725.0</cbc:PayableAmount>
+    <cbc:PayableAmount currencyID="SAR">1380.0</cbc:PayableAmount>
   </cac:LegalMonetaryTotal>
   <cac:InvoiceLine>
     <cbc:ID>1</cbc:ID>
     <cbc:InvoicedQuantity unitCode="Nos">1.0</cbc:InvoicedQuantity>
-    <cbc:LineExtensionAmount currencyID="SAR">1500.0</cbc:LineExtensionAmount>
+    <cbc:LineExtensionAmount currencyID="SAR">1200.0</cbc:LineExtensionAmount>
     <cac:TaxTotal>
-      <cbc:TaxAmount currencyID="SAR">225.0</cbc:TaxAmount>
-      <cbc:RoundingAmount currencyID="SAR">1725.0</cbc:RoundingAmount>
+      <cbc:TaxAmount currencyID="SAR">180.0</cbc:TaxAmount>
+      <cbc:RoundingAmount currencyID="SAR">1380.0</cbc:RoundingAmount>
     </cac:TaxTotal>
     <cac:Item>
-      <cbc:Name>1002</cbc:Name>
+      <cbc:Name>1001</cbc:Name>
       <cac:ClassifiedTaxCategory>
         <cbc:ID>S</cbc:ID>
         <cbc:Percent>15.00</cbc:Percent>
@@ -194,7 +194,7 @@
       </cac:ClassifiedTaxCategory>
     </cac:Item>
     <cac:Price>
-      <cbc:PriceAmount currencyID="SAR">1500.0</cbc:PriceAmount>
+      <cbc:PriceAmount currencyID="SAR">1200.0</cbc:PriceAmount>
     </cac:Price>
   </cac:InvoiceLine>
 </Invoice>

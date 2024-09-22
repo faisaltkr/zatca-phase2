@@ -78,7 +78,8 @@ def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                         "uuid": uuid1,
                         "invoice": xml_base64_Decode(signed_xmlfile_name), })
                         # basic_auth_production = csid
-
+                        print(signed_xmlfile_name)
+                        print(xml_base64_Decode(signed_xmlfile_name),"dddddd")
                         print(payload)
                         # basic_auth_production_data = json.loads(basic_auth_production)
                         production_csid = csid

@@ -188,7 +188,7 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
                                    item_data_with_template(invoice,sales_invoice_doc)
                             pretty_xml_string=xml_structuring(invoice,sales_invoice_doc)
 
-                            with open(frappe.local.site + "/private/files/finalzatcaxml.xml", 'r') as file:
+                            with open(frappe.local.site + f"/private/files/finalzatcaxml_{sales_invoice_doc.name}.xml", 'r') as file:
                                     file_content = file.read()
                             tag_removed_xml = removeTags(file_content)
                             canonicalized_xml = canonicalize_xml(tag_removed_xml)
@@ -196,10 +196,10 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
                             encoded_signature = digital_signature(hash1)
                             issuer_name,serial_number = extract_certificate_details(customer_doc=customer_doc)
                             encoded_certificate_hash=certificate_hash()
-                            namespaces,signing_time=signxml_modify(customer_doc=customer_doc)
+                            namespaces,signing_time=signxml_modify(customer_doc=customer_doc,sales_invoice_doc=sales_invoice_doc)
                             signed_properties_base64=generate_Signed_Properties_Hash(signing_time,issuer_name,serial_number,encoded_certificate_hash)
-                            populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_properties_base64,encoded_hash)
-                            tlv_data = generate_tlv_xml()
+                            populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_properties_base64,encoded_hash,sales_invoice_doc)
+                            tlv_data = generate_tlv_xml(sales_invoice_doc=sales_invoice_doc)
                             # print(tlv_data)
                             tagsBufsArray = []
                             for tag_num, tag_value in tlv_data.items():
@@ -208,8 +208,9 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
                             print(qrCodeBuf)
                             qrCodeB64 = base64.b64encode(qrCodeBuf).decode('utf-8')
                             print(qrCodeB64,"sdfsdfdsfgdfgdfgdfgdfdfgdgdgdgdgdgfdfg")
-                            update_Qr_toXml(qrCodeB64)
-                            signed_xmlfile_name=structuring_signedxml()
+                            update_Qr_toXml(qrCodeB64,sales_invoice_doc)
+                            print(qrCodeB64)
+                            signed_xmlfile_name=structuring_signedxml(sales_invoice_doc)
                             print(signed_xmlfile_name)
                             # generate_xml_hash()
                             print(compliance_type,"comsdflkjsdlkfjdklfjn",type(compliance_type))
