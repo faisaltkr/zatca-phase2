@@ -34,12 +34,13 @@ def get_Tax_for_Item(full_string,item):
                     frappe.throw("error occured in tax for item"+ str(e) )
 
 def tax_Data(invoice,sales_invoice_doc):
+            print(sales_invoice_doc,"dddddssss")
             try:
                 # print("sssssss11111",sales_invoice_doc.as_dict())
                 #for foreign currency
 
                 sales_json = sales_invoice_doc.as_dict()
-
+                print(sales_json, "ddd")
                 if sales_invoice_doc.currency != "SAR":
                     cac_TaxTotal = ET.SubElement(invoice, "cac:TaxTotal")
                     cbc_TaxAmount_SAR = ET.SubElement(cac_TaxTotal, "cbc:TaxAmount")
@@ -140,7 +141,8 @@ def tax_Data(invoice,sales_invoice_doc):
                         frappe.throw("error occured in tax data"+ str(e) )
 
 def tax_Data_with_template(invoice,sales_invoice_doc):
-       
+            print(sales_invoice_doc,"ddddd")
+
             try:
                 sales_json = sales_invoice_doc.as_dict()
                 print(sales_json,"jjjjjjjjjjjjj")

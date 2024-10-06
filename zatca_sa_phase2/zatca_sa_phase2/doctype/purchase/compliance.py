@@ -45,7 +45,6 @@ def compliance_api_call(uuid1,encoded_hash,signed_xmlfile_name):
                     key = frappe.get_all('CSR Settings', fields=['company_name','csid','secret'])
                     company =  key[0]['company_name']      
                     csid = key[0]['csid']
-                    print(csid,"csidddddd")
                     # settings = frappe.get_doc('Zatca ERPgulf Setting')
                     payload = json.dumps({
                         "invoiceHash": encoded_hash,

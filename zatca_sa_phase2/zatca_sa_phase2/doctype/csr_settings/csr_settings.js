@@ -107,6 +107,37 @@ frappe.ui.form.on('CSR Settings', {
                     }
                 })
             });
+            frm.fields_dict['get_production_csid'].$input.on('click',function(){
+                console.log("Generating Production csid");
+                let formData =  frm.doc
+                frappe.show_alert({message: __("Generating Production CSID..."), indicator: 'blue'}, 5);
+
+                frappe.call({
+                    method: 'zatca_sa_phase2.zatca_sa_phase2.doctype.csr_settings.utils.p_csid.generate_pcsid',
+                    args:{
+                        data : formData
+                    },
+                    callback: function(r) {
+                        console.log(r)
+                        if(r.message.success ==='true')
+                        {
+                        frappe.msgprint({
+                                title: __('Success'),
+                                message: '<b style="color:green">' + r.message.message + '</b>',
+                                indicator: 'red'
+                        });
+                        frm.set_value('production_csid', r.message.token);
+                        }
+                        else{
+                            frappe.msgprint({
+                                title: __('Failed'),
+                                message: '<b style="color:red">' + r.message.error.errors + '</b>',
+                                indicator: 'red'
+                            });
+                        }
+                    }
+                })
+            });
             frm.fields_dict['egs_onboard'].$input.on('click', function() {
                 frappe.show_alert({message: __("Generating CSID..."), indicator: 'green'}, 5);
                 let formData = frm.doc;
