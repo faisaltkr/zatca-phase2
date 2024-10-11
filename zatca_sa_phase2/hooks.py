@@ -233,6 +233,9 @@ doc_events = {
     },
     'Purchase Invoice': {
         'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.purchase.submit.on_submit'
+    },
+    "Item": {
+        "on_save": "zatca_sa_phase2.zatca_sa_phase2.update_price.update_item_price"
     }
 }
 

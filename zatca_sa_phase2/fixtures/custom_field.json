@@ -33,7 +33,7 @@
         "unique": 0
     },
     {
-        // "depends_on": "eval:doc.custom_zatca_status=='CLEARED' || doc.custom_zatca_status=='REPORTED'",
+        "depends_on": "eval:doc.custom_zatca_status=='CLEARED' || doc.custom_zatca_status=='REPORTED'",
         "allow_on_submit": 0,
         "doctype": "Custom Field",
         "dt": "Sales Invoice",
@@ -552,6 +552,22 @@
         "module": "Zatca Sa Phase2",
         "name": "Purchase Invoice-custom_invoice_transaction_type2",
         "options": "Default\nThird Party\nNominal Invoice\nSummary Invoice",
+        "read_only": 0,
+        "translatable": 1,
+        "unique": 0
+    },
+    {
+        "allow_on_submit": 0,
+        "doctype": "Custom Field",
+        "dt": "Item",
+        "fieldname": "tax_inclusive",
+        "fieldtype": "Check",
+        "hidden": 0,
+        "insert_after": "stock_uom",
+        "label": "Tax Inclusive",
+        "module": "Zatca Sa Phase2",
+        "name": "Purchase Invoice-custom_invoice_transaction_type2",
+        "options": "",
         "read_only": 0,
         "translatable": 1,
         "unique": 0
