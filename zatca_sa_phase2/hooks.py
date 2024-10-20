@@ -235,7 +235,9 @@ doc_events = {
         'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.purchase.submit.on_submit'
     },
     "Item": {
-        "validate": "zatca_sa_phase2.zatca_sa_phase2.update_price.update_item_price"
+        "after_insert": "zatca_sa_phase2.zatca_sa_phase2.update_price.update_item_price"
+        # "on_update": "zatca_sa_phase2.zatca_sa_phase2.update_price.update_item_price"
+
     }
 }
 
