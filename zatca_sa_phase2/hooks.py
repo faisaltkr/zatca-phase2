@@ -237,7 +237,6 @@ doc_events = {
     "Item": {
         "after_insert": "zatca_sa_phase2.zatca_sa_phase2.update_price.update_item_price"
         # "on_update": "zatca_sa_phase2.zatca_sa_phase2.update_price.update_item_price"
-
     }
 }
 
