@@ -6,7 +6,6 @@ def customer_Data(invoice,p_invoice_doc):
             try:
                 supplier_doc= frappe.get_doc("Supplier",p_invoice_doc.supplier)
                 cac_AccountingCustomerParty = ET.SubElement(invoice, "cac:AccountingCustomerParty")
-                print(supplier_doc.as_dict(),"supplier doc")
                 # print(customer_doc.custom_b2c,compliance_type,'3')
                 if not supplier_doc.is_custom_b2c:
                     supplier_doc= frappe.get_doc("Supplier",p_invoice_doc.supplier)

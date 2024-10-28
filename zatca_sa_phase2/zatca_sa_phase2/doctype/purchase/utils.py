@@ -115,11 +115,9 @@ def getInvoiceHash(canonicalized_xml):
 
 def digital_signature(hash1):
                     try:
-                        print("digital settings")
                         key = frappe.get_all('CSR Settings', fields=['private_key'])
                         key_file =  key[0]['private_key']
                         # settings = frappe.get_doc('CSR Settings')
-                        print(key_file)
                         # company = "mycompany"
                         # company_name = frappe.db.get_value("", company, "abbr")
                         # company_name = "mycompany"
@@ -591,17 +589,8 @@ def structuring_signedxml():
 def attach_QR_Image(qrCodeB64,p_invoice_doc):
                     try:
                         qr = pyqrcode.create(qrCodeB64)
-                        print(qrCodeB64,"qr code ")
                         temp_file_path = "qr_code.png"
                         qr_image=qr.png(temp_file_path, scale=5)
-                        print(frappe.get_doc({
-                            "doctype": "File",
-                            "file_name": f"QR_image_{p_invoice_doc.name}.png",
-                            "attached_to_doctype": p_invoice_doc.doctype,
-                            "attached_to_name": p_invoice_doc.name,
-                            "content": open(temp_file_path, "rb").read()
-                           
-                        }))
                         file = frappe.get_doc({
                             "doctype": "File",
                             "file_name": f"QR_image_{p_invoice_doc.name}.png",

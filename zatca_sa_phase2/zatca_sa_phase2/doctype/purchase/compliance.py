@@ -72,8 +72,6 @@ def compliance_api_call(uuid1,encoded_hash,signed_xmlfile_name):
                     try:
                         # frappe.throw("inside compliance api call2")
                         response = requests.request("POST", url=get_API_url(base_url="compliance/invoices"), headers=headers, data=payload)
-                        frappe.msgprint(response.text)
-                        print(response.status_code,response.text,"kkdfjkgkjfekgdkfjgkj")
                         # return response.text
 
                         if response.status_code != 200:

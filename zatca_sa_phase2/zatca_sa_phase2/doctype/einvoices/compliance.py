@@ -34,7 +34,6 @@ def get_API_url(base_url):
                         url = f"https://gw-fatoora.zatca.gov.sa/e-invoicing/simulation/{base_url}"
                     else:
                         url = f"https://gw-fatoora.zatca.gov.sa/e-invoicing/core/{base_url}"
-                    print(url,"kkkkkkkkkkkkkkkk")
                     return url 
                 except Exception as e:
                     frappe.throw(" getting url failed"+ str(e) ) 
@@ -45,7 +44,6 @@ def compliance_api_call(uuid1,encoded_hash,signed_xmlfile_name):
                     key = frappe.get_all('CSR Settings', fields=['company_name','csid','secret'])
                     company =  key[0]['company_name']      
                     csid = key[0]['csid']
-                    print(csid,"csidddddd")
                     # settings = frappe.get_doc('Zatca ERPgulf Setting')
                     payload = json.dumps({
                         "invoiceHash": encoded_hash,
@@ -74,7 +72,6 @@ def compliance_api_call(uuid1,encoded_hash,signed_xmlfile_name):
                         # frappe.throw("inside compliance api call2")
                         response = requests.request("POST", url=get_API_url(base_url="compliance/invoices"), headers=headers, data=payload)
                         frappe.msgprint(response.text)
-                        print(response.status_code,response.text,"kkdfjkgkjfekgdkfjgkj")
                         # return response.text
 
                         if response.status_code != 200:

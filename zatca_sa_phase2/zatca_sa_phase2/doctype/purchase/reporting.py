@@ -34,7 +34,6 @@ def get_API_url(url):
                         url = f"https://gw-fatoora.zatca.gov.sa/e-invoicing/simulation/{url}"
                     else:
                         url = f"https://gw-fatoora.zatca.gov.sa/e-invoicing/core/{url}"
-                    print(url,"kkkkkk")
                     return url 
                 except Exception as e:
                     frappe.throw(" getting url failed"+ str(e) )
@@ -115,8 +114,6 @@ def reporting_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,p_invoic
                             frappe.throw("Production CSID for company {} not found".format(company_name))
                         try:
                             response = requests.request("POST", url=get_API_url(url="invoices/reporting/single"), headers=headers, data=payload)
-                            print(response.text)
-                            print(response.status_code,"ResposeCode")
                             if response.status_code  in (400,405,406,409 ):
                                 invoice_doc = frappe.get_doc('Purchase Invoice' , invoice_number )
                                 invoice_doc.db_set('custom_uuid' , 'Not Submitted' , commit=True  , update_modified=True)

@@ -177,7 +177,6 @@ def get_API_url(url):
                         url = f"https://gw-fatoora.zatca.gov.sa/e-invoicing/simulation/{url}"
                     else:
                         url = f"https://gw-fatoora.zatca.gov.sa/e-invoicing/core/{url}"
-                    print(url,"kkkkkk")
                     return url 
                 except Exception as e:
                     frappe.throw(" getting url failed"+ str(e) ) 

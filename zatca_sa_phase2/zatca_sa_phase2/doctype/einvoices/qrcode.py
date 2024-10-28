@@ -15,13 +15,11 @@ def get_tlv(tag_num, tag_value):
 
 def generate_qr_code_base_64(invoice_number):
     sales_invoice = frappe.get_doc('Sales Invoice' ,invoice_number)
-    print(sales_invoice,"sdfjdhfgbdkfgbb")
     company_details = get_zatca_settings()
     seller_name = company_details['company_name']
     vat_registration_number = company_details['vat_registration_number']
     current_time = datetime.now(timezone.utc)
     invoice_date = current_time.strftime("%Y-%m-%dT%H:%M:%SZ")
-    print("posting data",invoice_date)
     invoice_total = str(sales_invoice.total)
     vat_total = str(sales_invoice.total_taxes_and_charges)
     total_with_vat = str(sales_invoice.outstanding_amount)  # Total Invoice Amount including VAT
@@ -35,5 +33,4 @@ def generate_qr_code_base_64(invoice_number):
         get_tlv(6, total_with_vat)  # Add total_with_vat as tag 6
     ])
     qr_code_data = base64.b64encode(tlv_data).decode('utf-8')
-    print(qr_code_data,"dkjfhdkkfgkj")
     return qr_code_data

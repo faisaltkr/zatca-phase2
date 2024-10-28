@@ -14,7 +14,6 @@ def get_Tax_for_Item(full_string,item):
 def item_data(invoice,p_invoice_doc):
             try:    
                 for single_item in p_invoice_doc.items : 
-                    print(single_item.as_dict(),"djfdjfjdjfgjgjdfjfjjjjjjj")
                     item_tax_amount,item_tax_percentage =  get_Tax_for_Item(p_invoice_doc.taxes[0].item_wise_tax_detail,single_item.item_code)
                     cac_InvoiceLine = ET.SubElement(invoice, "cac:InvoiceLine")
                     cbc_ID_10 = ET.SubElement(cac_InvoiceLine, "cbc:ID")
@@ -34,7 +33,7 @@ def item_data(invoice,p_invoice_doc):
                     cbc_RoundingAmount.text=str(abs(round(single_item.amount + (item_tax_percentage * single_item.amount / 100),2)))
                     cac_Item = ET.SubElement(cac_InvoiceLine, "cac:Item")
                     cbc_Name = ET.SubElement(cac_Item, "cbc:Name")
-                    cbc_Name.text = single_item.item_code
+                    cbc_Name.text = single_item.item_name
                     cac_ClassifiedTaxCategory = ET.SubElement(cac_Item, "cac:ClassifiedTaxCategory")
                     cbc_ID_11 = ET.SubElement(cac_ClassifiedTaxCategory, "cbc:ID")
                     if p_invoice_doc.custom_zatca_tax_category == "Standard":
@@ -62,7 +61,6 @@ def item_data(invoice,p_invoice_doc):
 def item_data_with_template(invoice, p_invoice_doc):
     try:
         for single_item in p_invoice_doc.items:
-            print(single_item.as_dict(),"djfdjfjdjfgjgjdfjfjjjjjjj")
             item_tax_template = frappe.get_doc('Item Tax Template', single_item.item_tax_template)
             item_tax_percentage = item_tax_template.taxes[0].tax_rate if item_tax_template.taxes else 15
             
@@ -86,7 +84,7 @@ def item_data_with_template(invoice, p_invoice_doc):
             
             cac_Item = ET.SubElement(cac_InvoiceLine, "cac:Item")
             cbc_Name = ET.SubElement(cac_Item, "cbc:Name")
-            cbc_Name.text = single_item.item_code
+            cbc_Name.text = single_item.item_name
             
             cac_ClassifiedTaxCategory = ET.SubElement(cac_Item, "cac:ClassifiedTaxCategory")
             cbc_ID_11 = ET.SubElement(cac_ClassifiedTaxCategory, "cbc:ID")

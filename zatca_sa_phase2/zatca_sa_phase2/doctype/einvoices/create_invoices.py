@@ -142,7 +142,6 @@ def removeTags(finalzatcaxml):
 # @frappe.whitelist(allow_guest=True) 
 def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= False):
                     # generate_qr_code_base_64(invoice_number=invoice_number)
-                    print(compliance_type,"comp")
                     # compliance_type = "1"
                     try:    
                             # create_compliance_x509()
@@ -150,16 +149,12 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
                             sales_invoice_doc = frappe.get_doc('Sales Invoice' ,invoice_number)
                             if not frappe.db.exists("Sales Invoice", invoice_number):
                                 frappe.throw("Invoice Number is NOT Valid:  " + str(invoice_number))
-                            print(0)
                             try:
-                                print(sales_invoice_doc.customer,"hhhhhhw")
                                 customer_doc = frappe.get_doc("Customer",sales_invoice_doc.customer)
                                 is_b2c  = customer_doc.custom_b2c
                             except Exception as e:
                                   print(str(e))
-                            print(1)
                             invoice= xml_tags(is_b2c=is_b2c)
-                            print(2)
                             invoice,uuid1,sales_invoice_doc=salesinvoice_data(invoice,invoice_number)
                             
                             if not compliance_type :
@@ -200,20 +195,14 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
                             signed_properties_base64=generate_Signed_Properties_Hash(signing_time,issuer_name,serial_number,encoded_certificate_hash)
                             populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_properties_base64,encoded_hash,sales_invoice_doc)
                             tlv_data = generate_tlv_xml(sales_invoice_doc=sales_invoice_doc)
-                            # print(tlv_data)
                             tagsBufsArray = []
                             for tag_num, tag_value in tlv_data.items():
                                 tagsBufsArray.append(get_tlv_for_value(tag_num, tag_value))
                             qrCodeBuf = b"".join(tagsBufsArray)
-                            print(qrCodeBuf)
                             qrCodeB64 = base64.b64encode(qrCodeBuf).decode('utf-8')
-                            print(qrCodeB64,"sdfsdfdsfgdfgdfgdfgdfdfgdgdgdgdgdgfdfg")
                             update_Qr_toXml(qrCodeB64,sales_invoice_doc)
-                            print(qrCodeB64)
                             signed_xmlfile_name=structuring_signedxml(sales_invoice_doc)
-                            print(signed_xmlfile_name)
                             # generate_xml_hash()
-                            print(compliance_type,"comsdflkjsdlkfjdklfjn",type(compliance_type))
                             if not compliance_type:
                                 if customer_doc.custom_b2c == 1:
                                     reporting_API(uuid1, encoded_hash, signed_xmlfile_name,invoice_number,sales_invoice_doc)
@@ -234,7 +223,6 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
 def zatca_Background_on_submit(doc, method=None):              
 # def zatca_Background(invoice_number):
                     # print(doc.custom_zatca_tax_category)
-                    print("hiiiiiii")
                     try:
                         sales_invoice_doc = doc
                         invoice_number = sales_invoice_doc.name
@@ -248,7 +236,9 @@ def zatca_Background_on_submit(doc, method=None):
                                 break
                         
                         if any_item_has_tax_template:
+                            print(sales_invoice_doc.items)
                             for item in sales_invoice_doc.items:
+                                print(item.item_tax_template)
                                 if not item.item_tax_template:
                                     frappe.throw("If any one item has an Item Tax Template, all items must have an Item Tax Template.")
 

@@ -31,3 +31,37 @@ Pre-commit is configured to use the following tools for checking and formatting 
 ### License
 
 mit
+
+icv
+qrcode
+pih
+payment meANS TYPE CODE
+ITEM NAME
+
+1
+
+Instrument not defined (Free Text)
+
+10
+
+In Cash
+
+20
+
+Cheque
+
+30
+
+Credit Transfer
+
+31
+
+Debit Transfer
+
+42
+
+Payment to bank account
+
+48
+
+Bank card

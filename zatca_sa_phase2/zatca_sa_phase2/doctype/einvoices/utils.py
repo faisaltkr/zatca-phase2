@@ -114,11 +114,9 @@ def getInvoiceHash(canonicalized_xml):
 
 def digital_signature(hash1):
                     try:
-                        print("digital settings")
                         key = frappe.get_all('CSR Settings', fields=['private_key'])
                         key_file =  key[0]['private_key']
                         # settings = frappe.get_doc('CSR Settings')
-                        print(key_file)
                         # company = "mycompany"
                         # company_name = frappe.db.get_value("", company, "abbr")
                         # company_name = "mycompany"
@@ -354,13 +352,10 @@ def create_public_key():
                     certificate_data_str = "MIICGjCCAb+gAwIBAgIGAZFWof7gMAoGCCqGSM49BAMCMBUxEzARBgNVBAMMCmVJbnZvaWNpbmcwHhcNMjQwODE1MTUyMjE3WhcNMjkwODE0MjEwMDAwWjBiMQswCQYDVQQGEwJTQTEWMBQGA1UECwwNUml5YWRoIEJyYW5jaDETMBEGA1UECgwKRXhvbmUgVGVjaDEmMCQGA1UEAwwdVFNULTg4NjQzMTE0NS0zOTk5OTk5OTk5MDAwMDMwVjAQBgcqhkjOPQIBBgUrgQQACgNCAASwEDiQG88p6iIz4DjJkDURlkJBkf/CRlnfDWD9B2mDjI+J4cCXBh+WCjT+ScCnxwMeqKW4ROcguS/hIO6VQBYeo4GwMIGtMAwGA1UdEwEB/wQCMAAwgZwGA1UdEQSBlDCBkaSBjjCBizE7MDkGA1UEBAwyMS1UU1R8Mi1UU1R8My1lZDIyZjFkOC1lNmEyLTExMTgtOWI1OC1kOWE4ZjExZTQ0NWYxHzAdBgoJkiaJk/IsZAEBDA8zOTk5OTk5OTk5MDAwMDMxDTALBgNVBAwMBDExMDAxDzANBgNVBBoMBlJpeWFkaDELMAkGA1UEDwwCSVQwCgYIKoZIzj0EAwIDSQAwRgIhAMBs0bS3fKmGdoj+l+xRkVZUcp1QtJL3DjvG7BOXNixGAiEAsu1i9NuDUcobfbqrjKY9ywI9YOxwa2xAfvwDNycjDsE="
                     # company_name = "mycompany"
                     key = frappe.get_all('CSR Settings', fields=['company_name','csid','public_key'])
-                    print(key)
                     base_64 =  key[0]['csid']
-                    print(base_64 ,'csidddddd')
                     company_name = key[0]['company_name']
 
                     base_64 = key[0]['public_key']
-                    print(base_64 ,'publickeyyy')
 
                     # print(base_64 ,)
                     # base_64 =  key[0]['public_key']
@@ -603,17 +598,8 @@ def structuring_signedxml(sales_invoice_doc):
 def attach_QR_Image(qrCodeB64,sales_invoice_doc):
                     try:
                         qr = pyqrcode.create(qrCodeB64)
-                        print(qrCodeB64,"qr code ")
                         temp_file_path = "qr_code.png"
                         qr_image=qr.png(temp_file_path, scale=5)
-                        print(frappe.get_doc({
-                            "doctype": "File",
-                            "file_name": f"QR_image_{sales_invoice_doc.name}.png",
-                            "attached_to_doctype": sales_invoice_doc.doctype,
-                            "attached_to_name": sales_invoice_doc.name,
-                            "content": open(temp_file_path, "rb").read()
-                           
-                        }))
                         file = frappe.get_doc({
                             "doctype": "File",
                             "file_name": f"QR_image_{sales_invoice_doc.name}.png",

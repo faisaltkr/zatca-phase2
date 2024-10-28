@@ -93,15 +93,12 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                             for tag_num, tag_value in tlv_data.items():
                                 tagsBufsArray.append(get_tlv_for_value(tag_num, tag_value))
                             qrCodeBuf = b"".join(tagsBufsArray)
-                            print(qrCodeBuf)
                             qrCodeB64 = base64.b64encode(qrCodeBuf).decode('utf-8')
-                            print(qrCodeB64,"sdfsdfdsfgdfgdfgdfgdfdfgdgdgdgdgdgfdfg")
                             update_Qr_toXml(qrCodeB64)
                             signed_xmlfile_name=structuring_signedxml()
                             
                             # generate_xml_hash()
                             if compliance_type == "0":
-                                print("Check1")
                                 if supplier_doc.is_custom_b2c == 1:
                                     reporting_API(uuid1, encoded_hash, signed_xmlfile_name,invoice_number,p_invoice_doc)
                                     attach_QR_Image(qrCodeB64,p_invoice_doc)
@@ -111,7 +108,6 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                                     attach_QR_Image(qrCodeB64,p_invoice_doc)
                             else:  # if it a compliance test
                                 # frappe.msgprint("Compliance test")
-                                print("Check2")
                                 compliance_api_call(uuid1, encoded_hash, signed_xmlfile_name)
                                 attach_QR_Image(qrCodeB64,p_invoice_doc)
                     except:       
@@ -125,22 +121,18 @@ def on_submit(doc, method=None):
                     try:
                         purchase_invoice_doc = doc
                         if doc.is_return:
-                            print(purchase_invoice_doc.as_dict(),"digiiidigjdifjgdfjgij")
                             invoice_number = purchase_invoice_doc.name
                             p_invoice_doc= frappe.get_doc("Purchase Invoice",invoice_number )
                             # settings = frappe.get_doc('Zatca ERPgulf Setting')
                             any_item_has_tax_template = False
-                            print(130)
                             for item in purchase_invoice_doc.items:
                                 if item.item_tax_template:
                                     any_item_has_tax_template = True
                                     break
-                            print(135)
                             if any_item_has_tax_template:
                                 for item in purchase_invoice_doc.items:
                                     if not item.item_tax_template:
                                         frappe.throw("If any one item has an Item Tax Template, all items must have an Item Tax Template.")
-                            print(140)
                             # for item in sales_invoice_doc.items:
                             #     if item.item_tax_template:
                             #         item_tax_template = frappe.get_doc('Item Tax Template', item.item_tax_template)
@@ -157,21 +149,17 @@ def on_submit(doc, method=None):
 
                             # if settings.zatca_invoice_enabled != 1:
                             #     frappe.throw("Zatca Invoice is not enabled in Zatca Settings, Please contact your system administrator")
-                            print(157)
                             if not frappe.db.exists("Purchase Invoice", invoice_number):
                                     frappe.throw("Please save and submit the invoice before sending to Zatca:  " + str(invoice_number))
                                                     
                             
-                            print(162)
                             if p_invoice_doc.docstatus in [0,2]:
                                 frappe.throw("Please submit the invoice before sending to Zatca:  " + str(invoice_number))
                                 
 
                             # TODO status to be added
-                            print(168)
                             if purchase_invoice_doc.custom_zatca_status == "REPORTED" or purchase_invoice_doc.custom_zatca_status == "CLEARED":
                                 frappe.throw("Already submitted to Zakat and Tax Authority")
-                            print(171)
                             zatca_Call(invoice_number,0,any_item_has_tax_template)
                         
                     except Exception as e:

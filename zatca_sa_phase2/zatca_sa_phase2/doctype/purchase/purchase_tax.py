@@ -143,7 +143,6 @@ def tax_Data_with_template(invoice,p_invoice_doc):
        
             try:
                 sales_json = p_invoice_doc.as_dict()
-                print(sales_json,"jjjjjjjjjjjjj")
                 total_tax = sum(single_item.net_amount * (frappe.get_doc('Item Tax Template', single_item.item_tax_template).taxes[0].tax_rate / 100)
                     for single_item in p_invoice_doc.items)
                 #for foreign currency
@@ -258,9 +257,7 @@ def tax_Data_with_template(invoice,p_invoice_doc):
 def get_tax_total_from_items(p_invoice_doc):
             try:
                 total_tax = 0
-                print(p_invoice_doc.as_dict(),"sddffsdfdf")
                 for single_item in p_invoice_doc.items : 
-                    print(single_item.as_dict(),"single_item")
                     #print(p_invoice_doc.taxes[0],'sales_invoice_doc.taxes[0]')
                     item_tax_amount,tax_percent =  get_Tax_for_Item(p_invoice_doc.taxes[0].item_wise_tax_detail,single_item.item_code)
                     total_tax = total_tax + (single_item.base_total * (tax_percent/100))

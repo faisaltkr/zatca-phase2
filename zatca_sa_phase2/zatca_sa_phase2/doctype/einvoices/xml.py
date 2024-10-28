@@ -23,6 +23,5 @@ def generate_xml_hash(invoice):
     # Encode the hash in Base64
     base64_encoded_hash = base64.b64encode(sha256_hash).decode('utf-8')
 
-    print(base64_encoded_hash, "sdfljsldflsdflsdlf")
 
     return base64_encoded_hash
