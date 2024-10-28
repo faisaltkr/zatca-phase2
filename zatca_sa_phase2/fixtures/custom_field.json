@@ -104,7 +104,7 @@
     },
     {
         "doctype": "Custom Field",
-        "depends_on": "eval:doc.custom_zatca_status='Failed'",
+        "depends_on": "eval:doc.custom_zatca_status=='Failed'",
         "dt": "Sales Invoice",
         "fieldname": "resend_to_zatca",
         "fieldtype": "Button",
