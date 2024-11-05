@@ -137,7 +137,7 @@
         "unique": 0
     },
     {
-        "default": "djfkasdhjadjasdkljsadjlasdjas",
+        "default": "",
         "allow_on_submit": 0,
         "doctype": "Custom Field",
         "dt": "Sales Invoice",
@@ -154,7 +154,7 @@
         "unique": 0
     },
     {
-        "default": "djfkasdhjadjasdkldsfdfdsjsadjlasdjas",
+        "default": "",
         "allow_on_submit": 0,
         "doctype": "Custom Field",
         "dt": "Sales Invoice",
@@ -406,7 +406,7 @@
         "unique": 0
     },
     {
-        "default": "Not submitted",
+        "default": "",
         "allow_on_submit": 0,
         "doctype": "Custom Field",
         "dt": "Purchase Invoice",
@@ -423,7 +423,7 @@
         "unique": 0
     },
     {
-        "default": "djfkasdhjadjasdkldsfdfdsjsadjlasdjas",
+        "default": "",
         "allow_on_submit": 0,
         "doctype": "Custom Field",
         "dt": "Purchase Invoice",

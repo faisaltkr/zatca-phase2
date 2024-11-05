@@ -2,6 +2,7 @@ import frappe
 import re
 import xml.etree.ElementTree as ET
 from .qrcode import generate_qr_code_base_64
+from .get_invoice_hash import get_latest_purchase_invoice_with_hash
 
 def get_ICV_code(invoice_number):
                 try:
@@ -78,8 +79,9 @@ def additional_Reference(invoice,supplier_doc,invoice_number):
                 
                 # cbc_EmbeddedDocumentBinaryObject.text = pih
 
-                cbc_EmbeddedDocumentBinaryObject.text = 'NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ=='
+                pih = get_latest_purchase_invoice_with_hash
 
+                cbc_EmbeddedDocumentBinaryObject.text = pih
                 # cbc_EmbeddedDocumentBinaryObject.text = "L0Awl814W4ycuFvjDVL/vIW08mNRNAwqfdlF5i/3dpU="
             # QR CODE ------------------------------------------------------------------------------------------------------------------------------------------------------------------
                 cac_AdditionalDocumentReference22 = ET.SubElement(invoice, "cac:AdditionalDocumentReference")

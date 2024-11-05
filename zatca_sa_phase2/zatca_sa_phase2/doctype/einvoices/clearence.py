@@ -72,6 +72,9 @@ def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                         csid = key[0]['csid']
                         company_name = company
                         secret = key[0]['secret']
+                        # invoice_doc = frappe.get_doc('Sales Invoice' , invoice_number  )
+
+                        # invoice_doc.db_set('custom_pih',encoded_hash, commit=True,update_modified=True)
 
                         payload = json.dumps({
                         "invoiceHash": encoded_hash,
@@ -136,18 +139,26 @@ def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                                 
                                 msg = msg + "Status Code: " + str(response.status_code) + "<br><br> "
                                 msg = msg + "Zatca Response: " + response.text + "<br><br> "
-                                frappe.msgprint(msg)
+                                # frappe.msgprint(msg)
                                 # pih_data = json.loads(settings.get("pih", "{}"))
                                 # updated_pih_data = update_json_data_pih(pih_data, company_name,encoded_hash)
                                 # settings.set("pih", json.dumps(updated_pih_data))
                                 # settings.save(ignore_permissions=True)
+
+
                                 
                                 invoice_doc = frappe.get_doc('Sales Invoice' , invoice_number )
                                 invoice_doc.db_set('custom_uuid' , uuid1 , commit=True  , update_modified=True)
                                 invoice_doc.db_set('custom_zatca_status' , "CLEARED" , commit=True  , update_modified=True)
-                                
-                               
-                                
+                                invoice_doc.db_set('custom_pih',encoded_hash, commit=True,update_modified=True)
+                                invoice_doc.submit()
+                                frappe.msgprint(msg)
+                                frappe.publish_realtime(
+                                    event="refresh_page",  # Define an event name
+                                    message={"message": msg},  # You can add more details if needed
+                                    user=frappe.session.user  # Optional: Only notify the user who performed the action
+                                )
+
                                 data=json.loads(response.text)
                                 base64_xml = data["clearedInvoice"] 
                                 xml_cleared= base64.b64decode(base64_xml).decode('utf-8')
@@ -167,6 +178,7 @@ def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                                 error_Log()
                             
                     except Exception as e:
+
                         frappe.throw("error in clearance api: jjjjjjjjj " + str(e) )
 
 def get_API_url(url):

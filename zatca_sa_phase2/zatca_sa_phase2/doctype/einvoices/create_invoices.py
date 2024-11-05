@@ -143,6 +143,7 @@ def removeTags(finalzatcaxml):
 def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= False):
                     # generate_qr_code_base_64(invoice_number=invoice_number)
                     # compliance_type = "1"
+                    print("11")
                     try:    
                             # create_compliance_x509()
                             # frappe.throw("Created compliance x509 certificate")
@@ -264,8 +265,8 @@ def zatca_Background_on_submit(doc, method=None):
                                                 
                         
             
-                        if sales_invoice_doc.docstatus in [0,2]:
-                            frappe.throw("Please submit the invoice before sending to Zatca:  " + str(invoice_number))
+                        # if sales_invoice_doc.docstatus in [0,2]:
+                        #     frappe.throw("Please submit the invoice before sending to Zatca:  " + str(invoice_number))
                             
                         if sales_invoice_doc.custom_zatca_status == "REPORTED" or sales_invoice_doc.custom_zatca_status == "CLEARED":
                             frappe.throw("Already submitted to Zakat and Tax Authority")

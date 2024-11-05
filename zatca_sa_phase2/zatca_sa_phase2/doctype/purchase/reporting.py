@@ -149,7 +149,7 @@ def reporting_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,p_invoic
                                 
                                 msg = msg + "Status Code: " + str(response.status_code) + "<br><br> "
                                 msg = msg + "Zatca Response: " + response.text + "<br><br> "
-                                frappe.msgprint(msg)
+                                # frappe.msgprint(msg)
                                 # pih_data = json.loads(settings.get("pih", "{}"))
                                 # updated_pih_data = update_json_data_pih(pih_data, company_name, encoded_hash)
                                 # settings.set("pih", json.dumps(updated_pih_data))
@@ -158,8 +158,10 @@ def reporting_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,p_invoic
                                 invoice_doc = frappe.get_doc('Purchase Invoice' , invoice_number )
                                 invoice_doc.db_set('custom_uuid' , uuid1 , commit=True  , update_modified=True)
                                 invoice_doc.db_set('custom_zatca_status' , 'REPORTED' , commit=True  , update_modified=True)
+                                invoice_doc.db_set('custom_pih',encoded_hash, commit=True,update_modified=True)
+                                invoice_doc.submit()
+                                frappe.msgprint("Purchase Invoice submitted successfully. Please refresh the page.")
 
-                               
                                 # frappe.msgprint(xml_cleared)
                                 # success_Log(response.text,uuid1, invoice_number)
                                 

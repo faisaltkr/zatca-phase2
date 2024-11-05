@@ -15,10 +15,19 @@ def customer_Data(invoice,sales_invoice_doc):
                     # cbc_ID_4 = ET.SubElement(cac_PartyIdentification_1, "cbc:ID")
                     # cbc_ID_4.set("schemeID", "CRN")
                     # cbc_ID_4.text = customer_doc.tax_id
-                    if int(frappe.__version__.split('.')[0]) == 13:
-                        address = frappe.get_doc("Address", sales_invoice_doc.customer_address)    
-                    else:
-                        address = frappe.get_doc("Address", customer_doc.customer_primary_address)
+                    # if int(frappe.__version__.split('.')[0]) == 13:
+                    #     address = frappe.get_doc("Address", sales_invoice_doc.customer_address)    
+                    # else:
+                    #     address = frappe.get_doc("Address", customer_doc.customer_primary_address)
+
+                    address = frappe.get_doc("Address", customer_doc.customer_primary_address)
+                    print(address,"sdfdkjgdkfgjkfn")
+
+                    if not address:
+                        address = frappe.get_doc("Address", sales_invoice_doc.customer_address)
+                        print(address,"2222")
+                    # address = frappe.get_doc("Address", sales_invoice_doc.customer_address)    
+
                     cac_PostalAddress_1 = ET.SubElement(cac_Party_2, "cac:PostalAddress")
                     cbc_StreetName_1 = ET.SubElement(cac_PostalAddress_1, "cbc:StreetName")
                     cbc_StreetName_1.text = address.address_line1
