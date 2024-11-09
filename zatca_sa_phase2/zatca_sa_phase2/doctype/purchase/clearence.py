@@ -67,7 +67,7 @@ def error_Log():
 def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,p_invoice_doc):
                     try:
                         # frappe.msgprint("Clearance API")
-                        key = frappe.get_all('CSR Settings', fields=['company_name','csid','secret'])
+                        key = frappe.get_all('CSR Settings', fields=['company_name','csid','secret'], filters={'company_name': p_invoice_doc.company })
                         company =  key[0]['company_name']                              # company = settings.company
                         csid = key[0]['csid']
                         company_name = company

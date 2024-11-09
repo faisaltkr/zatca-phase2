@@ -67,7 +67,8 @@ def error_Log():
 def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_invoice_doc):
                     try:
                         # frappe.msgprint("Clearance API")
-                        key = frappe.get_all('CSR Settings', fields=['company_name','csid','secret'])
+                        key = frappe.get_all('CSR Settings', fields=['company_name','csid','secret'],
+                            filters={'company_name': sales_invoice_doc.company })
                         company =  key[0]['company_name']                              # company = settings.company
                         csid = key[0]['csid']
                         company_name = company
@@ -99,7 +100,7 @@ def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                             'Cookie': 'TS0106293e=0132a679c03c628e6c49de86c0f6bb76390abb4416868d6368d6d7c05da619c8326266f5bc262b7c0c65a6863cd3b19081d64eee99' }
                         else:
                             frappe.throw("Production CSID for company {} not found".format(company_name))
-                        response = requests.request("POST", url=get_API_url(url="invoices/clearance/single"), headers=headers, data=payload)
+                        response = requests.request("POST", url=get_API_url(url="invoices/clearance/single",sales_invoice_doc=sales_invoice_doc), headers=headers, data=payload)
                         
                         
                         if response.status_code  in (400,405,406,409 ):
@@ -181,9 +182,9 @@ def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
 
                         frappe.throw("error in clearance api: jjjjjjjjj " + str(e) )
 
-def get_API_url(url):
+def get_API_url(url,sales_invoice_doc):
                 try:
-                    key = frappe.get_all('CSR Settings', fields=['select_environment'])
+                    key = frappe.get_all('CSR Settings', fields=['select_environment'], filters={'company_name': sales_invoice_doc.company })
                     env =  key[0]['select_environment']                    
                     if env == "Sandbox":
                         url = f"https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal/{url}"
@@ -195,3 +196,4 @@ def get_API_url(url):
                 except Exception as e:
                     frappe.throw(" getting url failed"+ str(e) ) 
 
+# key = frappe.get_all('CSR Settings'

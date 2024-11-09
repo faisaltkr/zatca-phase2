@@ -113,9 +113,9 @@ def getInvoiceHash(canonicalized_xml):
                     frappe.throw(" error in Invoice hash of xml: "+ str(e) )
 
 
-def digital_signature(hash1):
+def digital_signature(hash1,p_invoice_doc):
                     try:
-                        key = frappe.get_all('CSR Settings', fields=['private_key'])
+                        key = frappe.get_all('CSR Settings', fields=['private_key'],filters={'company_name': p_invoice_doc.company })
                         key_file =  key[0]['private_key']
                         # settings = frappe.get_doc('CSR Settings')
                         # company = "mycompany"
@@ -153,11 +153,11 @@ def get_certificate_for_company(certificate_content, company_name):
                     except Exception as e:
                         frappe.throw("Error in getting certificate for company: " + str(e))
 
-def extract_certificate_details(customer_doc):
+def extract_certificate_details(customer_doc,p_invoice_doc):
             try:    
                     # settings = frappe.get_doc('Zatca ERPgulf Setting')  
                     company_name = "mycompany"
-                    key = frappe.get_all('CSR Settings', fields=['csid'])
+                    key = frappe.get_all('CSR Settings', fields=['csid'],filters={'company_name': p_invoice_doc.company })
                     certificate_content =  key[0]['csid']
                     # certificate_data_str = settings.get("certificate", "{}")
                     # try:
@@ -191,11 +191,11 @@ def extract_certificate_details(customer_doc):
     
 
 
-def certificate_hash():
+def certificate_hash(p_invoice_doc):
             
             try:
                 # company_name = "mycompany"
-                key = frappe.get_all('CSR Settings', fields=['csid'])
+                key = frappe.get_all('CSR Settings', fields=['csid'],filters={'company_name': p_invoice_doc.company })
                 certificate_data =  key[0]['csid']
                 # settings = frappe.get_doc('Zatca ERPgulf Setting')
                 # company = settings.company

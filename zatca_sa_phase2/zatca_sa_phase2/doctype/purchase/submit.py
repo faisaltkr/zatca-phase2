@@ -81,13 +81,13 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                             tag_removed_xml = removeTags(file_content)
                             canonicalized_xml = canonicalize_xml(tag_removed_xml)
                             hash1, encoded_hash = getInvoiceHash(canonicalized_xml)
-                            encoded_signature = digital_signature(hash1)
-                            issuer_name,serial_number = extract_certificate_details(customer_doc=supplier_doc)
-                            encoded_certificate_hash=certificate_hash()
-                            namespaces,signing_time=signxml_modify(customer_doc=supplier_doc)
+                            encoded_signature = digital_signature(hash1,p_invoice_doc)
+                            issuer_name,serial_number = extract_certificate_details(customer_doc=supplier_doc,p_invoice_doc=p_invoice_doc)
+                            encoded_certificate_hash=certificate_hash(p_invoice_doc)
+                            namespaces,signing_time=signxml_modify(customer_doc=supplier_doc,p_invoice_doc=p_invoice_doc)
                             signed_properties_base64=generate_Signed_Properties_Hash(signing_time,issuer_name,serial_number,encoded_certificate_hash)
-                            populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_properties_base64,encoded_hash)
-                            tlv_data = generate_tlv_xml()
+                            populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_properties_base64,encoded_hash,p_invoice_doc)
+                            tlv_data = generate_tlv_xml(p_invoice_doc=p_invoice_doc)
                             # print(tlv_data)
                             tagsBufsArray = []
                             for tag_num, tag_value in tlv_data.items():
@@ -95,7 +95,7 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                             qrCodeBuf = b"".join(tagsBufsArray)
                             qrCodeB64 = base64.b64encode(qrCodeBuf).decode('utf-8')
                             update_Qr_toXml(qrCodeB64)
-                            signed_xmlfile_name=structuring_signedxml()
+                            signed_xmlfile_name=structuring_signedxml(p_invoice_doc)
                             
                             # generate_xml_hash()
                             if compliance_type == "0":
@@ -108,7 +108,7 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                                     attach_QR_Image(qrCodeB64,p_invoice_doc)
                             else:  # if it a compliance test
                                 # frappe.msgprint("Compliance test")
-                                compliance_api_call(uuid1, encoded_hash, signed_xmlfile_name)
+                                compliance_api_call(uuid1, encoded_hash, signed_xmlfile_name,p_invoice_doc)
                                 attach_QR_Image(qrCodeB64,p_invoice_doc)
                     except:       
                             frappe.log_error(title='Zatca invoice call failed', message=frappe.get_traceback())

@@ -24,9 +24,9 @@ def xml_base64_Decode(signed_xmlfile_name):
                     except Exception as e:
                         frappe.msgprint("Error in xml base64:  " + str(e) )
 
-def get_API_url(url):
+def get_API_url(url,sales_invoice_doc):
                 try:
-                    key = frappe.get_all('CSR Settings', fields=['select_environment'])
+                    key = frappe.get_all('CSR Settings', fields=['select_environment'], filters={'company_name': sales_invoice_doc.company })
                     env =  key[0]['select_environment']                    
                     if env == "Sandbox":
                         url = f"https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal/{url}"
@@ -85,7 +85,7 @@ def reporting_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                         # company = settings.company
                         # company_name = frappe.db.get_value("Company", company, "abbr")
 
-                        key = frappe.get_all('CSR Settings', fields=['company_name','csid','secret'])
+                        key = frappe.get_all('CSR Settings', fields=['company_name','csid','secret'], filters={'company_name': sales_invoice_doc.company })
                         company_name =  key[0]['company_name']   
                         payload = json.dumps({
                         "invoiceHash": encoded_hash,
@@ -113,7 +113,7 @@ def reporting_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                         else:
                             frappe.throw("Production CSID for company {} not found".format(company_name))
                         try:
-                            response = requests.request("POST", url=get_API_url(url="invoices/reporting/single"), headers=headers, data=payload)
+                            response = requests.request("POST", url=get_API_url(url="invoices/reporting/single",sales_invoice_doc=sales_invoice_doc), headers=headers, data=payload)
                             if response.status_code  in (400,405,406,409 ):
                                 invoice_doc = frappe.get_doc('Sales Invoice' , invoice_number )
                                 invoice_doc.db_set('custom_uuid' , 'Not Submitted' , commit=True  , update_modified=True)

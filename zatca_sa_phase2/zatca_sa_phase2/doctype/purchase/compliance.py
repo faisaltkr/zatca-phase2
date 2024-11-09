@@ -24,9 +24,9 @@ def get_csid_for_company(basic_auth_data, company_name):
                         frappe.throw("Error in getting csid for company:  " + str(e) )
                         
                         
-def get_API_url(base_url):
+def get_API_url(base_url,p_invoice_doc):
                 try:
-                    key = frappe.get_all('CSR Settings', fields=['select_environment'])
+                    key = frappe.get_all('CSR Settings', fields=['select_environment'],filters={'company_name': p_invoice_doc.company })
                     env =  key[0]['select_environment']                    
                     if env == "Sandbox":
                         url = f"https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal/{base_url}"
@@ -40,9 +40,9 @@ def get_API_url(base_url):
                     frappe.throw(" getting url failed"+ str(e) ) 
 
 
-def compliance_api_call(uuid1,encoded_hash,signed_xmlfile_name):
+def compliance_api_call(uuid1,encoded_hash,signed_xmlfile_name,p_invoice_doc):
                 try:                        
-                    key = frappe.get_all('CSR Settings', fields=['company_name','csid','secret'])
+                    key = frappe.get_all('CSR Settings', fields=['company_name','csid','secret'],filters={'company_name': p_invoice_doc.company })
                     company =  key[0]['company_name']      
                     csid = key[0]['csid']
                     # settings = frappe.get_doc('Zatca ERPgulf Setting')

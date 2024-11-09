@@ -189,9 +189,11 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
                             tag_removed_xml = removeTags(file_content)
                             canonicalized_xml = canonicalize_xml(tag_removed_xml)
                             hash1, encoded_hash = getInvoiceHash(canonicalized_xml)
-                            encoded_signature = digital_signature(hash1)
-                            issuer_name,serial_number = extract_certificate_details(customer_doc=customer_doc)
-                            encoded_certificate_hash=certificate_hash()
+                            encoded_signature = digital_signature(hash1,sales_invoice_doc)
+                            print(2,"3333")
+                            issuer_name,serial_number = extract_certificate_details(customer_doc=customer_doc,sales_invoice_doc=sales_invoice_doc)
+                            encoded_certificate_hash=certificate_hash(sales_invoice_doc)
+                            print(4,"sssss")
                             namespaces,signing_time=signxml_modify(customer_doc=customer_doc,sales_invoice_doc=sales_invoice_doc)
                             signed_properties_base64=generate_Signed_Properties_Hash(signing_time,issuer_name,serial_number,encoded_certificate_hash)
                             populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_properties_base64,encoded_hash,sales_invoice_doc)
@@ -214,7 +216,7 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
                                     attach_QR_Image(qrCodeB64,sales_invoice_doc)
                             else:  # if it a compliance test
                                 # frappe.msgprint("Compliance test")
-                                compliance_api_call(uuid1, encoded_hash, signed_xmlfile_name)
+                                compliance_api_call(uuid1, encoded_hash, signed_xmlfile_name,sales_invoice_doc)
                                 attach_QR_Image(qrCodeB64,sales_invoice_doc)
                     except:       
                             frappe.log_error(title='Zatca invoice call failed', message=frappe.get_traceback())
@@ -275,3 +277,5 @@ def zatca_Background_on_submit(doc, method=None):
                         
                     except Exception as e:
                         frappe.throw("Error in background call:  " + str(e) )
+
+# key = frappe.get_all('CSR Settings'

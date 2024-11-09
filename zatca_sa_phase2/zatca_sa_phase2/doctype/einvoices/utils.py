@@ -15,6 +15,9 @@ import pyqrcode
 from zatca_sa_phase2.zatca_sa_phase2.doctype.csr_settings.utils.get_values import get_zatca_settings
 
 
+# def get_company(company_name):
+#     key = frappe.get_all('CSR Settings', fields=['company_name','csid','secret'])
+#     print(key)
 # Get the current date
 
 def dateformat():
@@ -112,9 +115,9 @@ def getInvoiceHash(canonicalized_xml):
                     frappe.throw(" error in Invoice hash of xml: "+ str(e) )
 
 
-def digital_signature(hash1):
+def digital_signature(hash1,sales_invoice_doc):
                     try:
-                        key = frappe.get_all('CSR Settings', fields=['private_key'])
+                        key = frappe.get_all('CSR Settings', fields=['private_key'],filters={'company_name': sales_invoice_doc.company })
                         key_file =  key[0]['private_key']
                         # settings = frappe.get_doc('CSR Settings')
                         # company = "mycompany"
@@ -152,11 +155,11 @@ def get_certificate_for_company(certificate_content, company_name):
                     except Exception as e:
                         frappe.throw("Error in getting certificate for company: " + str(e))
 
-def extract_certificate_details(customer_doc):
+def extract_certificate_details(customer_doc,sales_invoice_doc):
             try:    
                     # settings = frappe.get_doc('Zatca ERPgulf Setting')  
                     company_name = "mycompany"
-                    key = frappe.get_all('CSR Settings', fields=['csid'])
+                    key = frappe.get_all('CSR Settings', fields=['csid'],filters={'company_name': sales_invoice_doc.company })
                     certificate_content =  key[0]['csid']
                     # certificate_data_str = settings.get("certificate", "{}")
                     # try:
@@ -190,11 +193,11 @@ def extract_certificate_details(customer_doc):
     
 
 
-def certificate_hash():
+def certificate_hash(sales_invoice_doc):
             
             try:
                 # company_name = "mycompany"
-                key = frappe.get_all('CSR Settings', fields=['csid'])
+                key = frappe.get_all('CSR Settings', fields=['csid'],filters={'company_name': sales_invoice_doc.company })
                 certificate_data =  key[0]['csid']
                 # settings = frappe.get_doc('Zatca ERPgulf Setting')
                 # company = settings.company
@@ -219,8 +222,8 @@ def certificate_hash():
 
 def signxml_modify(customer_doc,sales_invoice_doc):
                 try:
-                    encoded_certificate_hash= certificate_hash()
-                    issuer_name, serial_number = extract_certificate_details(customer_doc=customer_doc)
+                    encoded_certificate_hash= certificate_hash(sales_invoice_doc)
+                    issuer_name, serial_number = extract_certificate_details(customer_doc=customer_doc,sales_invoice_doc=sales_invoice_doc)
                     original_invoice_xml = etree.parse(frappe.local.site + f'/private/files/finalzatcaxml_{sales_invoice_doc.name}.xml')
                     root = original_invoice_xml.getroot()
                     namespaces = {
@@ -290,7 +293,7 @@ def populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_prope
             updated_invoice_xml = etree.parse(frappe.local.site + f'/private/files/after_step_4_{sales_invoice_doc.name}.xml')
             root3 = updated_invoice_xml.getroot()
             company_name = "mycompany"
-            key = frappe.get_all('CSR Settings', fields=['csid'])
+            key = frappe.get_all('CSR Settings', fields=['csid'],filters={'company_name': sales_invoice_doc.company })
             content =  key[0]['csid']
             # settings = frappe.get_doc('Zatca ERPgulf Setting')
             # company = settings.company
@@ -344,14 +347,14 @@ def update_json_data_public_key(existing_data, company_name, public_key):
                 except Exception as e:
                     frappe.throw("Error updating JSON data for public key: " + str(e))
 
-def create_public_key():
+def create_public_key(sales_invoice_doc):
                 try:
                     # settings = frappe.get_doc('Zatca ERPgulf Setting')
                     # company = settings.company
                     # company_name = frappe.db.get_value("Company", company, "abbr")
                     certificate_data_str = "MIICGjCCAb+gAwIBAgIGAZFWof7gMAoGCCqGSM49BAMCMBUxEzARBgNVBAMMCmVJbnZvaWNpbmcwHhcNMjQwODE1MTUyMjE3WhcNMjkwODE0MjEwMDAwWjBiMQswCQYDVQQGEwJTQTEWMBQGA1UECwwNUml5YWRoIEJyYW5jaDETMBEGA1UECgwKRXhvbmUgVGVjaDEmMCQGA1UEAwwdVFNULTg4NjQzMTE0NS0zOTk5OTk5OTk5MDAwMDMwVjAQBgcqhkjOPQIBBgUrgQQACgNCAASwEDiQG88p6iIz4DjJkDURlkJBkf/CRlnfDWD9B2mDjI+J4cCXBh+WCjT+ScCnxwMeqKW4ROcguS/hIO6VQBYeo4GwMIGtMAwGA1UdEwEB/wQCMAAwgZwGA1UdEQSBlDCBkaSBjjCBizE7MDkGA1UEBAwyMS1UU1R8Mi1UU1R8My1lZDIyZjFkOC1lNmEyLTExMTgtOWI1OC1kOWE4ZjExZTQ0NWYxHzAdBgoJkiaJk/IsZAEBDA8zOTk5OTk5OTk5MDAwMDMxDTALBgNVBAwMBDExMDAxDzANBgNVBBoMBlJpeWFkaDELMAkGA1UEDwwCSVQwCgYIKoZIzj0EAwIDSQAwRgIhAMBs0bS3fKmGdoj+l+xRkVZUcp1QtJL3DjvG7BOXNixGAiEAsu1i9NuDUcobfbqrjKY9ywI9YOxwa2xAfvwDNycjDsE="
                     # company_name = "mycompany"
-                    key = frappe.get_all('CSR Settings', fields=['company_name','csid','public_key'])
+                    key = frappe.get_all('CSR Settings', fields=['company_name','csid','public_key'],filters={'company_name': sales_invoice_doc.company })
                     base_64 =  key[0]['csid']
                     company_name = key[0]['company_name']
 
@@ -399,14 +402,14 @@ def get_public_key_for_company(data, company_name):
             except Exception as e:
                 frappe.throw("Error in getting public key for company: " + str(e))
 
-def extract_public_key_data():
+def extract_public_key_data(sales_invoice_doc):
             try:
                 # settings = frappe.get_doc('Zatca ERPgulf Setting')
                 # company = settings.company
                 # company_name = frappe.db.get_value("Company", company, "abbr")
                 # public_key_data_str = settings.get("public_key", "{}")
                 # company_name = "mycompany"
-                key = frappe.get_all('CSR Settings', fields=['csid','public_key'])
+                key = frappe.get_all('CSR Settings', fields=['csid','public_key'],filters={'company_name': sales_invoice_doc.company })
                 base_64 =  key[0]['csid']
                 public_key_data_str =  key[0]['public_key']
         
@@ -426,10 +429,10 @@ def extract_public_key_data():
             except Exception as e:
                     frappe.throw(" error in extracting public key data: "+ str(e) )
 
-def tag8_publickey():
+def tag8_publickey(sales_invoice_doc):
                     try:
                         # create_public_key()
-                        base64_encoded = extract_public_key_data() 
+                        base64_encoded = extract_public_key_data(sales_invoice_doc) 
                         
                         byte_data = base64.b64decode(base64_encoded)
                         hex_data = binascii.hexlify(byte_data).decode('utf-8')
@@ -443,7 +446,7 @@ def tag8_publickey():
                         frappe.throw(" error in tag 8 from public key: "+ str(e) )
 
 
-def tag9_signature_ecdsa():
+def tag9_signature_ecdsa(sales_invoice_doc):
             try:
 
                 # settings = frappe.get_doc('Zatca ERPgulf Setting')
@@ -451,7 +454,7 @@ def tag9_signature_ecdsa():
                 # company_name = frappe.db.get_value("Company", company, "abbr")
                 # certificate_data_str = settings.get("certificate", "{}")
                 company_name = "mycompany"
-                key = frappe.get_all('CSR Settings', fields=['csid','csr'])
+                key = frappe.get_all('CSR Settings', fields=['csid','csr'],filters={'company_name': sales_invoice_doc.company })
                 certificate_content =  key[0]['csid']
                 # certificate_content =  key[0]['csr']
                 # print(certificate_content,"certificate content")
@@ -527,9 +530,9 @@ def generate_tlv_xml(sales_invoice_doc):
                                     result_dict[tag] = xpath  
                             
                             result_dict[3] = issue_date_time
-                            result_dict[8] = tag8_publickey()
+                            result_dict[8] = tag8_publickey(sales_invoice_doc)
                             
-                            result_dict[9] = tag9_signature_ecdsa()
+                            result_dict[9] = tag9_signature_ecdsa(sales_invoice_doc)
                             
                             return result_dict
                     except Exception as e:
