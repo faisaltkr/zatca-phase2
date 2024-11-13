@@ -144,8 +144,8 @@ def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,p_invoic
                                 invoice_doc.db_set('custom_uuid' , uuid1 , commit=True  , update_modified=True)
                                 invoice_doc.db_set('custom_zatca_status' , "CLEARED" , commit=True  , update_modified=True)
                                 invoice_doc.db_set('custom_pih',encoded_hash, commit=True,update_modified=True)
-                                invoice_doc.submit()
-                                frappe.msgprint("Purchase Invoice submitted successfully. Please refresh the page.")
+                                # invoice_doc.submit()
+                                # frappe.msgprint("Purchase Invoice submitted successfully.")
 
                                 data=json.loads(response.text)
                                 base64_xml = data["clearedInvoice"] 

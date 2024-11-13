@@ -15,10 +15,7 @@ import pyqrcode
 from zatca_sa_phase2.zatca_sa_phase2.doctype.csr_settings.utils.get_values import get_zatca_settings
 
 
-# def get_company(company_name):
-#     key = frappe.get_all('CSR Settings', fields=['company_name','csid','secret'])
-#     print(key)
-# Get the current date
+
 
 def dateformat():
     current_date = datetime.now()
@@ -107,7 +104,6 @@ def getInvoiceHash(canonicalized_xml):
             #Code corrected by Farook K - ERPGulf
             hash_object = hashlib.sha256(canonicalized_xml.encode())
             hash_hex = hash_object.hexdigest()
-            # print(hash_hex)
             hash_base64 = base64.b64encode(bytes.fromhex(hash_hex)).decode('utf-8')
             # base64_encoded = base64.b64encode(hash_hex.encode()).decode()
             return hash_hex,hash_base64
@@ -158,9 +154,10 @@ def get_certificate_for_company(certificate_content, company_name):
 def extract_certificate_details(customer_doc,sales_invoice_doc):
             try:    
                     # settings = frappe.get_doc('Zatca ERPgulf Setting')  
-                    company_name = "mycompany"
-                    key = frappe.get_all('CSR Settings', fields=['csid'],filters={'company_name': sales_invoice_doc.company })
+                    # company_name = "mycompany"
+                    key = frappe.get_all('CSR Settings', fields=['csid','company_name'],filters={'company_name': sales_invoice_doc.company })
                     certificate_content =  key[0]['csid']
+                    company_name = key[0]['company_name']
                     # certificate_data_str = settings.get("certificate", "{}")
                     # try:
                     #     certificate_data = json.loads(certificate_data_str)
@@ -199,6 +196,8 @@ def certificate_hash(sales_invoice_doc):
                 # company_name = "mycompany"
                 key = frappe.get_all('CSR Settings', fields=['csid'],filters={'company_name': sales_invoice_doc.company })
                 certificate_data =  key[0]['csid']
+                
+                
                 # settings = frappe.get_doc('Zatca ERPgulf Setting')
                 # company = settings.company
                 # company_name = frappe.db.get_value("Company", company, "abbr")
@@ -279,9 +278,7 @@ def generate_Signed_Properties_Hash(signing_time,issuer_name,serial_number,encod
                 utf8_bytes = xml_string_rendered.encode('utf-8')
                 hash_object = hashlib.sha256(utf8_bytes)
                 hex_sha256 = hash_object.hexdigest()
-                # print(hex_sha256)
                 signed_properties_base64=  base64.b64encode(hex_sha256.encode('utf-8')).decode('utf-8')
-                # print(signed_properties_base64)
                 return signed_properties_base64
             except Exception as e:
                     frappe.throw(" error in generating signed properties hash: "+ str(e) )
@@ -362,7 +359,6 @@ def create_public_key(sales_invoice_doc):
 
                     # print(base_64 ,)
                     # base_64 =  key[0]['public_key']
-                    # print(public_key)
                     # TODO public key
                     try:
                         certificate_data = json.loads(certificate_data_str)
@@ -453,11 +449,11 @@ def tag9_signature_ecdsa(sales_invoice_doc):
                 # company = settings.company
                 # company_name = frappe.db.get_value("Company", company, "abbr")
                 # certificate_data_str = settings.get("certificate", "{}")
-                company_name = "mycompany"
-                key = frappe.get_all('CSR Settings', fields=['csid','csr'],filters={'company_name': sales_invoice_doc.company })
+                # company_name = "mycompany"
+                key = frappe.get_all('CSR Settings', fields=['csid','csr','company_name','public_key','private_key'],filters={'company_name': sales_invoice_doc.company })
                 certificate_content =  key[0]['csid']
+                company_name = key[0]['company_name']
                 # certificate_content =  key[0]['csr']
-                # print(certificate_content,"certificate content")
 
                 # certificate_content = "MIIB9TCCAZsCAQAwYjELMAkGA1UEBhMCU0ExFjAUBgNVBAsMDVJpeWFkaCBCcmFuY2gxEzARBgNVBAoMCkV4b25lIFRlY2gxJjAkBgNVBAMMHVRTVC04ODY0MzExNDUtMzk5OTk5OTk5OTAwMDAzMFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAEUcQJ/ZhKExLCP5IU7+2OfQ5nuqYkLpCJoYWb9hHRtFwEDLuV6NSkWE/2SaDH4oaMqiyi12tjBwV1xmorxZJ1PaCB2TCB1gYJKoZIhvcNAQkOMYHIMIHFMCQGCSsGAQQBgjcUAgQXExVQUkVaQVRDQS1jb2RlLVNpZ25pbmcwgZwGA1UdEQSBlDCBkaSBjjCBizE7MDkGA1UEBAwyMS1UU1R8Mi1UU1R8My1lZDIyZjFkOC1lNmEyLTExMTgtOWI1OC1kOWE4ZjExZTQ0NWYxHzAdBgoJkiaJk/IsZAEBDA8zOTk5OTk5OTk5MDAwMDMxDTALBgNVBAwMBDExMDAxDzANBgNVBBoMBlJpeWFkaDELMAkGA1UEDwwCSVQwCgYIKoZIzj0EAwIDSAAwRQIgax3Th6JMFrHRbp2vDzZbOmgyZm2/Yx6bfz/Zim3ZgSwCIQDpTCpYP5BkkY4IFZOEJ50ite2gmJxkIlgzxZcJLrzauQ=="
 
@@ -473,7 +469,6 @@ def tag9_signature_ecdsa(sales_invoice_doc):
                 formatted_certificate = "-----BEGIN CERTIFICATE-----\n"
                 formatted_certificate += "\n".join(certificate_content[i:i+64] for i in range(0, len(certificate_content), 64))
                 formatted_certificate += "\n-----END CERTIFICATE-----\n"
-                # print(formatted_certificate)
                 certificate_bytes = formatted_certificate.encode('utf-8')
                 cert = x509.load_pem_x509_certificate(certificate_bytes, default_backend())
                 signature = cert.signature

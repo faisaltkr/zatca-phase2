@@ -10,15 +10,16 @@ def company():
     }
 
 @frappe.whitelist()
-def get_company_name():
+def get_company_name(company_name):
         # Get the document
-    doc = frappe.get_all('Company',fields = ['name','country','default_currency','tax_id','domain',])
+    print(111)
+    doc = frappe.get_all('Company',fields = ['name','country','default_currency','tax_id','domain'],filters={'company_name': company_name })
     print(doc)
     company_billing_addresses = []
-    try:
-        set_additional_ids()
-    except Exception as e:
-        print(str(e),"sdkjfsldflsdnfl")
+    # try:
+    #     set_additional_ids()
+    # except Exception as e:
+    #     print(str(e),"sdkjfsldflsdnfl")
     for company in doc:
         # Get billing addresses linked to the current company
         billing_addresses = frappe.get_all('Address', 

@@ -1,51 +1,17 @@
-// Copyright (c) 2024, Insys Softwares and contributors
-// For license information, please see license.txt
-
-// frappe.your_hook_name = function(cur_doc) {
-//     // Replace with your actual HTML content for the extra tab
-//     var html_content = `
-//       <div class="custom-tab">
-//         <h2>Extra Tab</h2>
-//         <p>This is the content of the extra tab. You can display data from your library management app here using JavaScript.</p>
-//         <div id="dynamic-content"></div>  </div>
-//     `;
-  
-//     // Inject the HTML content into the sales invoice form using jQuery
-//     if (cur_doc.doctype === "Sales Invoice") {
-//       $(document).ready(function() {
-//         // Replace with the appropriate selector to target the desired location in the form
-//         $("#sales_invoice_form").find(".frappe-form-group").last().after(html_content);
-  
-//         // Example: Fetch data from library management app using frappe.get_doc (replace with your logic)
-//         var library_item_code = cur_doc.get("library_item_code");  // Assuming a library item code field exists
-//         if (library_item_code) {
-//           frappe.get_doc("Library Item", library_item_code, function(library_item) {
-//             var content = `
-//               <p>Borrower Name: ${library_item.borrower_name}</p>
-//               <p>Due Date: ${library_item.due_date}</p>
-//             `;
-//             $("#dynamic-content").html(content);  // Update the placeholder with fetched data
-//           });
-//         }
-//       });
-//     }
-//   };
-
-console.log("jjjjjjjjjjjjj")
-
 
 frappe.ui.form.on('CSR Settings', {
-    onload: function(frm) {
-    
-        // Fetch value from the database asynchronously
+
+    company_name: function(frm) {
+        // This function is triggered every time the Company field changes
+        const company_name = frm.doc.company_name;
+        // Call your custom function and pass the selected company name
         frappe.call({
             method: 'zatca_sa_phase2.zatca_sa_phase2.doctype.csr_settings.utils.get_values.get_company_name',
             args: {
-                // Add any arguments needed for your method here
+                company_name: company_name
             },
             callback: function(response) {
                 // Check if the call was successful and the value was retrieved
-                console.log(response)
                 if (response.message) {
                     // Set the value to the field
                     frm.set_value('company_name', response.message.company_name);
@@ -59,9 +25,12 @@ frappe.ui.form.on('CSR Settings', {
                     frappe.msgprint('Failed to get value from the database.');
                 }
             }
-        });
-    },
+        });    
+},
+
     refresh: function(frm) {
+        // frm.set_value('company_name', '');
+
             // Bind the custom button click event
             frm.fields_dict['generate_csr'].$input.on('click', function() {
                 let formData = frm.doc;
@@ -179,16 +148,3 @@ frappe.ui.form.on('CSR Settings', {
         },
 
 });
-
-// function validate_value_number(frm) {
-//     const value_number = frm.doc.value_number_fieldname;
-
-//     if (value_number=='Commercial Registration Number(CRN)') {
-//         frappe.msgprint(__('Value Number must be 10 Digit'));
-//         frappe.validated = false;
-//     }
-// }
-
-// Client Script for Sales Invoice
-
-    

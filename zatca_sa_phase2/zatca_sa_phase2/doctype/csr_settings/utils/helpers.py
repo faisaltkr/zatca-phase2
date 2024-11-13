@@ -11,7 +11,6 @@ def has_all_keys(dictionary, key_list):
 @frappe.whitelist()
 def helpers(name):
     current_dict = json.loads(name)
-    print(current_dict,"dfdf")
     required_fields = [
                         "name",
                         "company_name",
@@ -140,7 +139,6 @@ def helpers(name):
 def csid(dict):
     current_dict = json.loads(dict)
     from .generate_keys import get_csid
-    print(current_dict,"current_dict")
     # name = 
     try:
         env = current_dict.get('select_environment')

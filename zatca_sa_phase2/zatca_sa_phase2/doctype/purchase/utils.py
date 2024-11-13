@@ -156,9 +156,11 @@ def get_certificate_for_company(certificate_content, company_name):
 def extract_certificate_details(customer_doc,p_invoice_doc):
             try:    
                     # settings = frappe.get_doc('Zatca ERPgulf Setting')  
-                    company_name = "mycompany"
-                    key = frappe.get_all('CSR Settings', fields=['csid'],filters={'company_name': p_invoice_doc.company })
+                    # company_name = "mycompany"
+                    key = frappe.get_all('CSR Settings', fields=['csid','company_name'],filters={'company_name': p_invoice_doc.company })
                     certificate_content =  key[0]['csid']
+                    company_name = key[0]['company_name']
+
                     # certificate_data_str = settings.get("certificate", "{}")
                     # try:
                     #     certificate_data = json.loads(certificate_data_str)
@@ -285,13 +287,13 @@ def generate_Signed_Properties_Hash(signing_time,issuer_name,serial_number,encod
                     frappe.throw(" error in generating signed properties hash: "+ str(e) )
 
 
-def populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_properties_base64,encoded_hash):
+def populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_properties_base64,encoded_hash,p_invoice_doc):
         try:
             
             updated_invoice_xml = etree.parse(frappe.local.site + '/private/files/after_step_4.xml')
             root3 = updated_invoice_xml.getroot()
-            company_name = "mycompany"
-            key = frappe.get_all('CSR Settings', fields=['csid'])
+            # company_name = "mycompany"
+            key = frappe.get_all('CSR Settings', fields=['csid'],filters={'company_name': p_invoice_doc.company })
             content =  key[0]['csid']
             # settings = frappe.get_doc('Zatca ERPgulf Setting')
             # company = settings.company
@@ -345,15 +347,17 @@ def update_json_data_public_key(existing_data, company_name, public_key):
                 except Exception as e:
                     frappe.throw("Error updating JSON data for public key: " + str(e))
 
-def create_public_key():
+def create_public_key(p_invoice_doc):
                 try:
                     # settings = frappe.get_doc('Zatca ERPgulf Setting')
                     # company = settings.company
                     # company_name = frappe.db.get_value("Company", company, "abbr")
                     # certificate_data_str = settings.get("certificate", "{}")
-                    company_name = "mycompany"
-                    key = frappe.get_all('CSR Settings', fields=['csid','public_key'])
+                    # company_name = "mycompany"
+                    key = frappe.get_all('CSR Settings', fields=['csid','public_key','company_name'],filters={'company_name': p_invoice_doc.company })
                     base_64 =  key[0]['csid']
+                    company_name = key[0]['company_name']
+
                     # base_64 =  key[0]['public_key']
                     # print(public_key)
                     # TODO public key
@@ -395,14 +399,14 @@ def get_public_key_for_company(data, company_name):
             except Exception as e:
                 frappe.throw("Error in getting public key for company: " + str(e))
 
-def extract_public_key_data():
+def extract_public_key_data(p_invoice_doc):
             try:
                 # settings = frappe.get_doc('Zatca ERPgulf Setting')
                 # company = settings.company
                 # company_name = frappe.db.get_value("Company", company, "abbr")
                 # public_key_data_str = settings.get("public_key", "{}")
-                company_name = "mycompany"
-                key = frappe.get_all('CSR Settings', fields=['csid','public_key'])
+                # company_name = "mycompany"
+                key = frappe.get_all('CSR Settings', fields=['csid','public_key'],filters={'company_name': p_invoice_doc.company })
                 base_64 =  key[0]['csid']
                 public_key_data_str =  key[0]['public_key']
         
@@ -422,10 +426,10 @@ def extract_public_key_data():
             except Exception as e:
                     frappe.throw(" error in extracting public key data: "+ str(e) )
 
-def tag8_publickey():
+def tag8_publickey(p_invoice_doc):
                     try:
-                        create_public_key()
-                        base64_encoded = extract_public_key_data() 
+                        create_public_key(p_invoice_doc)
+                        base64_encoded = extract_public_key_data(p_invoice_doc) 
                         
                         byte_data = base64.b64decode(base64_encoded)
                         hex_data = binascii.hexlify(byte_data).decode('utf-8')
@@ -439,16 +443,18 @@ def tag8_publickey():
                         frappe.throw(" error in tag 8 from public key: "+ str(e) )
 
 
-def tag9_signature_ecdsa():
+def tag9_signature_ecdsa(p_invoice_doc):
             try:
 
                 # settings = frappe.get_doc('Zatca ERPgulf Setting')
                 # company = settings.company
                 # company_name = frappe.db.get_value("Company", company, "abbr")
                 # certificate_data_str = settings.get("certificate", "{}")
-                company_name = "mycompany"
-                key = frappe.get_all('CSR Settings', fields=['csid'])
+                # company_name = "mycompany"
+                key = frappe.get_all('CSR Settings', fields=['csid','company_name'],filters={'company_name': p_invoice_doc.company })
                 certificate_content =  key[0]['csid']
+                company_name = key[0]['company_name']
+
                 # try:
                 #     certificate_data = json.loads(certificate_data_str)
                 # except json.JSONDecodeError:
@@ -473,7 +479,7 @@ def tag9_signature_ecdsa():
             except Exception as e:
                     frappe.throw(" error in tag 9 (signaturetag): "+ str(e) )
 
-def generate_tlv_xml():
+def generate_tlv_xml(p_invoice_doc):
                     try:
                             with open(frappe.local.site + "/private/files/final_xml_after_sign.xml", 'rb') as file:
                                 xml_data = file.read()
@@ -518,9 +524,9 @@ def generate_tlv_xml():
                                     result_dict[tag] = xpath  
                             
                             result_dict[3] = issue_date_time
-                            result_dict[8] = tag8_publickey()
+                            result_dict[8] = tag8_publickey(p_invoice_doc)
                             
-                            result_dict[9] = tag9_signature_ecdsa()
+                            result_dict[9] = tag9_signature_ecdsa(p_invoice_doc)
                             
                             return result_dict
                     except Exception as e:

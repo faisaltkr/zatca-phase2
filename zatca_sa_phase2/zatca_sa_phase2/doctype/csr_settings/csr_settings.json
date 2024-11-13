@@ -87,8 +87,9 @@
   },
   {
    "fieldname": "company_name",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Company Name",
+   "options": "Company",
    "reqd": 1
   },
   {
@@ -436,7 +437,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-09-22 09:37:24.586811",
+ "modified": "2024-11-12 04:39:23.654329",
  "modified_by": "Administrator",
  "module": "Zatca Sa Phase2",
  "name": "CSR Settings",
