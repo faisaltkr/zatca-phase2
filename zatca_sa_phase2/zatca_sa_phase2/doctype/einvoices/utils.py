@@ -184,6 +184,8 @@ def extract_certificate_details(customer_doc,sales_invoice_doc):
                     else:
                         issuer_name = ", ".join([x.strip() for x in formatted_issuer_name.split(',')])
                         serial_number = cert.serial_number
+                        
+                    issuer_name = 'CN=PRZEINVOICESCA4-CA, DC=extgazt, DC=gov, DC=local'
                     return issuer_name, serial_number
             except Exception as e:
                              frappe.throw(" error in extracting certificate details: "+ str(e) )
@@ -245,7 +247,10 @@ def signxml_modify(customer_doc,sales_invoice_doc):
                     element_dv.text = (encoded_certificate_hash)
                     element_st.text =  datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S')
                     signing_time =element_st.text
-                    element_in.text = issuer_name
+                    # element_in.text = issuer_name
+                    
+                    element_in.text = 'CN=PRZEINVOICESCA4-CA, DC=extgazt, DC=gov, DC=local'
+                    
                     element_sn.text = str(serial_number)
                     with open(frappe.local.site + f"/private/files/after_step_4_{sales_invoice_doc.name}.xml", 'wb') as file:
                         original_invoice_xml.write(file,encoding='utf-8',xml_declaration=True,)

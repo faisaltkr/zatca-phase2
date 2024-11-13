@@ -10,9 +10,9 @@ import frappe
 openssl_dir = "/usr/bin"
 
 
-def generatekeys(path,config_dict,name):
+def generatekeys(path,config_dict,name,company_name):
     # Generate private key
-        name = f"keys_{name}"
+        name = f"keys_{name}_{company_name}"
         os.makedirs(name, exist_ok=True) 
         subprocess.run([os.path.join(openssl_dir, 'openssl'), 'ecparam',
                         '-name', 'secp256k1', '-genkey', '-noout', '-out', f'{name}/{path}_PrivateKey.pem'])
@@ -32,9 +32,9 @@ def generatekeys(path,config_dict,name):
         return True , private_key_path, public_key_path,csr_path
 
 
-def get_csid(unit,name,otp):
+def get_csid(unit,name,otp,company_name):
     try:
-        with open(f"keys_{unit}/{name}_.csr", "r") as f:
+        with open(f"keys_{unit}_{company_name}/{name}_.csr", "r") as f:
             csr_contents = f.read()
     except Exception as e:
         print(str(e),"dkkdkdkdkdkk")
@@ -66,12 +66,12 @@ def get_csid(unit,name,otp):
         secret = response.json()['secret']
         update_frappe_doc(name,'compliance_request_id', response.json()['requestID'])
 
-        with open(f'keys_{unit}/{name}_certificate.txt', 'w') as f:
+        with open(f'keys_{unit}_{company_name}/{name}_certificate.txt', 'w') as f:
             f.write(decoded_token)
             # update_frappe_doc(name,'csr',decoded_token)
         print('certificate.txt'+' saved')
 
-        with open(f'keys_{unit}/{name}_binarySecurityToken.txt', 'w') as f:
+        with open(f'keys_{unit}_{company_name}/{name}_binarySecurityToken.txt', 'w') as f:
             f.write(binarySecurityToken)
             update_frappe_doc(name,'csid',decoded_token)
             update_frappe_doc(name,'csr',csr)
@@ -79,7 +79,7 @@ def get_csid(unit,name,otp):
 
         print('binarySecurityToken.txt'+' saved')
 
-        with open(f'keys_{unit}/{name}_secret.txt', 'w') as f:
+        with open(f'keys_{unit}_{company_name}/{name}_secret.txt', 'w') as f:
             f.write(secret)
             update_frappe_doc(name,'secret',secret)
 

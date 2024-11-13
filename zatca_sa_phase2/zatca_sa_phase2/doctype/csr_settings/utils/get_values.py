@@ -48,22 +48,6 @@ def get_company_name(company_name):
             company_billing_addresses.append(company_billing_address)
     return company_billing_addresses[0]
 
-# Call the function to get all company billing addresses
-# all_company_billing_addresses = get_company_name()
-
-# print(all_company_billing_addresses)
-# for company_billing_address in all_company_billing_addresses:
-#     print(f"Company: {company_billing_address['company_name']}, Address: {company_billing_address['address_line1']}, {company_billing_address['address_line2']}, {company_billing_address['city']}, {company_billing_address['state']}, {company_billing_address['country']}, {company_billing_address['pincode']}")        
-        # Get the field value
-        # field_value = doc.get(fieldname)
-        
-        # print(f"Value of the field '{fieldname}': {field_value}")
-
-    # except frappe.DoesNotExistError:
-        # print(f"Document {docname} of Doctype {doctype_name} does not exist.")
-        # pass
-
-# get_company_name()
 
 
 def get_zatca_settings():

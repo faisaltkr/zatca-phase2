@@ -36,18 +36,7 @@ def helpers(name):
         return{
             "message":"Please add all mandatory fields."  
     
-        } 
-    get_additional_doc = get_additial_ids_zatca()
-    print(get_additional_doc,"sdfjkhdkjfghkjdfhkjhdfjkgh")
-    if not get_additional_doc:
-        return {
-            "message":"Additional Ids required."
-        }
-    # if all([get_additional_doc[0].get('id_name',False),get_additional_doc[0].get('type_code',False),get_additional_doc[0].get('valueid_number',False)]):
-    #     return {
-    #         "message":"all fields in the Additional Ids is required."
-    #     }
-                                                                                
+        }                                                             
 
     config_dict = {
     "oid_section": "OIDS",
@@ -87,13 +76,12 @@ def helpers(name):
         }
     }   
 
-    print(config_dict)
 
     try:
         from .generate_keys import generatekeys
         from .generate_keys import update_frappe_doc
         from .issuer import generate_issue_details
-        status,p_path,pu_path,csr_path = generatekeys(current_dict.get('name'),config_dict,current_dict.get('business_unit'))
+        status,p_path,pu_path,csr_path = generatekeys(current_dict.get('name'),config_dict,current_dict.get('business_unit'),current_dict.get('company_name'))
 
         with open(p_path, "r") as f:
             private_key = f.read()
@@ -142,7 +130,7 @@ def csid(dict):
     # name = 
     try:
         env = current_dict.get('select_environment')
-        csid = get_csid(current_dict.get('business_unit'),current_dict.get('name'),current_dict.get('enter_otp'))
+        csid = get_csid(current_dict.get('business_unit'),current_dict.get('name'),current_dict.get('enter_otp'),current_dict.get('company_name'))
 
     
         return {
