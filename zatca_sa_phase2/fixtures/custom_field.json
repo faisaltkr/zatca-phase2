@@ -346,7 +346,7 @@
         "fieldtype": "Select",
         "hidden": 0,
         "insert_after": "custom_exemption_reason",
-        "label": "Exemption Reason",
+        "label": "Tax Category Value",
         "module": "Zatca Sa Phase2",
         "name": "Item Tax Template-tax_category_value",
         "options": "Select\nS\nZ\nE\nO",
@@ -620,5 +620,21 @@
         "read_only": 0,
         "translatable": 0,
         "unique": 0
-    }
+    },
+    {
+        "allow_on_submit": 0,
+        "doctype": "Custom Field",
+        "dt": "Sales Invoice",
+        "fieldname": "zatca_details_section",
+        "fieldtype": "Section Break",
+        "hidden": 0,
+        "insert_after": "e_invoicing_details_tab",
+        "label": "Zatca Details",
+        "module": "Zatca Sa Phase2",
+        "name": "Sales Invoice-zatca_details_section",
+        "options": null,
+        "read_only": 0,
+        "translatable": 0,
+        "unique": 0
+    },
 ]
