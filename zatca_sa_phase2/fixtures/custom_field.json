@@ -29,7 +29,7 @@
         "name": "Sales Invoice-custom_delivery_date",
         "options": null,
         "read_only": 0,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -81,7 +81,7 @@
         "non_negative": 0,
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -99,7 +99,7 @@
         "non_negative": 0,
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -117,7 +117,7 @@
         "non_negative": 0,
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -133,7 +133,7 @@
         "name": "Sales Invoice-custom_zatca_tax_category",
         "options": "Standard\nSimplified",
         "read_only": 0,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -150,7 +150,7 @@
         "name": "Sales Invoice-custom_pih",
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -167,7 +167,7 @@
         "name": "Sales Invoice-custom_ih",
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -183,7 +183,7 @@
         "name": "Sales Invoice-custom_submit_time",
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -200,7 +200,7 @@
         "name": "Sales Invoice-custom_icv",
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -217,7 +217,7 @@
         "name": "Sales Invoice-custom_xml_file",
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -234,7 +234,7 @@
         "name": "Sales Invoice-custom_qr_code_file",
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -250,7 +250,7 @@
         "name": "Sales Invoice-custom_zatca_validation_result",
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -283,7 +283,7 @@
         "name": "Sales Invoice-custom_invoice_transaction_type1",
         "options": "Default\nThird Party\nNominal Invoice\nExport Invoice\nSummary Invoice\nSelf Billed",
         "read_only": 0,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -300,7 +300,7 @@
         "name": "Sales Invoice-custom_invoice_transaction_type2",
         "options": "Default\nThird Party\nNominal Invoice\nSummary Invoice",
         "read_only": 0,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -317,7 +317,7 @@
         "name": "Item Tax Template-custom_exemption_reason_code",
         "options": "Default\nVATEX-SA-29\nVATEX-SA-29-7\nVATEX-SA-30\nVATEX-SA-32\nVATEX-SA-33\nVATEX-SA-34-1\nVATEX-SA-34-2\nVATEX-SA-34-3\nVATEX-SA-34-4\nVATEX-SA-34-5\nVATEX-SA-35\nVATEX-SA-36\nVATEX-SA-EDU\nVATEX-SA-HEA\nVATEX-SA-MLTRY\nVATEX-SA-OOS",
         "read_only": 0,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -334,7 +334,24 @@
         "name": "Item Tax Template-custom_exemption_reason",
         "options": "Select Reason\nFinancial services mentioned in Article 29 of the VAT Regulations\nLife insurance services mentioned in Article 29 of the VAT Regulations\nReal estate transactions mentioned in Article 30 of the VAT Regulations\nExport of goods\nExport of services\nThe international transport of Goods\ninternational transport of passengers",
         "read_only": 0,
-        "translatable": 1,
+        "translatable": 0,
+        "unique": 0
+    },
+    {
+        "allow_on_submit": 0,
+        "default": null,
+        "doctype": "Custom Field",
+        "dt": "Item Tax Template",
+        "fieldname": "tax_category_value",
+        "fieldtype": "Select",
+        "hidden": 0,
+        "insert_after": "custom_exemption_reason",
+        "label": "Exemption Reason",
+        "module": "Zatca Sa Phase2",
+        "name": "Item Tax Template-tax_category_value",
+        "options": "Select\nS\nZ\nE\nO",
+        "read_only": 0,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -386,7 +403,7 @@
         "non_negative": 0,
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -402,7 +419,7 @@
         "name": "Purchase Invoice-custom_zatca_tax_category",
         "options": "Standard\nSimplified",
         "read_only": 0,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -419,7 +436,7 @@
         "name": "Purchase Invoice-custom_pih",
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -436,7 +453,7 @@
         "name": "Purchase Invoice-custom_ih",
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -452,7 +469,7 @@
         "name": "Purchase Invoice-custom_submit_time",
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -469,7 +486,7 @@
         "name": "Purchase Invoice-custom_icv",
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -486,7 +503,7 @@
         "name": "Purchase Invoice-custom_xml_file",
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -503,7 +520,7 @@
         "name": "Purchase Invoice-custom_qr_code_file",
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -519,7 +536,7 @@
         "name": "Purchase Invoice-custom_zatca_validation_result",
         "options": null,
         "read_only": 1,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -536,7 +553,7 @@
         "name": "Purchase Invoice-custom_invoice_transaction_type1",
         "options": "Default\nThird Party\nNominal Invoice\nExport Invoice\nSummary Invoice\nSelf Billed",
         "read_only": 0,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -553,7 +570,7 @@
         "name": "Purchase Invoice-custom_invoice_transaction_type2",
         "options": "Default\nThird Party\nNominal Invoice\nSummary Invoice",
         "read_only": 0,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -569,7 +586,7 @@
         "name": "Item-custom_tax_inclusive",
         "options": "",
         "read_only": 0,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -585,7 +602,7 @@
         "name": "Item-item_name_arabic",
         "options": "",
         "read_only": 0,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     },
     {
@@ -601,7 +618,7 @@
         "name": "Item-company_name",
         "options": "Company",
         "read_only": 0,
-        "translatable": 1,
+        "translatable": 0,
         "unique": 0
     }
 ]
