@@ -1,5 +1,13 @@
 import frappe
+import math
 
+def round_up_to_four_decimals(number):
+    factor = 10 ** 4  # Scale to 4 decimal places
+    return math.ceil(number * factor) / factor
+
+def round_down_to_four_decimals(number):
+    factor = 10 ** 2  # Scale to 4 decimal places
+    return math.floor(number * factor) / factor
 
 def get_item_group_tax(item_group_name):
     # Fetch the tax template associated with the Item Group
@@ -15,7 +23,6 @@ def get_item_group_tax(item_group_name):
 def update_item_price(doc, method):
     # Check if the 'Tax Inclusive' checkbox is checked
     data = doc.as_dict()
-    print(data)
     tax =  data['taxes']
 
     if data['tax_inclusive']:
@@ -27,7 +34,7 @@ def update_item_price(doc, method):
             
             group  = data['item_group']
 
-            tax_rate =get_item_group_tax(group)
+            tax_rate = get_item_group_tax(group)
 
         # If a valid tax rate was found, calculate the price excluding tax
         if tax_rate > 0:
@@ -46,7 +53,6 @@ def update_item_price(doc, method):
             # Update the existing Item Price with the exclusive price
             frappe.db.set_value('Item Price', existing_price[0].name, 'price_list_rate', exclusive_price)
         else:
-            print("jjjjjjj",doc.item_code)
             new_item_price = frappe.get_doc({
                 'doctype': 'Item Price',
                 'item_code': data['item_code'],
