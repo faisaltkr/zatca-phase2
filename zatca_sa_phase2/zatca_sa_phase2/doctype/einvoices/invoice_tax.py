@@ -139,6 +139,7 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
 
             try:
                 sales_json = sales_invoice_doc.as_dict()
+                print(sales_json,"dfgdfgdfgdgdfgdfg")
                 total_tax = sum(single_item.net_amount * (frappe.get_doc('Item Tax Template', single_item.item_tax_template).taxes[0].tax_rate / 100)
                     for single_item in sales_invoice_doc.items)
                 #for foreign currency
@@ -170,11 +171,10 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
                 tax_amount_without_retention =  round(abs(total_tax),2)
                 cbc_TaxAmount.text = str(abs(round( sales_json['taxes'][0]['tax_amount'] ,2)))     # str( abs(sales_invoice_doc.base_total_taxes_and_charges))
                 processed_tax_templates = set()
-
+                item_counter = 0
                 for item in sales_invoice_doc.items:
                     item_tax_template = frappe.get_doc('Item Tax Template', item.item_tax_template)
                     
-                    print(item_tax_template.as_dict(),)
                     if item.item_tax_template in processed_tax_templates:
                         continue
                     processed_tax_templates.add(item.item_tax_template)
@@ -183,19 +183,19 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
                     zatca_tax_category = "Standard"
 
                     # exemption_reason_code = item_tax_template.custom_exemption_reason_code 
-                    
                     for tax in item_tax_template.taxes:
                         item_tax_percentage = item_tax_template.taxes[0].tax_rate if item_tax_template.taxes else 15
-
+                        # print(sales_json,'dgdjfghdfkjghdjkfghjkh')
                         cac_TaxSubtotal = ET.SubElement(cac_TaxTotal, "cac:TaxSubtotal")
                         cbc_TaxableAmount = ET.SubElement(cac_TaxSubtotal, "cbc:TaxableAmount")
                         cbc_TaxableAmount.set("currencyID", sales_invoice_doc.currency)
                         # cbc_TaxableAmount.text = str(abs(item.base_net_amount))
-                        cbc_TaxableAmount.text = str(abs(round(sales_invoice_doc.total,2)))
+                        cbc_TaxableAmount.text = str(abs(round( sales_json['items'][item_counter]['base_amount'] ,2)))
                         cbc_TaxAmount_2 = ET.SubElement(cac_TaxSubtotal, "cbc:TaxAmount")
                         cbc_TaxAmount_2.set("currencyID", sales_invoice_doc.currency)
                         # cbc_TaxAmount_2.text =str(abs(round(item_tax_percentage * item.base_net_amount / 100,2)))
-                        cbc_TaxAmount_2.text =  str(abs(round( sales_json['taxes'][0]['tax_amount'] ,2)))
+
+                        cbc_TaxAmount_2.text =  str(abs(round( sales_json['taxes'][item_counter]['tax_amount'] ,2)))
                         cac_TaxCategory_1 = ET.SubElement(cac_TaxSubtotal, "cac:TaxCategory")
                         cbc_ID_8 = ET.SubElement(cac_TaxCategory_1, "cbc:ID")
                         cbc_ID_8.text = item_tax_template.tax_category_value
@@ -216,6 +216,7 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
                         cac_TaxScheme = ET.SubElement(cac_TaxCategory_1, "cac:TaxScheme")
                         cbc_TaxScheme_ID = ET.SubElement(cac_TaxScheme, "cbc:ID")
                         cbc_TaxScheme_ID.text = "VAT"
+                        item_counter = item_counter + 1
 
 
                 # cac_TaxTotal = ET.SubElement(invoice, "cac:TaxTotal")

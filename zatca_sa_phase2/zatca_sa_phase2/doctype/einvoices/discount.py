@@ -27,7 +27,8 @@ def discount_and_charge(invoice,sales_invoice_doc):
                 charges =  sales_invoice_doc.as_dict()['taxes']
                 if len(charges) >  1:
                     for charges in charges:
-                        if charges['custom_is_charge'] != 'tax':
+                        
+                        if 'custom_is_charge'in charges and charges['custom_is_charge'] != 'tax':
                             cac_allowance = ET.SubElement(invoice, "cac:AllowanceCharge")
                             cbc_chargeindicator =  ET.SubElement(cac_allowance,"cbc:ChargeIndicator")
                             cbc_chargeindicator.text =  'true'
