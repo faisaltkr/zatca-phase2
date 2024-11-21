@@ -190,6 +190,9 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
                         cbc_TaxableAmount = ET.SubElement(cac_TaxSubtotal, "cbc:TaxableAmount")
                         cbc_TaxableAmount.set("currencyID", sales_invoice_doc.currency)
                         # cbc_TaxableAmount.text = str(abs(item.base_net_amount))
+                        
+                        #note add to purchase invoice also
+                        
                         cbc_TaxableAmount.text = str(abs(round( sales_json['items'][item_counter]['base_amount'] ,2)))
                         cbc_TaxAmount_2 = ET.SubElement(cac_TaxSubtotal, "cbc:TaxAmount")
                         cbc_TaxAmount_2.set("currencyID", sales_invoice_doc.currency)
