@@ -117,7 +117,7 @@ def reporting_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                             if response.status_code  in (400,405,406,409 ):
                                 invoice_doc = frappe.get_doc('Sales Invoice' , invoice_number )
                                 invoice_doc.db_set('custom_uuid' , 'Not Submitted' , commit=True  , update_modified=True)
-                                invoice_doc.db_set('custom_zatca_status' , 'Not Submitted' , commit=True  , update_modified=True)
+                                invoice_doc.db_set('custom_zatca_status' , 'Failed' , commit=True  , update_modified=True)
 
                                 frappe.throw("Error: The request you are sending to Zatca is in incorrect format. Please report to system administrator . Status code:  " + str(response.status_code) + "<br><br> " + response.text )            
                             
@@ -125,7 +125,7 @@ def reporting_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                             if response.status_code  in (401,403,407,451 ):
                                 invoice_doc = frappe.get_doc('Sales Invoice' , invoice_number  )
                                 invoice_doc.db_set('custom_uuid' , 'Not Submitted' , commit=True  , update_modified=True)
-                                invoice_doc.db_set('custom_zatca_status' , 'Not Submitted' , commit=True  , update_modified=True)
+                                invoice_doc.db_set('custom_zatca_status' , 'Failed' , commit=True  , update_modified=True)
 
                               
                                 frappe.throw("Error: Zatca Authentication failed. Your access token may be expired or not valid. Please contact your system administrator. Status code:  " + str(response.status_code) + "<br><br> " + response.text)            
@@ -133,7 +133,7 @@ def reporting_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                             if response.status_code not in (200, 202):
                                 invoice_doc = frappe.get_doc('Sales Invoice' , invoice_number  )
                                 invoice_doc.db_set('custom_uuid' , 'Not Submitted' , commit=True  , update_modified=True)
-                                invoice_doc.db_set('custom_zatca_status' , 'Not Submitted' , commit=True  , update_modified=True)
+                                invoice_doc.db_set('custom_zatca_status' , 'Failed' , commit=True  , update_modified=True)
                                 
                                
                                 frappe.throw("Error: Zatca server busy or not responding. Try after sometime or contact your system administrator. Status code:  " + str(response.status_code)+ "<br><br> " + response.text )

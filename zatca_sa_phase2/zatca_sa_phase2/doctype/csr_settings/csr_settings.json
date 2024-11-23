@@ -67,7 +67,10 @@
   "simplified_credit_note",
   "other_fields_tab",
   "issuer_name",
-  "issuer_serial_number"
+  "issuer_serial_number",
+  "icv_invoice",
+  "icv_credit_note",
+  "icv_debit_note"
  ],
  "fields": [
   {
@@ -432,12 +435,27 @@
    "fieldtype": "Text",
    "label": "Production CSID",
    "read_only": 1
+  },
+  {
+   "fieldname": "icv_invoice",
+   "fieldtype": "Int",
+   "label": "ICV Invoice"
+  },
+  {
+   "fieldname": "icv_credit_note",
+   "fieldtype": "Int",
+   "label": "ICV Credit Note"
+  },
+  {
+   "fieldname": "icv_debit_note",
+   "fieldtype": "Int",
+   "label": "ICV Debit Note"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-11-12 04:39:23.654329",
+ "modified": "2024-11-23 17:17:11.498740",
  "modified_by": "Administrator",
  "module": "Zatca Sa Phase2",
  "name": "CSR Settings",

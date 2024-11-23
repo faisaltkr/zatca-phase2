@@ -57,19 +57,20 @@ def get_csid(unit,name,otp,company_name):
         headers=headers,
         json=json_data,
     )
-    print(response.text,"response text")
     if response.status_code == 200:
         csid = response.json()
-        print(csid)
         binarySecurityToken = response.json()['binarySecurityToken']
         decoded_token = base64.b64decode(binarySecurityToken).decode('utf-8')
         secret = response.json()['secret']
         update_frappe_doc(name,'compliance_request_id', response.json()['requestID'])
+        update_frappe_doc(name,'icv_invoice',0)
+        update_frappe_doc(name,'icv_credit_note',0)
+        update_frappe_doc(name,'icv_debit_note',0)
+
 
         with open(f'keys_{unit}_{company_name}/{name}_certificate.txt', 'w') as f:
             f.write(decoded_token)
             # update_frappe_doc(name,'csr',decoded_token)
-        print('certificate.txt'+' saved')
 
         with open(f'keys_{unit}_{company_name}/{name}_binarySecurityToken.txt', 'w') as f:
             f.write(binarySecurityToken)
@@ -77,13 +78,10 @@ def get_csid(unit,name,otp,company_name):
             update_frappe_doc(name,'csr',csr)
 
 
-        print('binarySecurityToken.txt'+' saved')
-
         with open(f'keys_{unit}_{company_name}/{name}_secret.txt', 'w') as f:
             f.write(secret)
             update_frappe_doc(name,'secret',secret)
 
-        print('secret.txt'+' saved')
     else:
         print( 
             f"Error: received {response.status_code} status code with message {response.json()}")

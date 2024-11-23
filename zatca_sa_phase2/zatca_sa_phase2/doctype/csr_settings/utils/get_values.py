@@ -1,7 +1,6 @@
 import frappe
 
 
-print("jjjjjjjj")
 @frappe.whitelist()
 def company():
 
@@ -12,9 +11,7 @@ def company():
 @frappe.whitelist()
 def get_company_name(company_name):
         # Get the document
-    print(111)
     doc = frappe.get_all('Company',fields = ['name','country','default_currency','tax_id','domain'],filters={'company_name': company_name })
-    print(doc)
     company_billing_addresses = []
     # try:
     #     set_additional_ids()

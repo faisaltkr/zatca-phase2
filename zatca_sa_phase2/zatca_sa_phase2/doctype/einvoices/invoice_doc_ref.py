@@ -3,12 +3,49 @@ import re
 import xml.etree.ElementTree as ET
 from .qrcode import generate_qr_code_base_64
 from .get_invoice_hash import get_latest_sales_invoice_with_hash
+
 def get_ICV_code(invoice_number):
                 try:
                     icv_code =  re.sub(r'\D', '', invoice_number)   # taking the number part only from doc name
                     return icv_code
                 except Exception as e:
                     frappe.throw("error in getting icv number:  "+ str(e) )
+
+
+
+
+def get_icv_code(sales_invoice_doc):
+    data = frappe.get_all('CSR Settings', fields=['name','icv_invoice','icv_credit_note','icv_debit_note'],filters={'company_name': sales_invoice_doc.company })
+    if sales_invoice_doc.is_debit_note:
+        icv = data[0]['icv_debit_note'] + 1
+        value = {
+            'icv_debit_note': icv
+        }
+
+    else if sales_invoice_doc.is_return:
+        icv = data[0]['icv_credit_note'] + 1
+        value = {
+            'icv_credit_note': icv
+        }
+    else:
+        icv = data[0]['icv_invoice'] + 1
+        value = {
+            'icv_invoice': icv
+        }
+    update_icv(data[0]['name'],value)
+    return icv
+
+
+def update_icv(name,value):
+
+    frappe.db.set_value(
+        'CSR Settings',
+            name,  # Record name
+            value
+        )
+    frappe.db.commit()
+
+        
 
 def billing_reference_for_credit_and_debit_note(invoice,sales_invoice_doc):
             try:
@@ -35,7 +72,7 @@ def doc_Reference(invoice,sales_invoice_doc,invoice_number):
                 cbc_ID_1 = ET.SubElement(cac_AdditionalDocumentReference, "cbc:ID")
                 cbc_ID_1.text = "ICV"
                 cbc_UUID_1 = ET.SubElement(cac_AdditionalDocumentReference, "cbc:UUID")
-                icv = str(get_ICV_code(invoice_number))
+                icv = str(get_icv_code(sales_invoice_doc))
                 cbc_UUID_1.text = icv
                 return invoice ,icv
             except Exception as e:
