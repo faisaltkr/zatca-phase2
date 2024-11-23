@@ -64,7 +64,7 @@ def error_Log():
                         frappe.throw("Error in error log  " + str(e))   
 
 
-def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_invoice_doc):
+def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_invoice_doc,icv):
                     try:
                         # frappe.msgprint("Clearance API")
                         key = frappe.get_all('CSR Settings', fields=['company_name','csid','secret'],
@@ -152,6 +152,8 @@ def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                                 invoice_doc.db_set('custom_uuid' , uuid1 , commit=True  , update_modified=True)
                                 invoice_doc.db_set('custom_zatca_status' , "CLEARED" , commit=True  , update_modified=True)
                                 invoice_doc.db_set('custom_pih',encoded_hash, commit=True,update_modified=True)
+                                invoice_doc.db_set('custom_icv' , icv , commit=True  , update_modified=True)
+
                                 # invoice_doc.submit()
                                 frappe.msgprint(msg)
                                 # frappe.publish_realtime(

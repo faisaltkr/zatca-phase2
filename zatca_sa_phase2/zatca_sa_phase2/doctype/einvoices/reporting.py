@@ -79,7 +79,7 @@ def error_Log():
                         frappe.throw("Error in error log  " + str(e))   
 
 
-def reporting_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_invoice_doc):
+def reporting_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_invoice_doc,icv):
                     try:
                         # settings = frappe.get_doc('Zatca ERPgulf Setting')
                         # company = settings.company
@@ -158,6 +158,8 @@ def reporting_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                                 invoice_doc = frappe.get_doc('Sales Invoice' , invoice_number )
                                 invoice_doc.db_set('custom_uuid' , uuid1 , commit=True  , update_modified=True)
                                 invoice_doc.db_set('custom_zatca_status' , 'REPORTED' , commit=True  , update_modified=True)
+                                invoice_doc.db_set('custom_icv' , icv , commit=True  , update_modified=True)
+
                                 invoice_doc.db_set('custom_pih',encoded_hash, commit=True,update_modified=True)
                                 # invoice_doc.submit()
 

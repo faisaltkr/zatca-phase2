@@ -168,7 +168,7 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
                                 # frappe.throw(str("here 8 " + str(compliance_type))) 
                                 invoice = invoice_Typecode_Compliance(invoice, compliance_type)
 
-                            invoice=doc_Reference(invoice,sales_invoice_doc,invoice_number)
+                            invoice,icv=doc_Reference(invoice,sales_invoice_doc,invoice_number)
                             invoice=additional_Reference(invoice,customer_doc,invoice_number)
                             invoice=company_Data(invoice,sales_invoice_doc)
                             invoice=customer_Data(invoice,sales_invoice_doc)
@@ -208,11 +208,11 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
                             # generate_xml_hash()
                             if not compliance_type:
                                 if customer_doc.custom_b2c == 1:
-                                    reporting_API(uuid1, encoded_hash, signed_xmlfile_name,invoice_number,sales_invoice_doc)
+                                    reporting_API(uuid1, encoded_hash, signed_xmlfile_name,invoice_number,sales_invoice_doc,icv)
                                     attach_QR_Image(qrCodeB64,sales_invoice_doc)
                                 else:
 
-                                    xml_cleared=clearance_API(uuid1, encoded_hash, signed_xmlfile_name,invoice_number,sales_invoice_doc)
+                                    xml_cleared=clearance_API(uuid1, encoded_hash, signed_xmlfile_name,invoice_number,sales_invoice_doc,icv)
                                     attach_QR_Image(qrCodeB64,sales_invoice_doc)
                             else:  # if it a compliance test
                                 # frappe.msgprint("Compliance test")
