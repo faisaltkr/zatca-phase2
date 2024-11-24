@@ -22,7 +22,7 @@ def get_icv_code(sales_invoice_doc):
             'icv_debit_note': icv
         }
 
-    else if sales_invoice_doc.is_return:
+    elif sales_invoice_doc.is_return:
         icv = data[0]['icv_credit_note'] + 1
         value = {
             'icv_credit_note': icv

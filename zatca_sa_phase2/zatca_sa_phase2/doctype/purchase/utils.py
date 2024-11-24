@@ -199,18 +199,6 @@ def certificate_hash(p_invoice_doc):
                 # company_name = "mycompany"
                 key = frappe.get_all('CSR Settings', fields=['csid'],filters={'company_name': p_invoice_doc.company })
                 certificate_data =  key[0]['csid']
-                # settings = frappe.get_doc('Zatca ERPgulf Setting')
-                # company = settings.company
-                # company_name = frappe.db.get_value("Company", company, "abbr")
-                # certificate_data_str = settings.get("certificate", "{}")
-                # try:
-                #         certificate_data = json.loads(certificate_data_str)
-                # except json.JSONDecodeError:
-                #         frappe.throw("Certificate field contains invalid JSON")   
-                # certificate_data = get_certificate_for_company(certificate_data, company_name)
-                # if not certificate_data:
-                #         frappe.throw(f"No certificate found for company in certificate hash {company_name}")
-
                 certificate_data_bytes = certificate_data.encode('utf-8')
                 sha256_hash = hashlib.sha256(certificate_data_bytes).hexdigest()
                 base64_encoded_hash = base64.b64encode(sha256_hash.encode('utf-8')).decode('utf-8')
