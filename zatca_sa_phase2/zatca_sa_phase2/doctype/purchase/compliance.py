@@ -71,7 +71,7 @@ def compliance_api_call(uuid1,encoded_hash,signed_xmlfile_name,p_invoice_doc):
                         frappe.throw("CSID for company {} not found".format(company_name))
                     try:
                         # frappe.throw("inside compliance api call2")
-                        response = requests.request("POST", url=get_API_url(base_url="compliance/invoices"), headers=headers, data=payload)
+                        response = requests.request("POST", url=get_API_url(base_url="compliance/invoices",p_invoice_doc=p_invoice_doc), headers=headers, data=payload)
                         # return response.text
 
                         if response.status_code != 200:

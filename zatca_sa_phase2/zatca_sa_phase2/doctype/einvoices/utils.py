@@ -55,6 +55,7 @@ def xml_structuring(invoice,sales_invoice_doc):
             try:
                 xml_declaration = "<?xml version='1.0' encoding='UTF-8'?>\n"
                 tree = ET.ElementTree(invoice)
+                print(tree,"ddddd")
                 with open(frappe.local.site + f"/private/files/xml_files_{sales_invoice_doc.name}.xml", 'wb') as file:
                     tree.write(file, encoding='utf-8', xml_declaration=True)
                 with open(frappe.local.site + f"/private/files/xml_files_{sales_invoice_doc.name}.xml", 'r') as file:

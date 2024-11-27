@@ -56,21 +56,30 @@ def xml_structuring(invoice,p_invoice_doc):
             try:
                 xml_declaration = "<?xml version='1.0' encoding='UTF-8'?>\n"
                 tree = ET.ElementTree(invoice)
-                with open(frappe.local.site + f"/private/files/xml_files_{p_invoice_doc.name}.xml", 'wb') as file:
-                    tree.write(file, encoding='utf-8', xml_declaration=True)
+
+                try:
+                    
+                    with open(frappe.local.site + f"/private/files/xml_files_{p_invoice_doc.name}.xml", 'wb') as file:
+                        tree.write(file, encoding='utf-8', xml_declaration=True)
+                except Exception as e:
+                    print(str(e))
+
                 with open(frappe.local.site + f"/private/files/xml_files_{p_invoice_doc.name}.xml", 'r') as file:
                     xml_string = file.read()
+
                 xml_dom = minidom.parseString(xml_string)
+
                 pretty_xml_string = xml_dom.toprettyxml(indent="  ")   # created xml into formatted xml form 
                 with open(frappe.local.site + f"/private/files/finalzatcaxml_{p_invoice_doc.name}.xml", 'w') as file:
                     file.write(pretty_xml_string)
+
                           # Attach the getting xml for each invoice
                 try:
                     if frappe.db.exists("File",{ "attached_to_name": p_invoice_doc.name, "attached_to_doctype": p_invoice_doc.doctype }):
                         frappe.db.delete("File",{ "attached_to_name":p_invoice_doc.name, "attached_to_doctype": p_invoice_doc.doctype })
                 except Exception as e:
                     frappe.throw(frappe.get_traceback())
-                
+
                 try:
                     fileX = frappe.get_doc(
                         {   "doctype": "File",        
@@ -208,10 +217,10 @@ def certificate_hash(p_invoice_doc):
                     frappe.throw("error in obtaining certificate hash: "+ str(e) )
 
 
-def signxml_modify(customer_doc):
+def signxml_modify(customer_doc,p_invoice_doc):
                 try:
-                    encoded_certificate_hash= certificate_hash()
-                    issuer_name, serial_number = extract_certificate_details(customer_doc=customer_doc)
+                    encoded_certificate_hash= certificate_hash(p_invoice_doc)
+                    issuer_name, serial_number = extract_certificate_details(customer_doc=customer_doc,p_invoice_doc=p_invoice_doc)
                     original_invoice_xml = etree.parse(frappe.local.site + '/private/files/finalzatcaxml.xml')
                     root = original_invoice_xml.getroot()
                     namespaces = {
@@ -552,7 +561,7 @@ def update_Qr_toXml(qrCodeB64):
                     except Exception as e:
                             frappe.throw(" error in saving tlv data to xml: "+ str(e) )
 
-def structuring_signedxml():
+def structuring_signedxml(p_invoice_doc):
                 try:
                     with open(frappe.local.site + '/private/files/final_xml_after_sign.xml', 'r') as file:
                         xml_content = file.readlines()

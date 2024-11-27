@@ -9,9 +9,9 @@ def  get_Issue_Time(invoice_number):
                 issue_time = time.strftime("%H:%M:%S")
                 return issue_time
 
-def purchase_invoice_data(invoice,invoice_number):
+def purchase_invoice_data(invoice,invoice_number,purchase_invoice_doc):
             try:
-                purchase_invoice_doc = frappe.get_doc('Purchase Invoice' ,invoice_number)
+                # purchase_invoice_doc = frappe.get_doc('Purchase Invoice' ,invoice_number)
                 cbc_ProfileID = ET.SubElement(invoice, "cbc:ProfileID")
                 cbc_ProfileID.text = "reporting:1.0"
                 cbc_ID = ET.SubElement(invoice, "cbc:ID")
@@ -29,6 +29,6 @@ def purchase_invoice_data(invoice,invoice_number):
                 cbc_IssueTime.text = issue_time
                 doc.set("custom_submit_time", str((str(purchase_invoice_doc.posting_date))+" "+issue_time))
                 doc.save()
-                return invoice ,uuid1 ,purchase_invoice_doc
+                return invoice ,uuid1
             except Exception as e:
                     frappe.throw("error occured in purchase invoice data"+ str(e) )

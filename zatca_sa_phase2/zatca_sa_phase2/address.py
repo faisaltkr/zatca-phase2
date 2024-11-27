@@ -6,27 +6,37 @@ def set_customer_primary_address(doc, method):
     when a new address is added.
     """
     # Check if the address has a linked customer
-    customer_link = next((link for link in doc.links if link.link_doctype == "Customer"), None)
+    supported_entities = ["Customer", "Supplier"]
     
-    if customer_link:
-        customer_name = customer_link.link_name
+    # Iterate through linked entities to check for Customer or Supplier
+    for link in doc.links:
+        if link.link_doctype in supported_entities:
+            entity_name = link.link_name
+            entity_type = link.link_doctype
 
-        # Check if any other primary address exists for this customer
-        existing_primary_address = frappe.db.sql(
-            """
-            SELECT parent
-            FROM `tabDynamic Link`
-            WHERE parenttype = 'Address'
-            AND link_doctype = 'Customer'
-            AND link_name = %s
-            AND parent IN (
-                SELECT name FROM `tabAddress` WHERE is_primary_address = 1
+            # Check if any other primary address exists for this entity
+            existing_primary_address = frappe.db.sql(
+                """
+                SELECT parent
+                FROM `tabDynamic Link`
+                WHERE parenttype = 'Address'
+                AND link_doctype = %s
+                AND link_name = %s
+                AND parent IN (
+                    SELECT name FROM `tabAddress` WHERE is_primary_address = 1
+                )
+                """,
+                (entity_type, entity_name),
             )
-            """,
-            (customer_name,),
-        )
 
-        # If no primary address exists, set the current one as primary
-        if not existing_primary_address:
-            frappe.db.set_value("Address", doc.name, "is_primary_address", 1)
-            frappe.db.set_value("Customer", customer_name, "customer_primary_address", doc.name)
+            # If no primary address exists, set the current one as primary
+            if not existing_primary_address:
+                frappe.db.set_value("Address", doc.name, "is_primary_address", 1)
+                
+                # Update the entity with the new primary address
+                primary_address_field = (
+                    "customer_primary_address"
+                    if entity_type == "Customer"
+                    else "supplier_primary_address"
+                )
+                frappe.db.set_value(entity_type, entity_name, primary_address_field, doc.name)

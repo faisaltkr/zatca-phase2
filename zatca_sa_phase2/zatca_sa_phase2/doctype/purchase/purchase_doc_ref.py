@@ -15,7 +15,7 @@ from .get_invoice_hash import get_latest_purchase_invoice_with_hash
 def get_icv_code(p_invoice_doc):
     data = frappe.get_all('CSR Settings', fields=['name','icv_debit_note'],filters={'company_name': p_invoice_doc.company })
     icv = data[0]['icv_debit_note'] + 1
-        value = {
+    value = {
             'icv_debit_note': icv
         }
     update_icv(data[0]['name'],value)
@@ -99,7 +99,7 @@ def additional_Reference(invoice,supplier_doc,invoice_number):
                 
                 # cbc_EmbeddedDocumentBinaryObject.text = pih
 
-                pih = get_latest_purchase_invoice_with_hash
+                pih = get_latest_purchase_invoice_with_hash()
 
                 cbc_EmbeddedDocumentBinaryObject.text = pih
                 # cbc_EmbeddedDocumentBinaryObject.text = "L0Awl814W4ycuFvjDVL/vIW08mNRNAwqfdlF5i/3dpU="
