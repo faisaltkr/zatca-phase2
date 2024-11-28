@@ -2,6 +2,8 @@ import frappe
 import json
 import base64
 import requests
+from .reporting import reporting_API
+
 
 def xml_base64_Decode(signed_xmlfile_name):
                     try:
@@ -102,7 +104,10 @@ def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                             frappe.throw("Production CSID for company {} not found".format(company_name))
                         response = requests.request("POST", url=get_API_url(url="invoices/clearance/single",sales_invoice_doc=sales_invoice_doc), headers=headers, data=payload)
                         
-                        
+                        if responce.status_code  == 303;
+                            reporting_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_invoice_doc,icv):
+                            
+                            
                         if response.status_code  in (400,405,406,409 ):
                             invoice_doc = frappe.get_doc('Sales Invoice' , invoice_number  )
                             invoice_doc.db_set('custom_uuid' , "Not Submitted" , commit=True  , update_modified=True)
