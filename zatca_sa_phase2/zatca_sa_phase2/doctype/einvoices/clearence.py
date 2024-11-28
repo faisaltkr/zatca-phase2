@@ -104,7 +104,8 @@ def clearance_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                             frappe.throw("Production CSID for company {} not found".format(company_name))
                         response = requests.request("POST", url=get_API_url(url="invoices/clearance/single",sales_invoice_doc=sales_invoice_doc), headers=headers, data=payload)
                         
-                        if responce.status_code  == 303;
+                        
+                        if response.status_code  == 303;
                             reporting_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_invoice_doc,icv):
                             
                             
