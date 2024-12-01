@@ -114,6 +114,7 @@ def reporting_API(uuid1,encoded_hash,signed_xmlfile_name,invoice_number,sales_in
                             frappe.throw("Production CSID for company {} not found".format(company_name))
                         try:
                             response = requests.request("POST", url=get_API_url(url="invoices/reporting/single",sales_invoice_doc=sales_invoice_doc), headers=headers, data=payload)
+                            
                             if response.status_code  in (400,405,406,409 ):
                                 invoice_doc = frappe.get_doc('Sales Invoice' , invoice_number )
                                 invoice_doc.db_set('custom_uuid' , 'Not Submitted' , commit=True  , update_modified=True)

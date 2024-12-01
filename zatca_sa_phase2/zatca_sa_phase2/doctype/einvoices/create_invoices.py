@@ -190,10 +190,8 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
                             canonicalized_xml = canonicalize_xml(tag_removed_xml)
                             hash1, encoded_hash = getInvoiceHash(canonicalized_xml)
                             encoded_signature = digital_signature(hash1,sales_invoice_doc)
-                            print(2,"3333")
                             issuer_name,serial_number = extract_certificate_details(customer_doc=customer_doc,sales_invoice_doc=sales_invoice_doc)
                             encoded_certificate_hash=certificate_hash(sales_invoice_doc)
-                            print(4,"sssss")
                             namespaces,signing_time=signxml_modify(customer_doc=customer_doc,sales_invoice_doc=sales_invoice_doc)
                             signed_properties_base64=generate_Signed_Properties_Hash(signing_time,issuer_name,serial_number,encoded_certificate_hash)
                             populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_properties_base64,encoded_hash,sales_invoice_doc)
@@ -225,7 +223,7 @@ def zatca_Call(invoice_number, compliance_type=0, any_item_has_tax_template= Fal
 @frappe.whitelist(allow_guest=True)          
 def zatca_Background_on_submit(doc, method=None):              
 # def zatca_Background(invoice_number):
-                    # print(doc.custom_zatca_tax_category)
+                    # print(doc.custom_zatca_tax_category)          
                     try:
                         sales_invoice_doc = doc
                         invoice_number = sales_invoice_doc.name
@@ -279,3 +277,31 @@ def zatca_Background_on_submit(doc, method=None):
                         frappe.throw("Error in background call:  " + str(e) )
 
 # key = frappe.get_all('CSR Settings'
+
+
+@frappe.whitelist(allow_guest=True)
+def get_last_submitted_invoice(doc, method=None):
+    """
+    Retrieve the last submitted Sales Invoice (excluding the current most recent one).
+
+    :return: Dictionary containing invoice details or None if no previous invoices exist.
+    """
+    # Fetch the last submitted Sales Invoice (excluding the most recent one)
+    last_invoice = frappe.db.sql(
+        """
+        SELECT name, custom_zatca_status
+        FROM `tabSales Invoice`
+        WHERE docstatus = 1
+        ORDER BY creation DESC
+        LIMIT 1 OFFSET 1
+        """,
+        as_dict=True
+    )
+    
+    last_status = last_invoice[0] if last_invoice else None
+    
+    
+    if last_status['custom_zatca_status'] not in ['REPORTED','CLEARED']:
+        frappe.throw("You can only save new invoice only if your previous invoice is cleared or reported")
+
+

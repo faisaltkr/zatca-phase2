@@ -230,6 +230,7 @@ app_license = "mit"
 doc_events = {
     'Sales Invoice': {
         'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.einvoices.create_invoices.zatca_Background_on_submit'
+        # 'before_save': 'zatca_sa_phase2.zatca_sa_phase2.doctype.einvoices.create_invoices.get_last_submitted_invoice'
     },
     'Purchase Invoice': {
         'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.purchase.submit.on_submit'
