@@ -4,10 +4,10 @@
   "doctype": "Client Script",
   "dt": "Address",
   "enabled": 1,
-  "modified": "2024-09-07 19:34:12.405705",
+  "modified": "2024-12-02 17:44:52.792348",
   "module": "Zatca Sa Phase2",
   "name": "Label Change",
-  "script": "frappe.ui.form.on('Address', {\n\tonload: function(frm) {\n        // Change the label of the address_line2 field\n        frm.set_df_property('address_line1', 'label', 'Street Name');\n        frm.set_df_property('address_line2', 'label', 'Building Number');\n    }\n})",
+  "script": "frappe.ui.form.on('Address', {\n    onload: function(frm) {\n        // Change the labels of the fields\n        frm.set_df_property('address_line1', 'label', 'Street Name');\n        frm.set_df_property('address_line2', 'label', 'Building Number');\n        frm.set_df_property('address_line2', 'reqd', 1);\n        // Set pincode field as mandatory\n        frm.set_df_property('pincode', 'reqd', 1);\n        frm.set_df_property('county', 'hidden', 1);\n        frm.set_df_property('state', 'hidden', 1);\n    }\n});",
   "view": "Form"
  },
  {
