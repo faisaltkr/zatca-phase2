@@ -140,6 +140,8 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
             try:
                 sales_json = sales_invoice_doc.as_dict()
                 print(sales_json,"dfgdfgdfgdgdfgdfg")
+                is_discount = sales_invoice_doc.as_dict()['discount_amount']
+                apply_discount_on = sales_invoice_doc.as_dict()['apply_discount_on'] 
                 total_tax = sum(single_item.net_amount * (frappe.get_doc('Item Tax Template', single_item.item_tax_template).taxes[0].tax_rate / 100)
                     for single_item in sales_invoice_doc.items)
                 #for foreign currency
@@ -189,11 +191,14 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
                         cac_TaxSubtotal = ET.SubElement(cac_TaxTotal, "cac:TaxSubtotal")
                         cbc_TaxableAmount = ET.SubElement(cac_TaxSubtotal, "cbc:TaxableAmount")
                         cbc_TaxableAmount.set("currencyID", sales_invoice_doc.currency)
-                        # cbc_TaxableAmount.text = str(abs(item.base_net_amount))
+                        cbc_TaxableAmount.text = str(abs(item.base_net_amount))
                         
                         #note add to purchase invoice also
                         
-                        cbc_TaxableAmount.text = str(abs(round( sales_json['items'][item_counter]['base_amount'] ,2)))
+                        # if is_discount and apply_discount_on =='Net Total':
+                        cbc_TaxableAmount.text = str(abs(sales_invoice_doc.net_total))
+                        # else:
+                        #     cbc_TaxableAmount.text = str(abs(round( sales_json['items'][item_counter]['base_amount'] ,2)))
                         cbc_TaxAmount_2 = ET.SubElement(cac_TaxSubtotal, "cbc:TaxAmount")
                         cbc_TaxAmount_2.set("currencyID", sales_invoice_doc.currency)
                         # cbc_TaxAmount_2.text =str(abs(round(item_tax_percentage * item.base_net_amount / 100,2)))
@@ -230,13 +235,22 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
                 cac_LegalMonetaryTotal = ET.SubElement(invoice, "cac:LegalMonetaryTotal")
                 cbc_LineExtensionAmount = ET.SubElement(cac_LegalMonetaryTotal, "cbc:LineExtensionAmount")
                 cbc_LineExtensionAmount.set("currencyID", sales_invoice_doc.currency)
-                cbc_LineExtensionAmount.text =  str(abs(sales_invoice_doc.base_total))
+                if is_discount and apply_discount_on =='Net Total':
+                    cbc_LineExtensionAmount.text =  str(abs(sales_invoice_doc.base_total))
+                else:
+                    cbc_LineExtensionAmount.text =  str(abs(sales_invoice_doc.total))
                 cbc_TaxExclusiveAmount = ET.SubElement(cac_LegalMonetaryTotal, "cbc:TaxExclusiveAmount")
                 cbc_TaxExclusiveAmount.set("currencyID", sales_invoice_doc.currency)
-                cbc_TaxExclusiveAmount.text = str(abs(sales_invoice_doc.base_total-sales_invoice_doc.base_discount_amount))
+                if is_discount and apply_discount_on =='Net Total':
+                    cbc_TaxExclusiveAmount.text = str(abs(sales_invoice_doc.net_total))
+                else:
+                    cbc_TaxExclusiveAmount.text = str(abs(sales_invoice_doc.base_total-sales_invoice_doc.base_discount_amount))
                 cbc_TaxInclusiveAmount = ET.SubElement(cac_LegalMonetaryTotal, "cbc:TaxInclusiveAmount")
                 cbc_TaxInclusiveAmount.set("currencyID", sales_invoice_doc.currency)
-                cbc_TaxInclusiveAmount.text = str(round(abs(sales_invoice_doc.base_total) + abs(sales_json['taxes'][0]['tax_amount']) - abs(sales_invoice_doc.base_discount_amount),2))
+                if is_discount and apply_discount_on =='Net Total':
+                    cbc_TaxInclusiveAmount.text = str(abs(sales_invoice_doc.grand_total))
+                else:
+                    cbc_TaxInclusiveAmount.text = str(round(abs(sales_invoice_doc.base_total) + abs(sales_json['taxes'][0]['tax_amount']) - abs(sales_invoice_doc.base_discount_amount),2))
                 cbc_AllowanceTotalAmount = ET.SubElement(cac_LegalMonetaryTotal, "cbc:AllowanceTotalAmount")
                 cbc_AllowanceTotalAmount.set("currencyID", sales_invoice_doc.currency)
                 # cbc_AllowanceTotalAmount.text = str(sales_invoice_doc.base_change_amount)
@@ -244,7 +258,11 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
 
                 cbc_PayableAmount = ET.SubElement(cac_LegalMonetaryTotal, "cbc:PayableAmount")
                 cbc_PayableAmount.set("currencyID", sales_invoice_doc.currency)
-                cbc_PayableAmount.text = str(round(abs(sales_invoice_doc.base_total) + abs(sales_json['taxes'][0]['tax_amount'])  - abs(sales_invoice_doc.base_discount_amount),2))
+                if is_discount and apply_discount_on =='Net Total':
+                    cbc_PayableAmount.text = str(abs(sales_invoice_doc.grand_total))
+
+                else:
+                    cbc_PayableAmount.text = str(round(abs(sales_invoice_doc.base_total) + abs(sales_json['taxes'][0]['tax_amount'])  - abs(sales_invoice_doc.base_discount_amount),2))
                 return invoice
              
             except Exception as e:

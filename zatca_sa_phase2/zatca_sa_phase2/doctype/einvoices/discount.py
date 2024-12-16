@@ -24,6 +24,8 @@ from frappe.utils.data import  get_time
 def discount_and_charge(invoice,sales_invoice_doc):
             try:
                 
+                print(sales_invoice_doc.as_dict(),"jjjjjjjjjjj")
+                
                 charges =  sales_invoice_doc.as_dict()['taxes']
                 if len(charges) >  1:
                     for charges in charges:
@@ -65,7 +67,7 @@ def discount_and_charge(invoice,sales_invoice_doc):
                     cbc_chargeindicator =  ET.SubElement(cac_allowance,"cbc:ChargeIndicator")
                     cbc_chargeindicator.text =  'false'
                     cbc_allowance_charge_reason_code = ET.SubElement(cac_allowance,"cbc:AllowanceChargeReasonCode")
-                    cbc_allowance_charge_reason_code.text = str(discount_code['custom_code'])
+                    cbc_allowance_charge_reason_code.text = '95'
                     cbc_allowance_charge_reason = ET.SubElement(cac_allowance,"cbc:AllowanceChargeReason")
                     cbc_allowance_charge_reason.text = 'discount'
                     cbc_multifactor_numeric = ET.SubElement(cac_allowance,"cbc:MultiplierFactorNumeric")
@@ -75,12 +77,12 @@ def discount_and_charge(invoice,sales_invoice_doc):
                     cbc_amount.set("currencyID", "SAR")
                     cbc_base_amount = ET.SubElement(cac_allowance,"cbc:BaseAmount")                
                     cbc_base_amount.set("currencyID", "SAR")
-                    cbc_base_amount.text = str(round(sales_invoice_doc.total-discount_amount,2))
+                    cbc_base_amount.text = str(round(sales_invoice_doc.base_total,2))
                     cac_tax_category = ET.SubElement(cac_allowance,"cac:TaxCategory")
                     cbc_id =  ET.SubElement(cac_tax_category,"cbc:ID")
                     cbc_id.text = 'S'
                     cbc_percent = ET.SubElement(cac_tax_category,"cbc:Percent")
-                    cbc_percent.text = str(round(discount_code['tax_rate'],2))
+                    cbc_percent.text = str(15)
                     cac_tax_scheme = ET.SubElement(cac_tax_category,"cac:TaxScheme")
                     cbc_id = ET.SubElement(cac_tax_scheme,"cbc:ID")
                     cbc_id.text = 'VAT'
