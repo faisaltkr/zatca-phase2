@@ -214,7 +214,7 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
 
                         # exemption_reason_map = get_exemption_reason_map()
 
-                        if item_tax_template.tax_category_value != "S" or item_tax_template.tax_category_value != "Z" :
+                        if item_tax_template.tax_category_value != "S" :
                             cbc_TaxExemptionReasonCode = ET.SubElement(cac_TaxCategory_1, "cbc:TaxExemptionReasonCode")
                             cbc_TaxExemptionReasonCode.text = item_tax_template.custom_exemption_reason_code
                             cbc_TaxExemptionReason = ET.SubElement(cac_TaxCategory_1, "cbc:TaxExemptionReason")
