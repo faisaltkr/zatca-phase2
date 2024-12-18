@@ -196,9 +196,9 @@ def tax_Data_with_template(invoice,sales_invoice_doc):
                         #note add to purchase invoice also
                         
                         # if is_discount and apply_discount_on =='Net Total':
-                        cbc_TaxableAmount.text = str(abs(sales_invoice_doc.net_total))
+                        # cbc_TaxableAmount.text = str(abs(sales_invoice_doc.net_total))
                         # else:
-                        #     cbc_TaxableAmount.text = str(abs(round( sales_json['items'][item_counter]['base_amount'] ,2)))
+                        cbc_TaxableAmount.text = str(abs(round( sales_json['items'][item_counter]['base_amount'] ,2)))
                         cbc_TaxAmount_2 = ET.SubElement(cac_TaxSubtotal, "cbc:TaxAmount")
                         cbc_TaxAmount_2.set("currencyID", sales_invoice_doc.currency)
                         # cbc_TaxAmount_2.text =str(abs(round(item_tax_percentage * item.base_net_amount / 100,2)))
