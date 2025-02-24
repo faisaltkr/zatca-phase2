@@ -46,7 +46,7 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                             if not frappe.db.exists("Purchase Invoice", invoice_number):
                                 frappe.throw("Invoice Number is NOT Valid:  " + str(invoice_number))
                             p_invoice_doc = frappe.get_doc('Purchase Invoice' ,invoice_number)
-
+                            print("dfgfhfghf","vvvvvvv")
                             supplier_doc = frappe.get_doc("Supplier",p_invoice_doc.supplier)
                             is_b2c  = supplier_doc.is_custom_b2c
 
@@ -65,8 +65,8 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                                 # frappe.throw(str("here 8 " + str(compliance_type))) 
                                 invoice = invoice_Typecode_Compliance(invoice, compliance_type)
 
-                            invoice=doc_Reference(invoice,p_invoice_doc,invoice_number)
-                            invoice=additional_Reference(invoice,supplier_doc,invoice_number)
+                            invoice, icv=doc_Reference(invoice,p_invoice_doc,invoice_number)
+                            invoice =additional_Reference(invoice,supplier_doc,invoice_number)
                             invoice=company_Data(invoice,p_invoice_doc)
                             invoice=customer_Data(invoice,p_invoice_doc)
                             invoice=delivery_And_PaymentMeans(invoice,p_invoice_doc, p_invoice_doc.is_return) 
@@ -80,11 +80,12 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                                 invoice=item_data(invoice,p_invoice_doc)
                             else:
                                    item_data_with_template(invoice,p_invoice_doc)
-                                   
+                            print(1)
                             pretty_xml_string=xml_structuring(invoice,p_invoice_doc)
-
-                            with open(frappe.local.site + "/private/files/finalzatcaxml.xml", 'r') as file:
+                            print(p_invoice_doc.name)
+                            with open(frappe.local.site + "/private/files/finalzatcaxml_{p_invoice_doc.name}.xml", 'r') as file:
                                     file_content = file.read()
+                            print(3)
                             tag_removed_xml = removeTags(file_content)
                             canonicalized_xml = canonicalize_xml(tag_removed_xml)
                             hash1, encoded_hash = getInvoiceHash(canonicalized_xml)
@@ -96,7 +97,6 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                             populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_properties_base64,encoded_hash,p_invoice_doc)
                             tlv_data = generate_tlv_xml(p_invoice_doc=p_invoice_doc)
                             # print(tlv_data)
-                            print("hiiiiii")
 
                             tagsBufsArray = []
                             for tag_num, tag_value in tlv_data.items():
@@ -105,16 +105,12 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                             qrCodeB64 = base64.b64encode(qrCodeBuf).decode('utf-8')
                             update_Qr_toXml(qrCodeB64)
                             signed_xmlfile_name=structuring_signedxml(p_invoice_doc)
-                            print("hiiiiii")
                             # generate_xml_hash()
                             if compliance_type == "0":
                                 if supplier_doc.is_custom_b2c == 1:
-                                    print(11)
                                     reporting_API(uuid1, encoded_hash, signed_xmlfile_name,invoice_number,p_invoice_doc)
                                     attach_QR_Image(qrCodeB64,p_invoice_doc)
                                 else:
-                                    print(22)
-
                                     xml_cleared=clearance_API(uuid1, encoded_hash, signed_xmlfile_name,invoice_number,p_invoice_doc)
                                     attach_QR_Image(qrCodeB64,p_invoice_doc)
                             else:  # if it a compliance test
@@ -125,9 +121,9 @@ def zatca_Call(invoice_number, compliance_type="0", any_item_has_tax_template= F
                             frappe.throw("Error in background call:  " + str(e) )
 
 @frappe.whitelist(allow_guest=True)          
-def on_submit(doc, method=None):       
+def on_submit_new(doc, method=None):       
  #def zatca_Background(invoice_number):
-                    #print(doc.custom_zatca_tax_category)
+                    print("dfkjdskjldjflkd============")
                     try:
                         purchase_invoice_doc = doc
                         if doc.is_return:

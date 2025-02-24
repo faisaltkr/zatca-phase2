@@ -56,8 +56,9 @@ def doc_Reference(invoice,p_invoice_doc,invoice_number):
                 cbc_ID_1 = ET.SubElement(cac_AdditionalDocumentReference, "cbc:ID")
                 cbc_ID_1.text = "ICV"
                 cbc_UUID_1 = ET.SubElement(cac_AdditionalDocumentReference, "cbc:UUID")
-                cbc_UUID_1.text = str(get_icv_code(p_invoice_doc))
-                return invoice  
+                icv = str(get_icv_code(p_invoice_doc))
+                cbc_UUID_1.text = icv
+                return invoice, icv
             except Exception as e:
                     frappe.throw("Error occured in  reference doc" + str(e) )
 

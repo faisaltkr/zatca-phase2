@@ -47,8 +47,6 @@ def compliance_api_call(uuid1,encoded_hash,signed_xmlfile_name):
                     csid = key[0]['csid']
                     # print(type(csid),"csidddddd")
                     # settings = frappe.get_doc('Zatca ERPgulf Setting')
-                    print(type(xml_base64_Decode(signed_xmlfile_name)))
-                    print(signed_xmlfile_name,"mmmmm")
                     # print(type(encoded_hash))
                     payload = json.dumps({
                         "invoiceHash": str(encoded_hash),
@@ -81,10 +79,9 @@ def compliance_api_call(uuid1,encoded_hash,signed_xmlfile_name):
                         response = requests.request("POST", url=get_API_url(base_url="compliance/invoices"), headers=headers, data=payload)
                         frappe.msgprint(response.text)
                         print(response.status_code,response.text,"kkdfjkgkjfekgdkfjgkj")
-                        # return response.text
 
                         if response.status_code != 200:
-
+                            frappe.msgprint("complaince failed", signed_xmlfile_name)
                             frappe.throw("Error in complaince: " + str(response.text))    
                     
                     except Exception as e:

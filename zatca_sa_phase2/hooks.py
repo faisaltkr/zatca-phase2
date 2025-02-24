@@ -233,7 +233,7 @@ doc_events = {
         # 'before_save': 'zatca_sa_phase2.zatca_sa_phase2.doctype.einvoices.create_invoices.get_last_submitted_invoice'
     },
     'Purchase Invoice': {
-        'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.purchase.submit.on_submit'
+        'on_submit': 'zatca_sa_phase2.zatca_sa_phase2.doctype.purchase.submit.on_submit_new'
     },
     "Item": {
         "after_insert": "zatca_sa_phase2.zatca_sa_phase2.update_price.update_item_price"

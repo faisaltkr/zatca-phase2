@@ -44,7 +44,6 @@ def check_compliance(data):
     except Exception as e:
         frappe.throw("Please select a customer")
     try:
-        print("sdfdfdfg")
         check_invoice(invoices,customer)
     except Exception as e:
         frappe.throw(str(e))
@@ -76,36 +75,22 @@ def check_invoice(invoices,customer):
     for key, value in invoices.items():
         if value:
             xml_file_path= f'{basepath}/doctype/compliance/invoices/{invoice_files[key]}'
-            print(xml_file_path)
             try:
                 customer_doc = frappe.get_doc("Customer",customer)
-                print("ddd")
                 with open(xml_file_path, 'r') as file:
                     file_content = file.read()
-                    print(file_content)
-                print("dddd")
+                    # print(file_content)
                 uuid1 = getuuid(file_content)
-                print(uuid1)
                 # print(file_content)
-                print(1)
                 tag_removed_xml = removeTags(file_content)
-                print(2)
                 canonicalized_xml = canonicalize_xml(tag_removed_xml)
-                print(3)
                 hash1, encoded_hash = getInvoiceHash(canonicalized_xml)
-                print(4)
                 encoded_signature = digital_signature(hash1)
-                print(5)
                 issuer_name,serial_number = extract_certificate_details(customer_doc=customer_doc)
-                print(6)
                 encoded_certificate_hash=certificate_hash()
-                print(7)
                 namespaces,signing_time=signxml_modify(customer_doc=customer_doc,xml=file_content)
-                print(8)
                 signed_properties_base64=generate_Signed_Properties_Hash(signing_time,issuer_name,serial_number,encoded_certificate_hash)
-                print(9)
                 populate_The_UBL_Extensions_Output(encoded_signature,namespaces,signed_properties_base64,encoded_hash)
-                print(10)
                 tlv_data = generate_tlv_xml()
                 # print(tlv_data)
                 tagsBufsArray = []

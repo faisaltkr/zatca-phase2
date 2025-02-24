@@ -34,6 +34,7 @@ frappe.ui.form.on('CSR Settings', {
             // Bind the custom button click event
             frm.fields_dict['generate_csr'].$input.on('click', function() {
                 let formData = frm.doc;
+                $(".frappe-alert").remove();
                 frappe.show_alert({message: __("Generating CSR..."), indicator: 'green'}, 5);
 
                 // Print form data to the console
@@ -45,18 +46,25 @@ frappe.ui.form.on('CSR Settings', {
                     },
                     callback: function(r) {
                         if(r.message) {
+                            $(".frappe-alert").remove();
+
                             frappe.msgprint({
                                 title: __('Success'),
                                 message: '<b style="color:green">' + r.message.message + '</b>',
                                 indicator: 'red'
                             });
-                            frm.set_value('private_key', r.message.key);
-                            frm.set_value('public_key', r.message.public_key);
-                            frm.set_value('csr', r.message.csr);
-                            frm.set_value('issuer_name', r.message.issuer_name);
-                            frm.set_value('issuer_serial_number', r.message.s_no);
-
-
+                            try {
+                                frm.set_value({
+                                    private_key: r.message.key,
+                                    public_key: r.message.public_key,
+                                    csr: r.message.csr,
+                                    issuer_name: r.message.issuer_name,
+                                    issuer_serial_number: r.message.s_no
+                                });
+                            } catch (error) {
+                                frappe.msgprint(__('Conflict detected. Reloading the document.'));
+                                frm.reload_doc();
+                            }
                         }
                     }
                 });
